@@ -44,39 +44,43 @@ calcStats = function(){
 	var sum = 0.0;
 
 	if(solves_today.length >= 5)
-	for(var i=0; i<5; i+=1){
-		sum += solves_today[solves_today.length - 1 - i];
-	}
+		for(var i=0; i<5; i+=1){
+			sum += solves_today[solves_today.length - 1 - i];
+		}
 	ao5 = sum / 5;
 
 	sum = 0.0;
-	
+
 	if(solves_today.length >= 12)
-	for(var i=0; i<12; i+=1){
-		sum += solves_today[solves_today.length - 1 - i];
-	}
+		for(var i=0; i<12; i+=1){
+			sum += solves_today[solves_today.length - 1 - i];
+		}
 	ao12 = sum / 12;
 
 	sum = 0.0;
-	
+
 	for(var i=0; i<solves_today.length; i+=1){
 		sum += solves_today[i];
 	}
 	ao_session = sum / solves_today.length;
 
-	console.log("Session Statistics: ");
-	console.log(ao5 + "; " + ao12 + "; " + ao_session);
-	console.log(solves_today);
+	ao5 = parseFloat((ao5).toFixed(2));
+	ao12 = parseFloat((ao12).toFixed(2));
+	ao_session = parseFloat((ao_session).toFixed(2));
+
+	// console.log("Session Statistics: ");
+	// console.log(ao5 + "; " + ao12 + "; " + ao_session);
+	// console.log(solves_today);
 }
 
 /*
-  stopwatch.on('done', function(){
-	console.log("\n");
-	console.log("This solve was " + stopwatch.ms);
-	console.log("-----------------------------------");
-	console.log("\n");
-	});
-*/
+	 stopwatch.on('done', function(){
+	 console.log("\n");
+	 console.log("This solve was " + stopwatch.ms);
+	 console.log("-----------------------------------");
+	 console.log("\n");
+	 });
+	 */
 
 var solving = false;
 var inspecting = false;
@@ -95,8 +99,27 @@ var ao5 = 0.0, ao12 = 0.0, ao_session = 0.0;
 process.stdin.on('keypress', function (ch, key) {
 
 	if(key.name == 's'){
+		charm.erase("line");
+		charm.left(1);
 		console.log("Session statistics");
 		console.log("Session started at " + start_time);
+		console.log("You have been cubing for " + (total_time.ms / 1000 / 60).toFixed(2) + " minutes");
+		if(solves_today.length >= 5){
+			console.log("Your current " + clc.red("AO5") + " is " + clc.blue(ao5));
+			start_solve += 1;
+			start_inspect += 1;
+		}
+		if(solves_today.length >= 12){
+			console.log("Your current " + clc.red("AO12") + " is " + clc.blue(ao12));
+			start_solve += 1;
+			start_inspect += 1;
+		}
+
+		console.log("Your current " + clc.red("Session average") + " is " + clc.blue(ao_session));
+		console.log(clc.blue("You: ") + "Press space to initiate a new solve");
+
+		start_solve += 5;
+		start_inspect += 5;
 	}
 
 	if(!inspecting && !solving && key.name == 'space'){
@@ -145,10 +168,10 @@ process.stdin.on('keypress', function (ch, key) {
 				if(num_solves < 5)
 					console.log(clc.red("Previous solve: ") + clc.blue(last_solve));
 				else
-					console.log(clc.red("Today's AO5: ") + clc.blue(ao5));
+					console.log(clc.red("This session's AO5: ") + clc.blue(ao5));
 			}
 
-			console.log(clc.blue("You: Press space to start a solve!"));
+			console.log(clc.blue("You: ") + "Press space to start a solve!");
 
 			start_solve += 2;
 			start_inspect += 2;
@@ -173,32 +196,36 @@ var rl = readline.createInterface({
 });
 
 charm.reset();
-console.log(clc.red("Bot: Hey! Let's start solving!"));
-console.log(clc.blue("You: Press space to initiate a solve."));
+console.log(clc.red("Bot: ") + "Hey! Let's start solving!");
+console.log(clc.red("Bot: ") + "The session starts now!");
+console.log(clc.blue("You: ") + "Press space to initiate a solve.");
 
 charm.position(right_row_num, 1);
 console.log(clc.green("Keyboard shortcuts"));
 charm.position(right_row_num, 2);
 console.log(clc.red("Press space to initiate a solve."));
 charm.position(right_row_num, 3);
-console.log(clc.blue("Press letter s to see your session statistics"));
+console.log(clc.blue("Press letter s to see your session statistics."));
 
 var start_time = new Date();
 start_time = start_time.getHours() + ":" + start_time.getMinutes();
 console.log(start_time);
 
+total_time = new Stopwatch();
+total_time.start();
+
 /*
-var file  =  './data.json';
-jf.readFile(file, function(err, obj) {
-	console.log("It is: ");
-	console.log(typeof(obj));
-	console.log(util.inspect(obj))
-});
+	 var file  =  './data.json';
+	 jf.readFile(file, function(err, obj) {
+	 console.log("It is: ");
+	 console.log(typeof(obj));
+	 console.log(util.inspect(obj))
+	 });
 
-obj = {name: 'Yu'};
+	 obj = {name: 'Yu'};
 
-jf.writeFileSync(file, obj);
-*/
+	 jf.writeFileSync(file, obj);
+	 */
 /*
 	 rl.question("What do you think of node.js? ", function(answer) {
 	 console.log("Thank you for your valuable feedback:", answer);
