@@ -10,8 +10,10 @@ var Stopwatch = require('timer-stopwatch');
 var keypress = require('keypress');
 var clc = require('cli-color');
 var charm = require('charm')();
+var jf  =  require('jsonfile')
+var util  =  require('util')
+
 charm.pipe(process.stdout);
-charm.reset();
 
 keypress(process.stdin);
 
@@ -105,9 +107,30 @@ var rl = readline.createInterface({
 		output: process.stdout
 });
 
+charm.reset();
 console.log(clc.red("Bot: Hey! Let's start solving!"));
-console.log(clc.blue("You: Press space to initiate a WCA solve. (15 sec inspection)"));
+console.log(clc.blue("You: Press space to initiate a solve."));
 
+var right_row_num = 50;
+charm.position(right_row_num, 1);
+console.log(clc.green("Keyboard shortcuts"));
+charm.position(right_row_num, 2);
+console.log(clc.red("Press space to initiate a solve."));
+charm.position(right_row_num, 3);
+console.log(clc.blue("Press the letter t to see your session statistics"));
+
+/*
+var file  =  './data.json';
+jf.readFile(file, function(err, obj) {
+	console.log("It is: ");
+	console.log(typeof(obj));
+	console.log(util.inspect(obj))
+});
+
+obj = {name: 'Yu'};
+
+jf.writeFileSync(file, obj);
+*/
 /*
 	 rl.question("What do you think of node.js? ", function(answer) {
 	 console.log("Thank you for your valuable feedback:", answer);
