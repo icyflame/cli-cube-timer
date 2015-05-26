@@ -1,3 +1,10 @@
+/*
+ * Rubik's Cube Timer on the Command Line
+ *
+ * Siddharth Kannan <kannan.siddharth12@gmail.com>
+ * MIT License
+ */
+
 var readline = require('readline');
 var Stopwatch = require('timer-stopwatch');
 var keypress = require('keypress');
@@ -13,7 +20,7 @@ var inspect = new Stopwatch(15000, inspect_options);
 var stopwatch = new Stopwatch();
 
 inspect.on('time', function(time) {
-	process.stdout.write("Inspecting: " + time.ms/1000 + "\r");
+	process.stdout.write("Inspecting: " + (time.ms/1000).toFixed() + "\r");
 });
 
 inspect.on('done', function(){
@@ -55,6 +62,7 @@ process.stdin.on('keypress', function (ch, key) {
 	else
 	if(inspecting && !solving && key.name == 'space'){
 		inspect.stop();
+		inspect.reset(0);
 		console.log("START SOLVING!");
 		stopwatch.start();
 		inspecting = false;
@@ -66,6 +74,7 @@ process.stdin.on('keypress', function (ch, key) {
 			console.log("\n\n");
 			console.log("This solve was: " + stopwatch.ms / 1000.0);
 			stopwatch.stop();
+			stopwatch.reset(0);
 			inspecting = false;
 			solving = false;
 			console.log("All set for the next solve!");
@@ -80,6 +89,7 @@ var rl = readline.createInterface({
 	input: process.stdin,
 		output: process.stdout
 });
+
 /*
 	 rl.question("What do you think of node.js? ", function(answer) {
 	 console.log("Thank you for your valuable feedback:", answer);
