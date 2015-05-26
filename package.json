@@ -11,6 +11,7 @@
   "dependencies": {
     "charm": "^1.0.0",
     "cli-color": "^1.0.0",
+    "jsonfile": "^2.0.1",
     "keypress": "^0.2.1",
     "timer-stopwatch": "^0.1.5"
   }
