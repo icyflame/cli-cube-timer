@@ -8,6 +8,10 @@
 var readline = require('readline');
 var Stopwatch = require('timer-stopwatch');
 var keypress = require('keypress');
+var clc = require('cli-color');
+var charm = require('charm')();
+charm.pipe(process.stdout);
+charm.reset();
 
 keypress(process.stdin);
 
@@ -20,7 +24,7 @@ var inspect = new Stopwatch(15000, inspect_options);
 var stopwatch = new Stopwatch();
 
 inspect.on('time', function(time) {
-	process.stdout.write("Inspecting: " + (time.ms/1000).toFixed() + "\r");
+	charm.position(1, 3).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
 });
 
 inspect.on('done', function(){
@@ -28,7 +32,7 @@ inspect.on('done', function(){
 });
 
 stopwatch.on('time', function(time){
-	process.stdout.write("Solving: " + time.ms + "\r");
+	charm.position(1, 4).write("Solving: " + (time.ms / 1000).toFixed(2));
 });
 
 stopwatch.on('done', function(){
@@ -89,6 +93,9 @@ var rl = readline.createInterface({
 	input: process.stdin,
 		output: process.stdout
 });
+
+console.log(clc.red("Bot: Hey! Let's start solving!"));
+console.log(clc.blue("You: Press space to initiate a WCA solve. (15 sec inspection)"));
 
 /*
 	 rl.question("What do you think of node.js? ", function(answer) {
