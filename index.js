@@ -24,7 +24,7 @@ var inspect = new Stopwatch(15000, inspect_options);
 var stopwatch = new Stopwatch();
 
 inspect.on('time', function(time) {
-	charm.position(1, 3).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
+	charm.position(1, start_inspect).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
 });
 
 inspect.on('done', function(){
@@ -32,7 +32,9 @@ inspect.on('done', function(){
 });
 
 stopwatch.on('time', function(time){
-	charm.position(1, 4).write("Solving: " + (time.ms / 1000).toFixed(2));
+	if(!solving)
+	return;
+charm.position(1, start_solve).write("Solving: " + (time.ms / 1000).toFixed(2));
 });
 
 stopwatch.on('done', function(){
@@ -46,11 +48,10 @@ stopwatch.on('done', function(){
 var solving = false;
 var inspecting = false;
 
+var start_inspect = 3;
+var start_solve = 4;
+
 process.stdin.on('keypress', function (ch, key) {
-	// console.log('got "keypress"', key);
-	//
-	// console.log("Inspecting: " + inspecting);
-	// console.log("Solving: " + solving);
 
 	if(key.name == 'r'){
 		inspecting = false;
@@ -67,7 +68,6 @@ process.stdin.on('keypress', function (ch, key) {
 	if(inspecting && !solving && key.name == 'space'){
 		inspect.stop();
 		inspect.reset(0);
-		console.log("START SOLVING!");
 		stopwatch.start();
 		inspecting = false;
 		solving = true;
@@ -75,13 +75,24 @@ process.stdin.on('keypress', function (ch, key) {
 
 	else
 		if(!inspecting && solving && key.name == 'space'){
-			console.log("\n\n");
-			console.log("This solve was: " + stopwatch.ms / 1000.0);
+
+			// A solve has been completed.
+			solving = false;
+			inspecting = false;
+
+			var solveTime = stopwatch.ms;
 			stopwatch.stop();
 			stopwatch.reset(0);
-			inspecting = false;
-			solving = false;
-			console.log("All set for the next solve!");
+
+			charm.position(1, start_solve);
+			charm.erase("end");
+			charm.position(1, start_inspect);
+			console.log(clc.red("Bot: ") + "That solve was " + (solveTime / 1000.0).toFixed(2) + ' seconds');
+			console.log(clc.blue("You: Press space to start a solve!"));
+
+			start_solve += 2;
+			start_inspect += 2;
+
 		}
 
 if (key.ctrl && key.name == 'c') {
