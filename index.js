@@ -73,6 +73,24 @@ calcStats = function(){
 	// console.log(solves_today);
 }
 
+writeSolveToFile = function(solvetime){
+
+	var t = new Date();
+	date = t.getFullYear() + "-" + t.getMonth() + "-" + t.getDate();
+	time = t.getHours() + ":" + t.getMinutes();
+
+	var obj = {
+		solvetime: solvetime,
+		date: date,
+		timeofday: time
+	}
+
+	file = "data.json";
+
+	jf.writeFileSync(file, obj);
+
+}
+
 /*
 	 stopwatch.on('done', function(){
 	 console.log("\n");
@@ -158,11 +176,13 @@ process.stdin.on('keypress', function (ch, key) {
 			console.log(clc.red("Bot: ") + "That solve was " + this_solve + ' seconds');
 			solves_today.push(parseFloat(this_solve));
 
+			calcStats();
+			writeSolveToFile(this_solve);
+
 			if(last_solve < 0)
 				console.log(clc.red("Bot: ") + "Great start! Keep the cube twisting!");
 			else{
 				num_solves += 1;
-				calcStats();
 
 				charm.position(right_row_num, start_inspect);
 				if(num_solves < 5)
