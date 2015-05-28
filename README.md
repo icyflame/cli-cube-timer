@@ -8,6 +8,8 @@ accidentally, and me losing my whole solve history!
 
 So, this is a hack around that. 
 
+[![NPM](https://nodei.co/npm/cli-cube-timer.png)](https://npmjs.org/package/cli-cube-timer)
+
 **Note: There's a lot of work to be done here!**
 
 I would love to have your help on this! Do check out the issues dashboard of this repository,
