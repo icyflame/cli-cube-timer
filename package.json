@@ -1,13 +1,13 @@
 {
-  "name": "cli-timer",
-  "version": "1.0.0",
-  "description": "",
+  "name": "cli-cube-timer",
+  "version": "0.0.1",
+  "description": "Rubik's Cube Timer for the Terminal-buff speedsolver",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "charm": "^1.0.0",
     "cli-color": "^1.0.0",
