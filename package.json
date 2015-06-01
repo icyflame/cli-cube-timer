@@ -15,8 +15,10 @@
   "dependencies": {
     "charm": "^1.0.0",
     "cli-color": "^1.0.0",
+    "file-exists": "^0.1.1",
     "jsonfile": "^2.0.1",
     "keypress": "^0.2.1",
+    "mkdirp": "^0.5.1",
     "request-json": "^0.5.3",
     "scrambo": "^0.1.0",
     "timer-stopwatch": "^0.1.5"
