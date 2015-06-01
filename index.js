@@ -12,6 +12,8 @@ var clc = require('cli-color');
 var charm = require('charm')();
 var jf  =  require('jsonfile');
 var util  =  require('util');
+var Scrambo = require('scrambo');
+var threebythree = new Scrambo(); // Defaults to 3x3
 
 charm.pipe(process.stdout);
 
@@ -91,20 +93,11 @@ writeSolveToFile = function(solvetime){
 
 }
 
-/*
-	 stopwatch.on('done', function(){
-	 console.log("\n");
-	 console.log("This solve was " + stopwatch.ms);
-	 console.log("-----------------------------------");
-	 console.log("\n");
-	 });
-	 */
-
 var solving = false;
 var inspecting = false;
 
-var start_inspect = 4;
-var start_solve = 5;
+var start_inspect = 5;
+var start_solve = 6;
 
 var last_solve = -1;
 
@@ -190,11 +183,12 @@ process.stdin.on('keypress', function (ch, key) {
 				else
 					console.log(clc.red("This session's AO5: ") + clc.blue(ao5));
 			}
-
+			
+			console.log(clc.red("Bot: ") + threebythree.get(1).join(" "));
 			console.log(clc.blue("You: ") + "Press space to start a solve!");
 
-			start_solve += 2;
-			start_inspect += 2;
+			start_solve += 3;
+			start_inspect += 3;
 
 			if(last_solve < 0){
 				start_solve += 1;
@@ -219,6 +213,7 @@ charm.reset();
 console.log(clc.red("Bot: ") + "Hey! Let's start solving!");
 console.log(clc.red("Bot: ") + "The session starts now!");
 console.log(clc.blue("You: ") + "Press space to initiate a solve.");
+console.log(clc.red("Bot: ") + threebythree.get(1).join(" "));
 
 charm.position(right_row_num, 1);
 console.log(clc.green("Keyboard shortcuts"));
@@ -229,28 +224,9 @@ console.log(clc.blue("Press letter s to see your session statistics."));
 
 var start_time = new Date();
 start_time = start_time.getHours() + ":" + start_time.getMinutes();
-console.log(start_time);
+// console.log(start_time);
 
 total_time = new Stopwatch();
 total_time.start();
-
-/*
-	 var file  =  './data.json';
-	 jf.readFile(file, function(err, obj) {
-	 console.log("It is: ");
-	 console.log(typeof(obj));
-	 console.log(util.inspect(obj))
-	 });
-
-	 obj = {name: 'Yu'};
-
-	 jf.writeFileSync(file, obj);
-	 */
-/*
-	 rl.question("What do you think of node.js? ", function(answer) {
-	 console.log("Thank you for your valuable feedback:", answer);
-
-	 rl.close();
-	 });
-	 */
+charm.position(1, start_inspect);
 
