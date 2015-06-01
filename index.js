@@ -11,7 +11,6 @@ module.exports = function(){
 	var keypress = require('keypress');
 	var clc = require('cli-color');
 	var charm = require('charm')();
-	var jf  =  require('jsonfile');
 	var util  =  require('util');
 	var Scrambo = require('scrambo');
 	var threebythree = new Scrambo(); // Defaults to 3x3
@@ -44,24 +43,9 @@ module.exports = function(){
 
 	stats = require('./statistics.js');
 	calcStats = stats.calcStats;
-
-	writeSolveToFile = function(solvetime){
-
-		var t = new Date();
-		date = t.getFullYear() + "-" + t.getMonth() + "-" + t.getDate();
-		time = t.getHours() + ":" + t.getMinutes();
-
-		var obj = {
-			solvetime: solvetime,
-			date: date,
-			timeofday: time
-		}
-
-		file = "data.json";
-
-		jf.writeFileSync(file, obj);
-
-	}
+	
+	push = require('./push.js');
+	pushGist = push.pushGist;
 
 	var solving = false;
 	var inspecting = false;
@@ -147,7 +131,7 @@ module.exports = function(){
 					ao12 = stats[1];
 					ao_session = stats[2];
 
-					writeSolveToFile(this_solve);
+					pushGist(this_solve, this_scramble);
 
 					if(last_solve < 0)
 						console.log(clc.red("Bot: ") + "Great start! Keep the cube twisting!");
@@ -161,7 +145,9 @@ module.exports = function(){
 							console.log(clc.red("This session's AO5: ") + clc.blue(ao5));
 					}
 
-					console.log(clc.red("Bot: ") + threebythree.get(1).join(" "));
+					this_scramble = threebythree.get(1).join(" ");
+
+					console.log(clc.red("Bot: ") + this_scramble);
 					console.log(clc.blue("You: ") + "Press space to start a solve!");
 
 					start_solve += 3;
@@ -190,7 +176,8 @@ module.exports = function(){
 	console.log(clc.red("Bot: ") + "Hey! Let's start solving!");
 	console.log(clc.red("Bot: ") + "The session starts now!");
 	console.log(clc.blue("You: ") + "Press space to initiate a solve.");
-	console.log(clc.red("Bot: ") + threebythree.get(1).join(" "));
+	var this_scramble = threebythree.get(1).join(" ");
+	console.log(clc.red("Bot: ") + this_scramble);
 
 	charm.position(right_row_num, 1);
 	console.log(clc.green("Keyboard shortcuts"));
