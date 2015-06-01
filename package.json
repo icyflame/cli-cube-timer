@@ -1,23 +1,24 @@
 {
-	"name": "cli-cube-timer",
-	"version": "0.0.4",
-	"description": "Rubik's Cube Timer for the Terminal-buff speedsolver",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"bin": {
-		"solve": "cli.js"
-	},
-	"author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
-	"repository": "icyflame/node-cube-cli-timer",
-	"license": "MIT",
-	"dependencies": {
-		"charm": "^1.0.0",
-		"cli-color": "^1.0.0",
-		"jsonfile": "^2.0.1",
-		"keypress": "^0.2.1",
-		"scrambo": "^0.1.0",
-		"timer-stopwatch": "^0.1.5"
-	}
+  "name": "cli-cube-timer",
+  "version": "0.1.0",
+  "description": "Rubik's Cube Timer for the Terminal-buff speedsolver",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "solve": "cli.js"
+  },
+  "author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
+  "repository": "icyflame/node-cube-cli-timer",
+  "license": "MIT",
+  "dependencies": {
+    "charm": "^1.0.0",
+    "cli-color": "^1.0.0",
+    "jsonfile": "^2.0.1",
+    "keypress": "^0.2.1",
+    "request-json": "^0.5.3",
+    "scrambo": "^0.1.0",
+    "timer-stopwatch": "^0.1.5"
+  }
 }
