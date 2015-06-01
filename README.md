@@ -1,6 +1,6 @@
 # Rubiks' Cube Timer on the Command Line
 
-Time your solves, without leaving the terminal.
+> Time your solves, without leaving the terminal.
 
 I was tired of having to go to a browser, and even more tired of not getting to clear
 my cookies now and then. And also, with living with the fear of the cookies getting cleared
