@@ -6,7 +6,10 @@ var meow = require('meow');
 var cli = meow({
 	help: [
 	"Usage",
-		" Start a solve session"
+		"  solve",
+		"    - Start a solve session",
+		"  solve stats",
+		"    - View your complete lifetime statistics"
 	].join("\n")
 });
 
