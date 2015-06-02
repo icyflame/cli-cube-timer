@@ -1,4 +1,4 @@
-# Rubiks' Cube Timer on the Command Line
+# Rubik's Cube Timer on the Command Line
 
 > Time your solves, without leaving the terminal.
 
