@@ -2,7 +2,7 @@
 
 > Time your solves, without leaving the terminal.
 
-[![NPM](https://nodei.co/npm/cli-cube-timer.png)](https://npmjs.org/package/cli-cube-timer)
+[![NPM](https://nodei.co/npm/cli-cube-timer.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/cli-cube-timer/)
 
 ## Why?
 
@@ -20,6 +20,14 @@ So, this is a hack around that.
 
 This will begin a solving session. All session statistics will be stored locally for this session.
 Solve times are stored universally at `~/.cube/times.csv`.
+
+### solve stats
+
+> View your lifetime statistics
+
+This will show you the mean, the standard deviation and the distribution of your solve times.
+This part section is always open for improvement. The code for this is implemented using 
+`fast-stats` and `fast-csv` node modules. So, this is one thing that you can always contribute to!
 
 ## Contributing
 
