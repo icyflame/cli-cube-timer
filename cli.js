@@ -5,7 +5,7 @@ var meow = require('meow');
 
 var cli = meow({
 	help: [
-		"Usage",
+	"Usage",
 		" Start a solve session"
 	].join("\n")
 });
@@ -13,8 +13,12 @@ var cli = meow({
 // console.log(cli.input.length);
 // var util = require('util');
 // console.log(util.inspect(cli));
-
-var start_solving = require('./index.js');
-
-start_solving();
-
+//
+if(cli.input.length >= 1){
+	if(cli.input[0] == "stats")
+		require("./stats-module.js")();
+}
+else{
+	var start_solving = require('./index.js');
+	start_solving();
+}
