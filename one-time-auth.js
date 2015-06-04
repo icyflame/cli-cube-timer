@@ -42,10 +42,6 @@
 
 			client.post("authorizations", data, function(err, res, body){
 
-				console.log(util.inspect(body));
-				console.log(body.token);
-				console.log(body.token.length);
-
 				nconf.set("user:oauth", body.token);
 
 				nconf.save(function(err){
