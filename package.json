@@ -9,6 +9,7 @@
   "bin": {
     "solve": "cli.js"
   },
+	"preferGlobal": "true",
   "author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
   "repository": "icyflame/node-cube-cli-timer",
   "license": "MIT",
@@ -24,6 +25,7 @@
     "mkdirp": "^0.5.1",
     "request-json": "^0.5.3",
     "scrambo": "^0.1.0",
+    "sync-prompt": "^0.4.2",
     "timer-stopwatch": "^0.1.5"
   }
 }
