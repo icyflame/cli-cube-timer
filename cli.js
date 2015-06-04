@@ -20,6 +20,9 @@ var cli = meow({
 if(cli.input.length >= 1){
 	if(cli.input[0] == "stats")
 		require("./stats-module.js")();
+	else
+		if(cli.input[0] == "login")
+			require("./login.js")();
 }
 else{
 	var start_solving = require('./index.js');
