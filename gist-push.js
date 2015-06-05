@@ -60,8 +60,10 @@
 					};
 
 					client.patch("gists/" + conf.get("gist_id"), newData, function(err, res, body){
-						console.log(res.statusCode);
-						console.log(body.html_url);
+						if(!err){
+							console.log(res.statusCode);
+							console.log(body.html_url);
+						}
 					});
 
 				});
@@ -95,7 +97,7 @@
 
 						// store gistid in conf file
 						// show URL to user
-
+						console.log(clc.green("Successfully pushed to Github!"));
 						console.log("You can find your solves at: ");
 						console.log(body.html_url);
 						conf.set("gist_id", body.id);
