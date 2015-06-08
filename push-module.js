@@ -76,8 +76,8 @@ module.exports = function(){
 							require('./file-module.js').writeToPushed(glob);
 						}
 						else{
+							console.log("HTTP Status Code: " + res.statusCode);
 							console.log("We encountered an error!");
-							console.log(err);
 						}
 
 					});

@@ -1,5 +1,7 @@
 module.exports = function(){
 
+	var clc = require("cli-color");
+
 	console.log(clc.blue("Welcome to the one-time-authentication module."));
 	console.log("This module will take your github username and password\nand exchange it for an OAuth token");
 
@@ -37,12 +39,24 @@ module.exports = function(){
 
 			client.post("authorizations", data, function(err, res, body){
 
-				if(res.statusCode == 200 && !err)
+				if(res.statusCode == 201 && !err){
 
-				var conf = new configstore(pkg.name);
-				conf.set('username', username);
-				conf.set('oauth_token', body.token);
-				console.log(clc.green("Authenticated!") + " We have stored your OAuth Token in the ~/.config directory.");
+					var conf = new configstore(pkg.name);
+
+					for (var i in conf.all) {
+						conf.del(i);
+					};
+
+					conf.set('username', username);
+					conf.set('oauth_token', body.token);
+
+					console.log(clc.green("Authenticated!") + " We have stored your OAuth Token in the ~/.config directory.");
+				}
+
+				else{
+					console.log("HTTP Status Code: " + res.statusCode);
+					console.log("We encountered an error!");
+				}
 			});
 
 		});
