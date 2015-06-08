@@ -1,7 +1,7 @@
 module.exports = function(){
 
-	console.log("Welcome to your one-time-authentication module.");
-	console.log("This module will take your github username and password\nand exchange it for an OAuth token, which we will store in ~/.config/cube.");
+	console.log(clc.blue("Welcome to the one-time-authentication module."));
+	console.log("This module will take your github username and password\nand exchange it for an OAuth token");
 
 	var username, password;
 
@@ -12,14 +12,14 @@ module.exports = function(){
 
 	read({
 
-		prompt: "Enter your username: ",
+		prompt: "Enter your GitHub username: ",
 
 	}, function(err, result, isDef){
 		username = result;
 
 		read({
 
-			prompt: "Enter your password: ",
+			prompt: "Enter your GitHub password: ",
 			silent: true
 
 		}, function(err, result, isDef){
@@ -37,10 +37,12 @@ module.exports = function(){
 
 			client.post("authorizations", data, function(err, res, body){
 
+				if(res.statusCode == 200 && !err)
+
 				var conf = new configstore(pkg.name);
 				conf.set('username', username);
 				conf.set('oauth_token', body.token);
-
+				console.log(clc.green("Authenticated!") + " We have stored your OAuth Token in the ~/.config directory.");
 			});
 
 		});
