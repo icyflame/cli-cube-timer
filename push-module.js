@@ -48,7 +48,7 @@ module.exports = function(){
 
 				client.get("gists/" + conf.get("gist_id"), function(err, res, body){
 					for(var key in body.files){
-						console.log(key);
+						// console.log(key);
 						var oldcont = body.files[key].content;
 						var newcont = oldcont += glob;
 						break;
@@ -61,9 +61,9 @@ module.exports = function(){
 							"times.csv": {
 								"content": newcont
 							},
-					"updated-on.txt":{
-						"content": new Date().toString()
-					}
+							"updated-on.txt":{
+								"content": new Date().toString()
+							}
 						}
 					};
 
@@ -72,6 +72,7 @@ module.exports = function(){
 							console.log("Successfully updated on GitHub!");
 							console.log("Your solves are available at: ");
 							console.log(body.html_url);
+							require("./file-module.js").deleteLocalFile();
 						}
 						else{
 							console.log("We encountered an error!");
@@ -84,7 +85,7 @@ module.exports = function(){
 
 				// send patch request
 
-				console.log("case 2");
+				// console.log("case 2");
 			}
 
 			else{
@@ -115,28 +116,14 @@ module.exports = function(){
 						console.log("You can find your solves at: ");
 						console.log(body.html_url);
 						conf.set("gist_id", body.id);
+
+						require("./file-module.js").deleteLocalFile();
 					}
 				});
 
 			}
 
 		}
-
 	}
-
 	// GH flow end
-
-	// empty the file times.csv
-
-	var trash = require('trash');
-
-	trash([filepath], function(err){
-		if(err){
-			console.log("There was an error in removing the file.");
-			console.log(err);
-		}
-		else
-		console.log("Old file removed!");
-	});
-
 }

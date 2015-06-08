@@ -24,3 +24,18 @@ exports.checkLocalFile = function(){
 
 	return filepath;
 }
+
+exports.deleteLocalFile = function(){
+	// empty the file times.csv
+
+	var trash = require('trash');
+
+	trash([filepath], function(err){
+		if(err){
+			console.log("There was an error in removing the file.");
+			console.log(err);
+		}
+		// else
+		// console.log("Old file removed!");
+	});
+}
