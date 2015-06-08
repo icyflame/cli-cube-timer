@@ -39,3 +39,23 @@ exports.deleteLocalFile = function(){
 		// console.log("Old file removed!");
 	});
 }
+
+exports.writeToPushed = function(glob){
+	var fileExists = require('file-exists');
+	var touch = require('touch');
+	var xdg = require('xdg-basedir');
+
+	var filepath = xdg.data + "/cube/pushed.csv";
+
+	if(!fileExists(filepath)){
+		var mkdirp = require('mkdirp');
+		mkdirp(xdg.data + '/cube');
+		touch(filepath);
+	}
+
+	var fs = require("fs");
+
+	fs.writeFileSync(filepath, glob);
+
+	return filepath;
+}

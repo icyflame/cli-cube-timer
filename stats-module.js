@@ -1,7 +1,7 @@
 module.exports = function(){
 
 	var xdg = require('xdg-basedir');
-	var file_name = xdg.data + "/cube/times.csv";
+	var file_name = xdg.data + "/cube/pushed.csv";
 
 	var fs = require('fs');
 	var csv = require('fast-csv');

@@ -73,6 +73,7 @@ module.exports = function(){
 							console.log("Your solves are available at: ");
 							console.log(body.html_url);
 							require("./file-module.js").deleteLocalFile();
+							require('./file-module.js').writeToPushed(glob);
 						}
 						else{
 							console.log("We encountered an error!");
