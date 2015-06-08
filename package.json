@@ -13,6 +13,19 @@
   "author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
   "repository": "icyflame/node-cube-cli-timer",
   "license": "MIT",
+  "keywords": [
+    "cli-app",
+    "cli",
+    "rubiks",
+    "cube",
+    "solving",
+    "speedcubing",
+    "cubing",
+    "timer",
+    "competition",
+    "sync",
+    "statistics"
+  ],
   "dependencies": {
     "charm": "^1.0.0",
     "cli-color": "^1.0.0",
