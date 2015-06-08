@@ -29,8 +29,8 @@ module.exports = function(){
 	// case 0: not yet authenticated
 
 	if(conf.size < 2){
-		console.log("You have not yet authenticated yet.");
-		console.log("Please run " + clc.red("solve login") + " before running " + clc.red("solve push"));
+		console.log("You have not authenticated yet.");
+		console.log("Please run " + clc.green("solve login") + " before running " + clc.red("solve push"));
 	}
 
 	else{
