@@ -1,4 +1,4 @@
-// module.exports = function(){
+module.exports = function(){
 
 	var request = require('request-json');
 	var xdg = require('xdg-basedir');
@@ -8,13 +8,21 @@
 	var configstore = require('configstore');
 	var conf = new configstore(pkg.name);
 
-	console.log(conf.path);
+	// console.log(conf.path);
 
 	// read file
 
 	var fs = require('fs');
-	var filepath = xdg.data + "/cube/times.csv";
+
+	filepath = require('./file-module.js').checkLocalFile();
+
 	var glob = fs.readFileSync(filepath).toString();
+
+	if(glob.length <= 0){
+		console.log("It seems you have not logged any new solves!");
+		console.log("Use " + clc.red("solve") + " from your CLI, and then run " + clc.green("solve push"));
+		return;
+	}
 
 	// GH flow begin
 
@@ -53,17 +61,23 @@
 							"times.csv": {
 								"content": newcont
 							},
-							"updated-on.txt":{
-								"content": new Date().toString()
-							}
+					"updated-on.txt":{
+						"content": new Date().toString()
+					}
 						}
 					};
 
 					client.patch("gists/" + conf.get("gist_id"), newData, function(err, res, body){
-						if(!err){
-							console.log(res.statusCode);
+						if(!err && res.statusCode == 200){
+							console.log("Successfully updated on GitHub!");
+							console.log("Your solves are available at: ");
 							console.log(body.html_url);
 						}
+						else{
+							console.log("We encountered an error!");
+							console.log(err);
+						}
+
 					});
 
 				});
@@ -103,7 +117,7 @@
 						conf.set("gist_id", body.id);
 					}
 				});
-				
+
 			}
 
 		}
@@ -114,6 +128,15 @@
 
 	// empty the file times.csv
 
-	// move the pushed contents to pushed.csv
+	var trash = require('trash');
 
-// }
+	trash([filepath], function(err){
+		if(err){
+			console.log("There was an error in removing the file.");
+			console.log(err);
+		}
+		else
+		console.log("Old file removed!");
+	});
+
+}

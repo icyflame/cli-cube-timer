@@ -28,6 +28,8 @@
     "request-json": "^0.5.3",
     "scrambo": "^0.1.0",
     "timer-stopwatch": "^0.1.5",
+    "touch": "0.0.3",
+    "trash": "^1.4.1",
     "xdg-basedir": "^1.0.1"
   }
 }

@@ -18,10 +18,10 @@ if(cli.input.length >= 1){
 		require("./stats-module.js")();
 	else
 		if(cli.input[0] == "login")
-			require("./login.js")();
+			require("./login-module.js")();
 		else
 			if(cli.input[0] == "push")
-				require("./gist-push.js")();
+				require("./push-module.js")();
 }
 else{
 	var start_solving = require('./index.js');
