@@ -41,11 +41,11 @@ module.exports = function(){
 	charm.position(1, start_solve).write("Solving: " + (time.ms / 1000).toFixed(2));
 	});
 
-	stats = require('./statistics.js');
+	stats = require('./solvestats-module.js');
 	calcStats = stats.calcStats;
 	
-	push = require('./push.js');
-	pushGist = push.pushGist;
+	push = require('./file-module.js');
+	writeLocal = push.writeLocal;
 
 	var solving = false;
 	var inspecting = false;
@@ -131,7 +131,7 @@ module.exports = function(){
 					ao12 = stats[1];
 					ao_session = stats[2];
 
-					pushGist(this_solve, this_scramble);
+					writeLocal(this_solve, this_scramble);
 
 					if(last_solve < 0)
 						console.log(clc.red("Bot: ") + "Great start! Keep the cube twisting!");

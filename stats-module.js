@@ -1,5 +1,7 @@
 module.exports = function(){
-	var file_name = process.env.HOME + "/.cube/times.csv";
+
+	var xdg = require('xdg-basedir');
+	var file_name = xdg.data + "/cube/pushed.csv";
 
 	var fs = require('fs');
 	var csv = require('fast-csv');

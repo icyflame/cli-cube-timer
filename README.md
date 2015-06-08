@@ -10,7 +10,10 @@ I was tired of having to go to a browser, and even more tired of not getting to 
 my cookies now and then. And also, with living with the fear of the cookies getting cleared
 accidentally, and me losing my whole solve history!
 
-So, this is a hack around that. 
+So, this is a hack around that.
+
+You need a GitHub account to store your solves on a Gist. 
+(Create an account [here](http://github.com)).
 
 ## Usage
 
@@ -28,6 +31,25 @@ Solve times are stored universally at `~/.cube/times.csv`.
 This will show you the mean, the standard deviation and the distribution of your solve times.
 This part section is always open for improvement. The code for this is implemented using 
 `fast-stats` and `fast-csv` node modules. So, this is one thing that you can always contribute to!
+
+### solve push
+
+> Push all your solves to a gist
+
+Ever wanted to take a backup? Well, do this, and everything stays backed up!
+Psst, You can always add more data to your gist, from any other place that you may
+have recorded solves previously, and this app will automatically account for that when
+calculating stats using `solve stats`. Handy, huh?
+
+### solve login
+
+> One time GitHub authentication
+
+This will make some API calls to GitHub's OAuth Authorizations API, and exchange your username and
+password for an OAuth token, that it will store locally, **on your machine**. So, you don't have to enter
+the username and password everytime you want to push, and the OAuth token stays safe.
+Psst, you can delete and create a new OAuth token using this command at any time, just in case you think
+there was a breach! (Everything will work exactly like before!)
 
 ## Contributing
 
