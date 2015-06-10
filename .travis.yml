@@ -1,7 +1,7 @@
 language: node_js
-sudo: true
+sudo: false
 before_install:
-  - "sudo npm install -g npm@latest"
+  - "npm install -g npm@latest"
 node_js:
   - "0.12"
   - "0.11"
