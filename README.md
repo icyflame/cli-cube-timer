@@ -1,6 +1,8 @@
-# Rubik's Cube Timer on the Command Line
+# Rubik's Cube Timer on the Command Line 
 
 > Time your solves, without leaving the terminal.
+
+[![Build Status](https://travis-ci.org/icyflame/node-cube-cli-timer.svg)](https://travis-ci.org/icyflame/node-cube-cli-timer)
 
 [![NPM](https://nodei.co/npm/cli-cube-timer.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/cli-cube-timer/)
 
