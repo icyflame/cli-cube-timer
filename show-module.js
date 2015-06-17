@@ -20,12 +20,14 @@ module.exports = function(arg){
 					console.log("You are authenticated, but we don't have a Gist ID.")
 					console.log("Log a few solves, and then run " + clc.green("solve push") + " to get a Gist ID.");
 				}
+			break;
 		}
 
 		default: {
 			console.log("Unknown option!");
 			console.log("For recognised options, check the README file here:");
 			console.log("http://github.com/icyflame/node-cube-cli-timer");
+			break;
 		}
 
 	}
