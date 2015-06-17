@@ -73,7 +73,7 @@ module.exports = function(){
 							console.log("Your solves are available at: ");
 							console.log(body.html_url);
 							require("./file-module.js").deleteLocalFile();
-							require('./file-module.js').writeToPushed(glob);
+							require('./file-module.js').writeToPushed(newcont);
 						}
 						else{
 							console.log("HTTP Status Code: " + res.statusCode);
