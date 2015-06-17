@@ -50,8 +50,15 @@ calculating stats using `solve stats`. Handy, huh?
 This will make some API calls to GitHub's OAuth Authorizations API, and exchange your username and
 password for an OAuth token, that it will store locally, **on your machine**. So, you don't have to enter
 the username and password everytime you want to push, and the OAuth token stays safe.
-Psst, you can delete and create a new OAuth token using this command at any time, just in case you think
+**Psst,** you can delete and create a new OAuth token using this command at any time, just in case you think
 there was a breach! (Everything will work exactly like before!)
+
+### solve --show gist
+
+> Print the URL where all your times are stored
+
+This will print the URL to your gist, using your username and the gist ID that we have stored on
+your machine.
 
 ## Contributing
 
