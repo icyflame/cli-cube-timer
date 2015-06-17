@@ -13,7 +13,7 @@ var cli = meow({
 	"  solve login",
 	"    - Run the one time authentication module (GitHub)",
 	"  solve push",
-	"    - Push all your solves to a GitHub gist"
+	"    - Push all your solves to a GitHub gist",
 	"  solve --show gist",
 	"    - Get the link of the Gist where all the times are stored."
 	].join("\n")
