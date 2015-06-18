@@ -30,6 +30,7 @@ else
 		switch(arg){
 			case 'stats': require("./stats-module.js")(); break;
 			case 'login': require("./login-module.js")(); break;
+			case 'logout': require("./logout-module.js")(); break;
 			case 'push': require("./push-module.js")(); break;
 		}
 	}
