@@ -32,9 +32,9 @@ module.exports = function(){
 
 			var data = {
 				"scopes": ["gist"],
-				"note": "OAuth token for node-cube-cli-timer.",
-				"client_id": "678a9606a01d79c24046",
-				"client_secret": "266c833862498ac55856cf276a26c8b680515e91"
+			"note": "OAuth token for node-cube-cli-timer.",
+			"client_id": "678a9606a01d79c24046",
+			"client_secret": "266c833862498ac55856cf276a26c8b680515e91"
 			};
 
 			client.post("authorizations", data, function(err, res, body){
@@ -47,6 +47,18 @@ module.exports = function(){
 					conf.set('oauth_token', body.token);
 
 					console.log(clc.green("Authenticated!") + " We have stored your OAuth Token in the ~/.config directory.");
+
+					if(conf.get('gist_id')){
+						var ghGistOwner = require('gh-gist-owner');
+						var owner_username = ghGistOwner(conf.get('gist_id'));
+						if(username != owner_username){
+							console.log("Gist ID: " + conf.get('gist_id') + " was stored on file.");
+							console.log("It is owned by " + owner_username + ". We are removing this from local storage.");
+							conf.del('gist_id');
+						}
+						else
+							console.log("Gist ID: " + conf.get('gist_id') + " will be used for pushing solves.");
+					}
 				}
 
 				else{
