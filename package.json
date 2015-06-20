@@ -1,6 +1,6 @@
 {
   "name": "cli-cube-timer",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Rubik's Cube Timer for the Terminal-buff speedsolver",
   "main": "index.js",
   "scripts": {
