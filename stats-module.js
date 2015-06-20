@@ -20,7 +20,11 @@ module.exports = function(){
 			// console.log(all_times);
 			console.log("Mean of all solves: " + clc.green(all_times.amean().toFixed(2) + " seconds"));
 			console.log("Standard Deviation: " + clc.green(all_times.stddev().toFixed(2) + " seconds"));
+			var range = all_times.range();
+			console.log("Best Solve: " + clc.green(range[0].toFixed(2) + " seconds"));
+			console.log("Worst Solve: " + clc.green(range[1].toFixed(2) + " seconds"));
 			// console.log(all_times.distribution());
+			
 			var distribution = all_times.distribution();
 
 			distribution.forEach(function(e){
