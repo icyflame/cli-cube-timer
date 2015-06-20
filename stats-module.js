@@ -8,6 +8,8 @@ module.exports = function(){
 	var Stats = require('fast-stats').Stats;
 	var clc = require('cli-color');
 
+	var prettyMs = require('pretty-ms');
+
 	var stream = fs.createReadStream(file_name);
 	var all_times = new Stats({bucket_precision: 10});
 
@@ -18,11 +20,11 @@ module.exports = function(){
 		}).on("end", function(){
 			// console.log("Completed!");
 			// console.log(all_times);
-			console.log("Mean of all solves: " + clc.green(all_times.amean().toFixed(2) + " seconds"));
-			console.log("Standard Deviation: " + clc.green(all_times.stddev().toFixed(2) + " seconds"));
+			console.log("Mean of all solves: " + clc.green(prettyMs(all_times.amean().toFixed(3) * 1000)));
+			console.log("Standard Deviation: " + clc.green(prettyMs(all_times.stddev().toFixed(3)*1000)));
 			var range = all_times.range();
-			console.log("Best Solve: " + clc.green(range[0].toFixed(2) + " seconds"));
-			console.log("Worst Solve: " + clc.green(range[1].toFixed(2) + " seconds"));
+			console.log("Best Solve: " + clc.green(prettyMs(range[0].toFixed(3)*1000)));
+			console.log("Worst Solve: " + clc.green(prettyMs(range[1].toFixed(3)*1000)));
 			// console.log(all_times.distribution());
 			
 			var distribution = all_times.distribution();
