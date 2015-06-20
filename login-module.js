@@ -43,10 +43,6 @@ module.exports = function(){
 
 					var conf = new configstore(pkg.name);
 
-					for (var i in conf.all) {
-						conf.del(i);
-					};
-
 					conf.set('username', username);
 					conf.set('oauth_token', body.token);
 
