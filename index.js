@@ -41,6 +41,19 @@ module.exports = function(){
 		charm.erase("end");
 	}
 
+	function addToStatsModule(solveTime) {
+		this_solve = (solveTime / 1000.0).toFixed(2);
+		solves_today.push(parseFloat(this_solve));
+
+		var stats = calcStats(solves_today);
+		ao5 = stats[0];
+		ao12 = stats[1];
+		ao_session = stats[2];
+
+		writeLocal(this_solve, this_scramble);
+		num_solves += 1;
+	}
+
 	charm.pipe(process.stdout);
 
 	keypress(process.stdin);
@@ -169,16 +182,7 @@ module.exports = function(){
 
 					resetForNextSolve();
 
-					var this_solve = (solveTime / 1000.0).toFixed(2);
-					solves_today.push(parseFloat(this_solve));
-
-					var stats = calcStats(solves_today);
-					ao5 = stats[0];
-					ao12 = stats[1];
-					ao_session = stats[2];
-
-					writeLocal(this_solve, this_scramble);
-					num_solves += 1;
+					addToStatsModule(solveTime);
 
 					charm.position(1, start_inspect);				
 					botSay("That solve was " + clc.green(this_solve + ' seconds'));
