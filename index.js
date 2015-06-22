@@ -39,9 +39,16 @@ module.exports = function(){
 
 		charm.position(1, start_solve);
 		charm.erase("end");
+
+		penalty = 0;
 	}
 
 	function addToStatsModule(solveTime) {
+
+		if (! typeof solveTime === 'number') {
+			return;
+		}
+
 		this_solve = (solveTime / 1000.0).toFixed(2);
 		solves_today.push(parseFloat(this_solve));
 
@@ -50,7 +57,6 @@ module.exports = function(){
 		ao12 = stats[1];
 		ao_session = stats[2];
 
-		writeLocal(this_solve, this_scramble);
 		num_solves += 1;
 	}
 
@@ -91,8 +97,17 @@ module.exports = function(){
 		charm.position(1, start_inspect+1);
 		charm.erase("end");
 		charm.position(1, start_inspect);
-		console.log("This solve is a DNS.");
-	// console.log("You exceeded your inspection time.");
+		console.log(clc.red('This solve is a DNF.'));
+
+		resetForNextSolve();
+		writeLocal('DNF', this_scramble);
+		charm.position(1, start_inspect);
+		botSay("That solve was " + clc.green('DNF'));
+		prepNewSolve();
+		start_inspect += 3;
+		start_solve += 3;
+		last_solve = 'DNF';
+
 });
 
 	stopwatch.on('time', function(time){
@@ -115,6 +130,7 @@ module.exports = function(){
 	var start_solve = 6;
 
 	var last_solve = -1;
+	var penalty = 0;
 
 	var right_row_num = 50;
 
@@ -142,7 +158,7 @@ module.exports = function(){
 			}
 
 			console.log("Your current " + clc.red("Session average") + " is " + clc.blue(ao_session));
-			console.log(clc.blue("You: ") + "Press space to initiate a new solve");
+			userSay("Press space to initiate a new solve");
 
 			start_solve += 5;
 			start_inspect += 5;
@@ -173,6 +189,7 @@ module.exports = function(){
 				stopwatch.start();
 				post_inspecting = false;
 				solving = true;
+				penalty = 2000; // 2 seconds penalty
 			}
 
 			else
@@ -180,9 +197,13 @@ module.exports = function(){
 
 					var solveTime = stopwatch.ms;
 
+					solveTime = solveTime + penalty;
+
 					resetForNextSolve();
 
 					addToStatsModule(solveTime);
+
+					writeLocal(this_solve, this_scramble);
 
 					charm.position(1, start_inspect);				
 					botSay("That solve was " + clc.green(this_solve + ' seconds'));
@@ -228,7 +249,6 @@ console.log(clc.blue("Press letter s to see your session statistics."));
 
 var start_time = new Date();
 start_time = start_time.getHours() + ":" + start_time.getMinutes();
-// console.log(start_time);
 
 var total_time = new Stopwatch();
 total_time.start();
