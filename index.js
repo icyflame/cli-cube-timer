@@ -199,14 +199,12 @@ module.exports = function(){
 
 					solveTime = solveTime + penalty;
 
-					resetForNextSolve();
-
 					addToStatsModule(solveTime);
 
 					writeLocal(this_solve, this_scramble);
 
-					charm.position(1, start_inspect);				
-					botSay("That solve was " + clc.green(this_solve + ' seconds'));
+					charm.position(1, start_inspect);
+					botSay("That solve was " + clc.green(this_solve + ' seconds') + (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
 
 					if(num_solves > 1) {
 						charm.position(right_row_num, start_inspect);
@@ -222,6 +220,8 @@ module.exports = function(){
 					start_inspect += 3;
 
 					last_solve = this_solve;
+
+					resetForNextSolve();
 
 				}
 
