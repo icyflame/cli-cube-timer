@@ -25,14 +25,36 @@ module.exports = function(){
 	};
 
 	var inspect = new Stopwatch(15000, inspect_options);
+	var post_inspect = new Stopwatch(2000);
 	var stopwatch = new Stopwatch();
 
 	inspect.on('time', function(time) {
 		charm.position(1, start_inspect).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
+		if(!inspect.hasBeenStopped)
+			charm.position(1, start_inspect).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
 	});
 
 	inspect.on('done', function(){
-		console.log('This solve is +2');
+		charm.position(1, start_inspect);
+		charm.erase("end");
+		charm.position(1, start_inspect+1);
+		charm.erase("end");
+		charm.position(1, start_inspect);
+		console.log(clc.red('Penalty!')); 
+		console.log('You must start the solve within the next two seconds');
+		inspecting = false;
+		post_inspecting = true;
+		post_inspect.start();
+	});
+
+	post_inspect.on('done', function(){
+		charm.position(1, start_inspect);
+		charm.erase("end");
+		charm.position(1, start_inspect+1);
+		charm.erase("end");
+		charm.position(1, start_inspect);
+		console.log("This solve is a DNS.");
+		// console.log("You exceeded your inspection time.");
 	});
 
 	stopwatch.on('time', function(time){
@@ -87,22 +109,35 @@ module.exports = function(){
 			start_inspect += 5;
 		}
 
-		if(!inspecting && !solving && key.name == 'space'){
+		if(!inspecting && !post_inspecting && !solving && key.name == 'space'){
+			// A new solve has been initiated
 			inspect.start();
 			inspecting = true;
 		}
 
 		else
-			if(inspecting && !solving && key.name == 'space'){
+			if(inspecting && !post_inspecting && !solving && key.name == 'space'){
+				// Inspection ends, solving begins
 				inspect.stop();
 				inspect.reset(0);
 				stopwatch.start();
 				inspecting = false;
 				solving = true;
 			}
-
 			else
-				if(!inspecting && solving && key.name == 'space'){
+				if(!inspecting && post_inspecting && !solving && key.name == 'space'){
+					// Inspection has ended, with a penalty of +2
+					// Solving begins
+					post_inspect.stop();
+					inspect.reset(0);
+					post_inspect.reset(0);
+					stopwatch.start();
+					post_inspecting = false;
+					solving = true;
+				}
+
+				else
+					if(!inspecting && !post_inspecting && solving && key.name == 'space'){
 
 					// A solve has been completed.
 					solving = false;
