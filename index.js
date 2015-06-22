@@ -215,8 +215,8 @@ var rl = readline.createInterface({
 });
 
 charm.reset();
-console.log(clc.red("Bot: ") + "Hey! Let's start solving!");
-console.log(clc.red("Bot: ") + "The session starts now!");
+botSay("Hey! Let's start solving!");
+botSay("The session starts now!");
 prepNewSolve();
 
 charm.position(right_row_num, 1);
