@@ -5,14 +5,14 @@
  * MIT License
  */
 
-module.exports = function(){
-	var readline = require('readline');
-	var Stopwatch = require('timer-stopwatch');
-	var keypress = require('keypress');
-	var clc = require('cli-color');
-	var charm = require('charm')();
-	var util  =  require('util');
-	var Scrambo = require('scrambo');
+ module.exports = function(){
+ 	var readline = require('readline');
+ 	var Stopwatch = require('timer-stopwatch');
+ 	var keypress = require('keypress');
+ 	var clc = require('cli-color');
+ 	var charm = require('charm')();
+ 	var util  =  require('util');
+ 	var Scrambo = require('scrambo');
 	var threebythree = new Scrambo(); // Defaults to 3x3
 
 	charm.pipe(process.stdout);
@@ -21,15 +21,14 @@ module.exports = function(){
 
 	var inspect_options = {
 		refreshRateMS: 1000,
-		almostDoneMS: 8000,
+		// almostDoneMS: 8000,
 	};
 
-	var inspect = new Stopwatch(15000, inspect_options);
+	var inspect = new Stopwatch(3000, inspect_options);
 	var post_inspect = new Stopwatch(2000);
 	var stopwatch = new Stopwatch();
 
 	inspect.on('time', function(time) {
-		charm.position(1, start_inspect).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
 		if(!inspect.hasBeenStopped)
 			charm.position(1, start_inspect).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
 	});
@@ -59,8 +58,8 @@ module.exports = function(){
 
 	stopwatch.on('time', function(time){
 		if(!solving)
-		return;
-	charm.position(1, start_solve).write("Solving: " + (time.ms / 1000).toFixed(2));
+			return;
+		charm.position(1, start_solve).write("Solving: " + (time.ms / 1000).toFixed(2));
 	});
 
 	var stats = require('./solvestats-module.js');
@@ -71,6 +70,7 @@ module.exports = function(){
 
 	var solving = false;
 	var inspecting = false;
+	var post_inspecting = false;
 
 	var start_inspect = 5;
 	var start_solve = 6;
@@ -197,32 +197,32 @@ module.exports = function(){
 
 				}
 
-		if (key.ctrl && key.name == 'c') {
-			process.stdin.pause();
-		}
-	});
+				if (key.ctrl && key.name == 'c') {
+					process.stdin.pause();
+				}
+			});
 
-	var rl = readline.createInterface({
-		input: process.stdin,
-			output: process.stdout
-	});
+var rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
 
-	charm.reset();
-	console.log(clc.red("Bot: ") + "Hey! Let's start solving!");
-	console.log(clc.red("Bot: ") + "The session starts now!");
-	console.log(clc.blue("You: ") + "Press space to initiate a solve.");
-	var this_scramble = threebythree.get(1).join(" ");
-	console.log(clc.red("Bot: ") + this_scramble);
+charm.reset();
+console.log(clc.red("Bot: ") + "Hey! Let's start solving!");
+console.log(clc.red("Bot: ") + "The session starts now!");
+console.log(clc.blue("You: ") + "Press space to initiate a solve.");
+var this_scramble = threebythree.get(1).join(" ");
+console.log(clc.red("Bot: ") + this_scramble);
 
-	charm.position(right_row_num, 1);
-	console.log(clc.green("Keyboard shortcuts"));
-	charm.position(right_row_num, 2);
-	console.log(clc.red("Press space to initiate a solve."));
-	charm.position(right_row_num, 3);
-	console.log(clc.blue("Press letter s to see your session statistics."));
+charm.position(right_row_num, 1);
+console.log(clc.green("Keyboard shortcuts"));
+charm.position(right_row_num, 2);
+console.log(clc.red("Press space to initiate a solve."));
+charm.position(right_row_num, 3);
+console.log(clc.blue("Press letter s to see your session statistics."));
 
-	var start_time = new Date();
-	start_time = start_time.getHours() + ":" + start_time.getMinutes();
+var start_time = new Date();
+start_time = start_time.getHours() + ":" + start_time.getMinutes();
 	// console.log(start_time);
 
 	var total_time = new Stopwatch();
