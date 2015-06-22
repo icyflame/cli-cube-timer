@@ -22,7 +22,7 @@ module.exports = function(){
 	var inspect_options = {
 		refreshRateMS: 1000,
 		almostDoneMS: 8000,
-	}
+	};
 
 	var inspect = new Stopwatch(15000, inspect_options);
 	var stopwatch = new Stopwatch();
@@ -41,11 +41,11 @@ module.exports = function(){
 	charm.position(1, start_solve).write("Solving: " + (time.ms / 1000).toFixed(2));
 	});
 
-	stats = require('./solvestats-module.js');
-	calcStats = stats.calcStats;
+	var stats = require('./solvestats-module.js');
+	var calcStats = stats.calcStats;
 	
-	push = require('./file-module.js');
-	writeLocal = push.writeLocal;
+	var push = require('./file-module.js');
+	var writeLocal = push.writeLocal;
 
 	var solving = false;
 	var inspecting = false;
@@ -119,7 +119,7 @@ module.exports = function(){
 					charm.erase("end");
 
 					charm.position(1, start_inspect);
-					this_solve = (solveTime / 1000.0).toFixed(2);
+					var this_solve = (solveTime / 1000.0).toFixed(2);
 					console.log(clc.red("Bot: ") + "That solve was " + clc.green(this_solve + ' seconds'));
 					solves_today.push(parseFloat(this_solve));
 
@@ -190,7 +190,7 @@ module.exports = function(){
 	start_time = start_time.getHours() + ":" + start_time.getMinutes();
 	// console.log(start_time);
 
-	total_time = new Stopwatch();
+	var total_time = new Stopwatch();
 	total_time.start();
 	charm.position(1, start_inspect);
 
