@@ -132,11 +132,11 @@ module.exports = function(){
 					ao_session = stats[2];
 
 					writeLocal(this_solve, this_scramble);
+					num_solves += 1;
 
 					if(last_solve < 0)
 						console.log(clc.red("Bot: ") + "Great start! Keep the cube twisting!");
 					else{
-						num_solves += 1;
 
 						charm.position(right_row_num, start_inspect);
 						if(num_solves < 5)
