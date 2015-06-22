@@ -175,10 +175,7 @@ module.exports = function(){
 
 				console.log(clc.red("Bot: ") + "That solve was " + clc.green(this_solve + ' seconds'));
 
-				if(last_solve < 0)
-					console.log(clc.red("Bot: ") + "Great start! Keep the cube twisting!");
-				else{
-
+				if(num_solves > 1) {
 					charm.position(right_row_num, start_inspect);
 					if(num_solves < 5)
 						console.log(clc.red("Previous solve: ") + clc.blue(last_solve));
@@ -190,11 +187,6 @@ module.exports = function(){
 
 				start_solve += 3;
 				start_inspect += 3;
-
-				if(last_solve < 0){
-					start_solve += 1;
-					start_inspect += 1;
-				}
 
 				last_solve = this_solve;
 
