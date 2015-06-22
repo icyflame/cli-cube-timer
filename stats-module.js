@@ -14,10 +14,12 @@ module.exports = function(){
 	var all_times = new Stats({bucket_precision: 10});
 
 	var csvStream	= csv()
-		.on("data", function(data){
-			// isolate the time		
+	.on("data", function(data){
+		if (data[0] !== 'DNF') {
+			// isolate the time
 			all_times.push(parseFloat(data[0]));
-		}).on("end", function(){
+		}
+	}).on("end", function(){
 			// console.log("Completed!");
 			// console.log(all_times);
 			console.log("Mean of all solves: " + clc.green(prettyMs(all_times.amean().toFixed(3) * 1000)));
