@@ -1,27 +1,45 @@
-var readline = require('readline');
-var Stopwatch = require('timer-stopwatch');
-var keypress = require('keypress');
-var clc = require('cli-color');
-var charm = require('charm')();
-var util  =  require('util');
-var Scrambo = require('scrambo');
-var threebythree = new Scrambo();
-
-function botSay (phrase) {
-	console.log(clc.red("Bot: ") + phrase);
-}
-
-function userSay (phrase) {
-	console.log(clc.blue("You: ") + phrase);
-}
-
-function prepNewSolve() {
-	userSay("Press space to initiate a solve.");
-	this_scramble = threebythree.get(1).join(" ")
-	botSay(this_scramble);
-}
-
 module.exports = function(){
+
+	var readline = require('readline');
+	var Stopwatch = require('timer-stopwatch');
+	var keypress = require('keypress');
+	var clc = require('cli-color');
+	var charm = require('charm')();
+	var util  =  require('util');
+	var Scrambo = require('scrambo');
+	var threebythree = new Scrambo();
+
+	function botSay (phrase) {
+		console.log(clc.red("Bot: ") + phrase);
+	}
+
+	function userSay (phrase) {
+		console.log(clc.blue("You: ") + phrase);
+	}
+
+	function prepNewSolve() {
+		userSay("Press space to initiate a solve.");
+		this_scramble = threebythree.get(1).join(" ")
+		botSay(this_scramble);
+	}
+
+	function resetForNextSolve() {
+		stopwatch.stop();
+
+		stopwatch.reset(0);
+		post_inspect.reset(0);
+		inspect.reset(0);
+
+		solving = false;
+		inspecting = false;
+		post_inspecting = false;
+
+		charm.position(1, start_inspect);
+		charm.erase("end");
+
+		charm.position(1, start_solve);
+		charm.erase("end");
+	}
 
 	charm.pipe(process.stdout);
 
@@ -147,55 +165,45 @@ module.exports = function(){
 			else
 				if(!inspecting && !post_inspecting && solving && key.name == 'space'){
 
-				// A solve has been completed.
-				solving = false;
-				inspecting = false;
+					var solveTime = stopwatch.ms;
 
-				var solveTime = stopwatch.ms;
-				stopwatch.stop();
-				stopwatch.reset(0);
+					resetForNextSolve();
 
-				charm.position(1, start_inspect);
-				charm.erase("end");
+					var this_solve = (solveTime / 1000.0).toFixed(2);
+					solves_today.push(parseFloat(this_solve));
 
-				charm.position(1, start_solve);
-				charm.erase("end");
+					var stats = calcStats(solves_today);
+					ao5 = stats[0];
+					ao12 = stats[1];
+					ao_session = stats[2];
 
-				charm.position(1, start_inspect);
-				var this_solve = (solveTime / 1000.0).toFixed(2);
-				solves_today.push(parseFloat(this_solve));
+					writeLocal(this_solve, this_scramble);
+					num_solves += 1;
 
-				var stats = calcStats(solves_today);
-				ao5 = stats[0];
-				ao12 = stats[1];
-				ao_session = stats[2];
+					charm.position(1, start_inspect);				
+					botSay("That solve was " + clc.green(this_solve + ' seconds'));
 
-				writeLocal(this_solve, this_scramble);
-				num_solves += 1;
+					if(num_solves > 1) {
+						charm.position(right_row_num, start_inspect);
+						if(num_solves < 5)
+							console.log(clc.red("Previous solve: ") + clc.blue(last_solve));
+						else
+							console.log(clc.red("This session's AO5: ") + clc.blue(ao5));
+					}
 
-				console.log(clc.red("Bot: ") + "That solve was " + clc.green(this_solve + ' seconds'));
+					prepNewSolve();
 
-				if(num_solves > 1) {
-					charm.position(right_row_num, start_inspect);
-					if(num_solves < 5)
-						console.log(clc.red("Previous solve: ") + clc.blue(last_solve));
-					else
-						console.log(clc.red("This session's AO5: ") + clc.blue(ao5));
+					start_solve += 3;
+					start_inspect += 3;
+
+					last_solve = this_solve;
+
 				}
 
-				prepNewSolve();
-
-				start_solve += 3;
-				start_inspect += 3;
-
-				last_solve = this_solve;
-
-			}
-
-			if (key.ctrl && key.name == 'c') {
-				process.stdin.pause();
-			}
-		});
+				if (key.ctrl && key.name == 'c') {
+					process.stdin.pause();
+				}
+			});
 
 var rl = readline.createInterface({
 	input: process.stdin,
