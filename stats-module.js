@@ -10,6 +10,10 @@ module.exports = function(){
 
 	var prettyMs = require('pretty-ms');
 
+	function prettifyVerbose(ms) {
+		return prettyMs(ms, {verbose: true, secDecimalDigits: 2})
+	}
+
 	var stream = fs.createReadStream(file_name);
 	var all_times = new Stats({bucket_precision: 10});
 
@@ -22,11 +26,11 @@ module.exports = function(){
 	}).on("end", function(){
 			// console.log("Completed!");
 			// console.log(all_times);
-			console.log("Mean of all solves: " + clc.green(prettyMs(all_times.amean().toFixed(3) * 1000)));
-			console.log("Standard Deviation: " + clc.green(prettyMs(all_times.stddev().toFixed(3)*1000)));
+			console.log("Mean of all solves: " + clc.green(prettifyVerbose(all_times.amean() * 1000)));
+			console.log("Standard Deviation: " + clc.green(prettifyVerbose(all_times.stddev() * 1000)));
 			var range = all_times.range();
-			console.log("Best Solve: " + clc.green(prettyMs(range[0].toFixed(3)*1000)));
-			console.log("Worst Solve: " + clc.green(prettyMs(range[1].toFixed(3)*1000)));
+			console.log("Best Solve: " + clc.green(prettifyVerbose(range[0] * 1000)));
+			console.log("Worst Solve: " + clc.green(prettifyVerbose(range[1] * 1000)));
 			// console.log(all_times.distribution());
 			
 			var distribution = all_times.distribution();
