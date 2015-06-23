@@ -152,38 +152,44 @@ module.exports = function () {
 
 	process.stdin.on('keypress', function (ch, key) {
 
-		if(key.name == 's') {
-			charm.erase("line");
-			charm.left(1);
-			console.log("Session statistics");
-			console.log("Session started at " + start_time);
-			console.log("You have been cubing for " + prettifyVerbose(total_time.ms));
-			if(solves_today.length >= 5) {
-				console.log("Your current " + clc.red("AO5") + " is " + clc.blue(ao5));
-				start_solve += 1;
-				start_inspect += 1;
+		switch (key.name) {
+
+			case 's': {
+				charm.erase("line");
+				charm.left(1);
+				console.log("Session statistics");
+				console.log("Session started at " + start_time);
+				console.log("You have been cubing for " + prettifyVerbose(total_time.ms));
+				if(solves_today.length >= 5) {
+					console.log("Your current " + clc.red("AO5") + " is " + clc.blue(prettifyVerbose(ao5)));
+					start_solve += 1;
+					start_inspect += 1;
+				}
+				if(solves_today.length >= 12) {
+					console.log("Your current " + clc.red("AO12") + " is " + clc.blue(prettifyVerbose(ao12)));
+					start_solve += 1;
+					start_inspect += 1;
+				}
+
+				console.log("Your current " + clc.red("Session average") + " is " + clc.blue(prettifyVerbose(ao_session)));
+				userSay("Press space to initiate a new solve");
+
+				start_solve += 5;
+				start_inspect += 5;
+
+				break;
 			}
-			if(solves_today.length >= 12) {
-				console.log("Your current " + clc.red("AO12") + " is " + clc.blue(ao12));
-				start_solve += 1;
-				start_inspect += 1;
-			}
 
-			console.log("Your current " + clc.red("Session average") + " is " + clc.blue(ao_session));
-			userSay("Press space to initiate a new solve");
+			case 'space': {
 
-			start_solve += 5;
-			start_inspect += 5;
-		}
+				if(!inspecting && !post_inspecting && !solving) {
+					// A new solve has been initiated
+					inspect.start();
+					inspecting = true;
+				}
 
-		if(!inspecting && !post_inspecting && !solving && key.name == 'space') {
-		// A new solve has been initiated
-		inspect.start();
-		inspecting = true;
-	}
-
-	else
-		if(inspecting && !post_inspecting && !solving && key.name == 'space') {
+				else
+					if(inspecting && !post_inspecting && !solving) {
 			// Inspection ends, solving begins
 			inspect.stop();
 			inspect.reset(0);
@@ -192,7 +198,7 @@ module.exports = function () {
 			solving = true;
 		}
 		else
-			if(!inspecting && post_inspecting && !solving && key.name == 'space') {
+			if(!inspecting && post_inspecting && !solving) {
 				// Inspection has ended, with a penalty of +2
 				// Solving begins
 				post_inspect.stop();
@@ -205,7 +211,7 @@ module.exports = function () {
 			}
 
 			else
-				if(!inspecting && !post_inspecting && solving && key.name == 'space') {
+				if(!inspecting && !post_inspecting && solving) {
 
 					var solveTime = stopwatch.ms;
 
@@ -238,10 +244,16 @@ module.exports = function () {
 
 				}
 
-				if (key.ctrl && key.name == 'c') {
-					process.stdin.pause();
-				}
-			});
+				break;
+
+			}
+
+		}
+
+		if (key.ctrl && key.name == 'c') {
+			process.stdin.pause();
+		}
+	});
 
 var rl = readline.createInterface({
 	input: process.stdin,
