@@ -8,12 +8,17 @@ module.exports = function(){
 	var util  =  require('util');
 	var Scrambo = require('scrambo');
 	var threebythree = new Scrambo();
+	var prettyMs = require('prettyMs');
+	
+	function prettify(ms) {
+		return prettyMs(ms, {verbose: true, secDecimalDigits: 2})
+	};
 
-	function botSay (phrase) {
+	function botSay(phrase) {
 		console.log(clc.red("Bot: ") + phrase);
 	}
 
-	function userSay (phrase) {
+	function userSay(phrase) {
 		console.log(clc.blue("You: ") + phrase);
 	}
 
