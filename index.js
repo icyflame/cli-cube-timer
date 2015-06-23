@@ -1,4 +1,4 @@
-module.exports = function(){
+module.exports = function () {
 
 	var readline = require('readline');
 	var Stopwatch = require('timer-stopwatch');
@@ -82,12 +82,12 @@ module.exports = function(){
 	var post_inspect = new Stopwatch(2000);
 	var stopwatch = new Stopwatch();
 
-	inspect.on('time', function(time) {
+	inspect.on('time', function (time) {
 		if(!inspect.hasBeenStopped)
 			charm.position(1, start_inspect).write("Inspecting: " + String('00'+(time.ms / 1000).toFixed()).slice(-2));
 	});
 
-	inspect.on('done', function(){
+	inspect.on('done', function () {
 		charm.position(1, start_inspect);
 		charm.erase("end");
 		charm.position(1, start_inspect+1);
@@ -100,7 +100,7 @@ module.exports = function(){
 		post_inspect.start();
 	});
 
-	post_inspect.on('done', function(){
+	post_inspect.on('done', function () {
 		charm.position(1, start_inspect);
 		charm.erase("end");
 		charm.position(1, start_inspect+1);
@@ -119,7 +119,7 @@ module.exports = function(){
 
 	});
 
-	stopwatch.on('time', function(time){
+	stopwatch.on('time', function (time) {
 		if(!solving)
 			return;
 		charm.position(1, start_solve).write("Solving: " + (time.ms / 1000).toFixed(2));
@@ -149,18 +149,18 @@ module.exports = function(){
 
 	process.stdin.on('keypress', function (ch, key) {
 
-		if(key.name == 's'){
+		if(key.name == 's') {
 			charm.erase("line");
 			charm.left(1);
 			console.log("Session statistics");
 			console.log("Session started at " + start_time);
 			console.log("You have been cubing for " + prettifyVerbose(total_time.ms));
-			if(solves_today.length >= 5){
+			if(solves_today.length >= 5) {
 				console.log("Your current " + clc.red("AO5") + " is " + clc.blue(ao5));
 				start_solve += 1;
 				start_inspect += 1;
 			}
-			if(solves_today.length >= 12){
+			if(solves_today.length >= 12) {
 				console.log("Your current " + clc.red("AO12") + " is " + clc.blue(ao12));
 				start_solve += 1;
 				start_inspect += 1;
@@ -173,14 +173,14 @@ module.exports = function(){
 			start_inspect += 5;
 		}
 
-		if(!inspecting && !post_inspecting && !solving && key.name == 'space'){
+		if(!inspecting && !post_inspecting && !solving && key.name == 'space') {
 		// A new solve has been initiated
 		inspect.start();
 		inspecting = true;
 	}
 
 	else
-		if(inspecting && !post_inspecting && !solving && key.name == 'space'){
+		if(inspecting && !post_inspecting && !solving && key.name == 'space') {
 			// Inspection ends, solving begins
 			inspect.stop();
 			inspect.reset(0);
@@ -189,7 +189,7 @@ module.exports = function(){
 			solving = true;
 		}
 		else
-			if(!inspecting && post_inspecting && !solving && key.name == 'space'){
+			if(!inspecting && post_inspecting && !solving && key.name == 'space') {
 				// Inspection has ended, with a penalty of +2
 				// Solving begins
 				post_inspect.stop();
@@ -202,7 +202,7 @@ module.exports = function(){
 			}
 
 			else
-				if(!inspecting && !post_inspecting && solving && key.name == 'space'){
+				if(!inspecting && !post_inspecting && solving && key.name == 'space') {
 
 					var solveTime = stopwatch.ms;
 
