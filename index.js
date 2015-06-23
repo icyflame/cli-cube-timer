@@ -182,78 +182,76 @@ module.exports = function () {
 
 			case 'space': {
 
-				if(!inspecting && !post_inspecting && !solving) {
+				if (!inspecting && !post_inspecting && !solving) {
 					// A new solve has been initiated
 					inspect.start();
 					inspecting = true;
-				}
+				}	else {
+					if (inspecting && !post_inspecting && !solving) {
+					// Inspection ends, solving begins
+					inspect.stop();
+					inspect.reset(0);
+					stopwatch.start();
+					inspecting = false;
+					solving = true;
+				}	else {
+					if (!inspecting && post_inspecting && !solving) {
+						// Inspection has ended, with a penalty of +2
+						// Solving begins
+						post_inspect.stop();
+						inspect.reset(0);
+						post_inspect.reset(0);
+						stopwatch.start();
+						post_inspecting = false;
+						solving = true;
+						penalty = 2000;
+					} else {
+						if (!inspecting && !post_inspecting && solving) {
 
-				else
-					if(inspecting && !post_inspecting && !solving) {
-			// Inspection ends, solving begins
-			inspect.stop();
-			inspect.reset(0);
-			stopwatch.start();
-			inspecting = false;
-			solving = true;
-		}
-		else
-			if(!inspecting && post_inspecting && !solving) {
-				// Inspection has ended, with a penalty of +2
-				// Solving begins
-				post_inspect.stop();
-				inspect.reset(0);
-				post_inspect.reset(0);
-				stopwatch.start();
-				post_inspecting = false;
-				solving = true;
-				penalty = 2000; // 2 seconds penalty
-			}
+							var solveTime = stopwatch.ms;
 
-			else
-				if(!inspecting && !post_inspecting && solving) {
+							solveTime = solveTime + penalty;
 
-					var solveTime = stopwatch.ms;
+							addToStatsModule(solveTime);
 
-					solveTime = solveTime + penalty;
+							writeLocal(this_solve, this_scramble);
 
-					addToStatsModule(solveTime);
+							charm.position(1, start_inspect);
+							botSay("That solve was " + clc.green(prettify(solveTime)) + 
+								(penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
 
-					writeLocal(this_solve, this_scramble);
+							eraseInspectSolveLines
 
-					charm.position(1, start_inspect);
-					botSay("That solve was " + clc.green(prettify(solveTime)) + 
-						(penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
+							if (num_solves > 1) {
+								charm.position(right_row_num, start_inspect);
+								console.log(clc.red(num_solves < 5 ? "Previous solve: " : "This session's AO5: ") + 
+									clc.blue(prettify(num_solves < 5 ? last_solve : ao5)));
+							}
 
-					eraseInspectSolveLines
+							last_solve = solveTime;					
 
-					if(num_solves > 1) {
-						charm.position(right_row_num, start_inspect);
-						console.log(clc.red(num_solves < 5 ? "Previous solve: " : "This session's AO5: ") + 
-							clc.blue(prettify(num_solves < 5 ? last_solve : ao5)));
+							prepNewSolve();
+
+							start_solve += 3;
+							start_inspect += 3;
+
+							resetForNextSolve();
+
+						}
 					}
-
-					last_solve = solveTime;					
-
-					prepNewSolve();
-
-					start_solve += 3;
-					start_inspect += 3;
-
-					resetForNextSolve();
-
 				}
-
-				break;
-
 			}
 
+			break;
+
 		}
 
-		if (key.ctrl && key.name == 'c') {
-			process.stdin.pause();
-		}
-	});
+	}
+
+	if (key.ctrl && key.name == 'c') {
+		process.stdin.pause();
+	}
+});
 
 var rl = readline.createInterface({
 	input: process.stdin,
