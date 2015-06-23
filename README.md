@@ -8,15 +8,15 @@
 
 ## Why you should update now?
 
-This is a constantly changing package. I am pushing changes, and updating it almost everyday, so, please do update and stay on the latest version of the module, as some modules in between may have some rendering bugs.
+This is a constantly changing package. I am pushing changes, and updating it almost everyday, so, please do update and stay on the latest version of the module, as some versions in between may have some rendering bugs.
 
-The core functionality has been achieved already, and there will be no issues with that, but rendering is still being improved.
+**Note:** The core functionality has been completed without any known bugs already, and there will be no issues with that, but rendering is still being improved and I am adding new functionaity.
 
 ```shell
 $ npm install -g cli-cube-timer@latest
 
 $ solve --version
-  0.5.1
+  0.5.2
 ```
 
 ## Why?
