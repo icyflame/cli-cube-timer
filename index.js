@@ -8,11 +8,15 @@ module.exports = function(){
 	var util  =  require('util');
 	var Scrambo = require('scrambo');
 	var threebythree = new Scrambo();
-	var prettyMs = require('prettyMs');
+	var prettyMs = require('pretty-ms');
 	
 	function prettify(ms) {
+		return prettyMs(ms, {secDecimalDigits: 2})
+	}
+
+	function prettifyVerbose(ms) {
 		return prettyMs(ms, {verbose: true, secDecimalDigits: 2})
-	};
+	}
 
 	function botSay(phrase) {
 		console.log(clc.red("Bot: ") + phrase);
@@ -113,7 +117,7 @@ module.exports = function(){
 		start_solve += 3;
 		last_solve = 'DNF';
 
-});
+	});
 
 	stopwatch.on('time', function(time){
 		if(!solving)
@@ -150,7 +154,7 @@ module.exports = function(){
 			charm.left(1);
 			console.log("Session statistics");
 			console.log("Session started at " + start_time);
-			console.log("You have been cubing for " + (total_time.ms / 1000 / 60).toFixed(2) + " minutes");
+			console.log("You have been cubing for " + prettifyVerbose(total_time.ms));
 			if(solves_today.length >= 5){
 				console.log("Your current " + clc.red("AO5") + " is " + clc.blue(ao5));
 				start_solve += 1;
@@ -209,22 +213,21 @@ module.exports = function(){
 					writeLocal(this_solve, this_scramble);
 
 					charm.position(1, start_inspect);
-					botSay("That solve was " + clc.green(this_solve + ' seconds') + (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
+					botSay("That solve was " + clc.green(prettify(solveTime)) + 
+						(penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
 
 					if(num_solves > 1) {
 						charm.position(right_row_num, start_inspect);
-						if(num_solves < 5)
-							console.log(clc.red("Previous solve: ") + clc.blue(last_solve));
-						else
-							console.log(clc.red("This session's AO5: ") + clc.blue(ao5));
+						console.log(clc.red(num_solves < 5 ? "Previous solve: " : "This session's AO5: ") + 
+							clc.blue(prettify(num_solves < 5 ? last_solve : ao5)));
 					}
+
+					last_solve = solveTime;					
 
 					prepNewSolve();
 
 					start_solve += 3;
 					start_inspect += 3;
-
-					last_solve = this_solve;
 
 					resetForNextSolve();
 

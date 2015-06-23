@@ -38,9 +38,9 @@ exports.calcStats = function(solves_today){
 	}
 	ao_session = sum / solves_today.length;
 
-	ao5 = parseFloat((ao5).toFixed(2));
-	ao12 = parseFloat((ao12).toFixed(2));
-	ao_session = parseFloat((ao_session).toFixed(2));
+	ao5 = parseFloat((ao5)) * 1000;
+	ao12 = parseFloat((ao12)) * 1000;
+	ao_session = parseFloat((ao_session)) * 1000;
 
 	var temp = [ao5, ao12, ao_session];
 	return temp;
