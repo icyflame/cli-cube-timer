@@ -93,8 +93,7 @@ module.exports = function () {
 		charm.position(1, start_inspect+1);
 		charm.erase("end");
 		charm.position(1, start_inspect);
-		console.log(clc.red('Penalty!')); 
-		console.log('You must start the solve within the next two seconds');
+		console.log(clc.red('Penalty! +2s'));
 		inspecting = false;
 		post_inspecting = true;
 		post_inspect.start();
