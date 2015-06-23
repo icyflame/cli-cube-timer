@@ -32,6 +32,14 @@ module.exports = function () {
 		botSay(this_scramble);
 	}
 
+	function eraseInspectSolveLines() {
+		charm.position(1, start_inspect);
+		charm.erase("end");
+
+		charm.position(1, start_solve);
+		charm.erase("end");
+	}
+
 	function resetForNextSolve() {
 		stopwatch.stop();
 
@@ -43,11 +51,7 @@ module.exports = function () {
 		inspecting = false;
 		post_inspecting = false;
 
-		charm.position(1, start_inspect);
-		charm.erase("end");
-
-		charm.position(1, start_solve);
-		charm.erase("end");
+		eraseInspectSolveLines();
 
 		penalty = 0;
 	}
@@ -214,6 +218,8 @@ module.exports = function () {
 					charm.position(1, start_inspect);
 					botSay("That solve was " + clc.green(prettify(solveTime)) + 
 						(penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
+
+					eraseInspectSolveLines
 
 					if(num_solves > 1) {
 						charm.position(right_row_num, start_inspect);
