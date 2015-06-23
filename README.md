@@ -6,6 +6,19 @@
 
 [![NPM](https://nodei.co/npm/cli-cube-timer.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/cli-cube-timer/)
 
+## Why you should update now?
+
+This is a constantly changing package. I am pushing changes, and updating it almost everyday, so, please do update and stay on the latest version of the module, as some modules in between may have some rendering bugs.
+
+The core functionality has been achieved already, and there will be no issues with that, but rendering is still being improved.
+
+```shell
+$ npm install -g cli-cube-timer@latest
+
+$ solve --version
+  0.5.1
+```
+
 ## Why?
 
 I was tired of having to go to a browser, and even more tired of not getting to clear
@@ -24,7 +37,6 @@ You need a GitHub account to store your solves on a Gist.
 > Primary command line executable name.
 
 This will begin a solving session. All session statistics will be stored locally for this session.
-Solve times are stored universally at `~/.cube/times.csv`.
 
 ### solve stats
 
