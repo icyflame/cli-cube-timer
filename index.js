@@ -225,7 +225,7 @@ module.exports = function () {
 							if (num_solves > 1) {
 								charm.position(right_row_num, start_inspect);
 								console.log(clc.red(num_solves < 5 ? "Previous solve: " : "This session's AO5: ") + 
-									clc.blue(prettify(num_solves < 5 ? last_solve : ao5)));
+									clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
 							}
 
 							last_solve = solveTime;					
