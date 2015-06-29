@@ -27,6 +27,7 @@
     "statistics"
   ],
   "dependencies": {
+    "bar-horizontal": "^0.2.0",
     "charm": "^1.0.0",
     "cli-color": "^1.0.0",
     "configstore": "^1.0.0",
@@ -45,6 +46,7 @@
     "timer-stopwatch": "^0.1.5",
     "touch": "0.0.3",
     "trash": "^1.4.1",
+    "window-size": "^0.1.1",
     "xdg-basedir": "^1.0.1"
   }
 }

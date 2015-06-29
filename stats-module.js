@@ -7,6 +7,7 @@ module.exports = function(){
 	var csv = require('fast-csv');
 	var Stats = require('fast-stats').Stats;
 	var clc = require('cli-color');
+	var barHorizontal = require('bar-horizontal');
 
 	var prettyMs = require('pretty-ms');
 
@@ -32,12 +33,17 @@ module.exports = function(){
 			console.log("Best Solve: " + clc.green(prettifyVerbose(range[0] * 1000)));
 			console.log("Worst Solve: " + clc.green(prettifyVerbose(range[1] * 1000)));
 			// console.log(all_times.distribution());
-			
+
 			var distribution = all_times.distribution();
 
+			input_obj = {};
+
 			distribution.forEach(function(e){
-				console.log(clc.blue(e.range[0] + "+: ") + e.count);
+				input_obj[clc.blue(e.range[0] + '+')] = e.count;
 			});
+
+			barHorizontal(input_obj, { labels: true });
+
 		});
 
 	stream.pipe(csvStream);
