@@ -1,4 +1,4 @@
-# Rubik's Cube Timer on the Command Line 
+# Rubik's Cube Timer on the Command Line
 
 > Time your solves, without leaving the terminal.
 
@@ -16,7 +16,7 @@ This is a constantly changing package. I am pushing changes, and updating it alm
 $ npm install -g cli-cube-timer@latest
 
 $ solve --version
-  0.5.2
+  0.5.3
 ```
 
 ## Why?
@@ -27,7 +27,7 @@ accidentally, and me losing my whole solve history!
 
 So, this is a hack around that.
 
-You need a GitHub account to store your solves on a Gist. 
+You need a GitHub account to store your solves on a Gist.
 (Create an account [here](http://github.com)).
 
 ## Usage
@@ -43,7 +43,7 @@ This will begin a solving session. All session statistics will be stored locally
 > View your lifetime statistics
 
 This will show you the mean, the standard deviation and the distribution of your solve times.
-This part section is always open for improvement. The code for this is implemented using 
+This part section is always open for improvement. The code for this is implemented using
 `fast-stats` and `fast-csv` node modules. So, this is one thing that you can always contribute to!
 
 ### solve push
