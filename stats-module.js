@@ -39,7 +39,7 @@ module.exports = function(){
 			input_obj = {};
 
 			distribution.forEach(function(e){
-				input_obj[clc.blue(e.range[0] + '+')] = e.count;
+				input_obj[clc.blue(e.count + ' (' + e.range[0] + '+)')] = e.count;
 			});
 
 			barHorizontal(input_obj, { labels: true });
