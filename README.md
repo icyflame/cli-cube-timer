@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/icyflame/node-cube-cli-timer.svg)](https://travis-ci.org/icyflame/node-cube-cli-timer)
 
-[![NPM](https://nodei.co/npm/cli-cube-timer.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/cli-cube-timer/)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
 ## Why you should update now?
 
@@ -16,7 +16,7 @@ This is a constantly changing package. I am pushing changes, and updating it alm
 $ npm install -g cli-cube-timer@latest
 
 $ solve --version
-  0.5.3
+  0.5.5
 ```
 
 ## Why?
