@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
-var meow = require('meow')
+var meow = require('meow');
 
 var cli = meow({
   help: [
@@ -17,23 +17,23 @@ var cli = meow({
     '  solve --show gist',
     '    - Get the link of the Gist where all the times are stored.'
   ].join('\n')
-})
+});
 
 if (cli.flags.show) {
-  require('./show-module.js')(cli.flags.show)
+  require('./show-module.js')(cli.flags.show);
 } else if (cli.input.length >= 1) {
-  var arg = cli.input[0]
+  var arg = cli.input[0];
 
   switch (arg) {
-    case 'stats': require('./stats-module.js')()
-      break
-    case 'login': require('./login-module.js')()
-      break
-    case 'logout': require('./logout-module.js')()
-      break
-    case 'push': require('./push-module.js')()
-      break
+    case 'stats': require('./stats-module.js')();
+      break;
+    case 'login': require('./login-module.js')();
+      break;
+    case 'logout': require('./logout-module.js')();
+      break;
+    case 'push': require('./push-module.js')();
+      break;
   }
 } else {
-  require('./index.js')()
+  require('./index.js')();
 }
