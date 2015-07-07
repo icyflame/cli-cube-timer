@@ -62,13 +62,12 @@ module.exports = function () {
 
     this_solve = (solveTime / 1000.0).toFixed(2);
     solves_today.push(parseFloat(this_solve));
+    num_solves += 1;
 
     var stats = calcStats(solves_today);
     ao5 = stats[0];
     ao12 = stats[1];
     ao_session = stats[2];
-
-    num_solves += 1;
   }
 
   charm.pipe(process.stdout);
@@ -217,8 +216,6 @@ module.exports = function () {
                 charm.position(1, start_inspect);
                 botSay('That solve was ' + clc.green(prettify(solveTime)) +
                   (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
-
-                eraseInspectSolveLines;
 
                 if (num_solves > 1) {
                   charm.position(right_row_num, start_inspect);

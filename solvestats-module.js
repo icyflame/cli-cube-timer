@@ -1,4 +1,9 @@
 exports.calcStats = function (solves_today) {
+
+  var assert = require('assert');
+  var removeMinMax = require('remove-min-max');
+  var mathAvg = require('math-avg');
+
   var sum = 0.0;
   var total_solves = solves_today.length;
   var last_five = [];
@@ -12,34 +17,19 @@ exports.calcStats = function (solves_today) {
     for (i = total_solves - 1; i >= total_solves - 5; i -= 1) {
       last_five.push(solves_today[i]);
     }
-    last_five.sort();
-    for (i = 1; i < 4; ++i) {
-      sum += last_five[i];
-    }
   }
 
-  ao5 = sum / 3;
-
-  sum = 0.0;
+  ao5 = mathAvg(removeMinMax(last_five));
 
   if (total_solves >= 12) {
     for (i = total_solves - 1; i >= total_solves - 12; i -= 1) {
       last_twelve.push(solves_today[i]);
     }
-    last_twelve.sort();
-    for (i = 1; i < 11; ++i) {
-      sum += last_twelve[i];
-    }
   }
 
-  ao12 = sum / 10;
+  ao12 = mathAvg(removeMinMax(last_twelve));
 
-  sum = 0.0;
-
-  for (i = 0; i < solves_today.length; i += 1) {
-    sum += solves_today[i];
-  }
-  ao_session = sum / solves_today.length;
+  ao_session = mathAvg(solves_today);
 
   ao5 = parseFloat((ao5)) * 1000;
   ao12 = parseFloat((ao12)) * 1000;
