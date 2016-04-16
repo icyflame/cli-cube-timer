@@ -11,7 +11,7 @@
 ## Known issues with node 4.0.0 ![help-wanted](https://img.shields.io/badge/help-wanted-brightgreen.svg)
 
 This package has known issues with node 4.0.0. Especially with recognizing one single keypress as
-two separate keypresses. I use [this module]() for keypress recognition. I am not sure where the problem
+two separate keypresses. I use [this module](https://www.npmjs.com/package/keypress) for keypress recognition. I am not sure where the problem
 is and I don't have time at the moment to solve this problem.
 
 Any patch towards solving this issue for node 4.0.0 is much appreciated.
