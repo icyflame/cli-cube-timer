@@ -1,5 +1,4 @@
 module.exports = function () {
-  var readline = require('readline');
   var Stopwatch = require('timer-stopwatch');
   var keypress = require('keypress');
   var clc = require('cli-color');
@@ -153,6 +152,8 @@ module.exports = function () {
 
   process.stdin.on('keypress', function (ch, key) {
     switch (key.name) {
+      case 'e':
+        process.exit(0);
       case 's':
         charm.erase('line');
         charm.left(1);
@@ -246,10 +247,8 @@ module.exports = function () {
     }
   });
 
-  readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
 
   charm.reset();
   botSay("Hey! Let's start solving!");
@@ -257,7 +256,7 @@ module.exports = function () {
   prepNewSolve();
 
   charm.position(right_row_num, 1);
-  console.log(clc.green('Keyboard shortcuts'));
+  console.log(clc.green('Keyboard shortcuts (press e to exit)'));
   charm.position(right_row_num, 2);
   console.log(clc.red('Press space to initiate a solve.'));
   charm.position(right_row_num, 3);
@@ -269,5 +268,4 @@ module.exports = function () {
   var total_time = new Stopwatch();
   total_time.start();
   charm.position(1, start_inspect);
-
 };
