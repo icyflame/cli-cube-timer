@@ -6,15 +6,7 @@
 
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
-[![node-version](https://img.shields.io/badge/node-0.12.7-green.svg)](https://nodejs.org/en/blog/release/v0.12.7/)
-
-## Known issues with node 4.0.0 ![help-wanted](https://img.shields.io/badge/help-wanted-brightgreen.svg)
-
-This package has known issues with node 4.0.0. Especially with recognizing one single keypress as
-two separate keypresses. I use [this module](https://www.npmjs.com/package/keypress) for keypress recognition. I am not sure where the problem
-is and I don't have time at the moment to solve this problem.
-
-Any patch towards solving this issue for node 4.0.0 is much appreciated.
+**Note:** This module had some issues with Node v4.0.0. These have been fixed now, and the module has been tested with node v4.0.0, and it works! :smile:
 
 ## Why you should update now?
 
