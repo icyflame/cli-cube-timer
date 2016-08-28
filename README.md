@@ -2,7 +2,7 @@
 
 > Time your solves, without leaving the terminal.
 
-[![Build Status](https://travis-ci.org/icyflame/node-cube-cli-timer.svg)](https://travis-ci.org/icyflame/node-cube-cli-timer)
+[![Build Status](https://travis-ci.org/icyflame/cli-cube-timer.svg?branch=master)](https://travis-ci.org/icyflame/node-cube-cli-timer)
 
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
