@@ -6,28 +6,15 @@
 
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
-**Note:** This module had some issues with Node v4.0.0. These have been fixed now, and the module has been tested with node v4.0.0, and it works! :smile:
-
-## Why you should update now?
-
-This is a constantly changing package. I am pushing changes, and updating it almost everyday, so, please do update and stay on the latest version of the module, as some versions in between may have some rendering bugs.
-
-**Note:** The core functionality has been completed without any known bugs already, and there will be no issues with that, but rendering is still being improved and I am adding new functionaity.
-
-```shell
-$ npm install -g cli-cube-timer@latest
-
-$ solve --version
-  0.5.5
-```
+[![node-4-and-above](https://img.shields.io/badge/node.js-%3E%204.0-brightgreen.svg)](https://nodejs.org/en/download/)
 
 ## Why?
 
 I was tired of having to go to a browser, and even more tired of not getting to clear
-my cookies now and then. And also, with living with the fear of the cookies getting cleared
-accidentally, and me losing my whole solve history!
+my cookies now and then. And also, living with the fear of the cookies getting cleared
+accidentally, and hence, losing my whole solve history!
 
-So, this is a hack around that.
+So, this is my way around that.
 
 You need a GitHub account to store your solves on a Gist.
 (Create an account [here](http://github.com)).
