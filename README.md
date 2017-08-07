@@ -21,8 +21,9 @@ Especially with browser based timers, the times are stored in JavaScript's
 LocalStorage. That is an extremely unstable form of storage because it gets
 cleared whenever you delete the cached images, files and cookies (periodically
 doing that speeds up your browser). I was frustrated with losing 100s of solve
-times and the statistics related to that, because of mistakenly clearing or
-installing an update.
+times and the statistics related to that, because of mistakenly clearing the
+cache or uninstalling and re-installing the browser in the attempt to solve a
+completely unrelated problem.
 
 ## So?
 
@@ -59,7 +60,7 @@ GitHub account to store your solves on a Gist.
 
 #### What does the Gist look like?
 
-![img](gist-sample.png)
+[![img](gist-sample.png)](https://gist.github.com/59f64461aff1438975d7b241876fcc6e)
 
 6. Help text
 
@@ -113,6 +114,8 @@ I would love to have your help on this! Do check out the issues dashboard of thi
 and submit a PR on any one of those issues, and I will be happy to merge! If there are no issues
 on the dashboard, please do feel free to create new ones!
 
-Code licensed under MIT.
+Code licensed under MIT. 
 
-Copyright Siddharth Kannan 2015.
+This project page uses the [Cayman](https://pages-themes.github.io/cayman/) theme.
+
+Copyright Siddharth Kannan 2017
