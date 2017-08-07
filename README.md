@@ -8,6 +8,9 @@
 
 [![node-4-and-above](https://img.shields.io/badge/node.js-%3E%204.0-brightgreen.svg)](https://nodejs.org/en/download/)
 
+Project page (for screenshots and explanation):
+[cli-cube-timer](http://icyflame.github.io/cli-cube-timer/)
+
 ## Why?
 
 I was tired of having to go to a browser, and even more tired of not getting to clear
