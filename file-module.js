@@ -24,6 +24,25 @@ exports.checkLocalFile = function () {
   return filepath;
 };
 
+
+exports.localFileExists = function () {
+  var fileExists = require('file-exists');
+  var xdg = require('xdg-basedir');
+
+  var filepath = xdg.data + '/cube/times.csv';
+
+  return fileExists(filepath);
+};
+
+exports.pushedFileExists = function () {
+  var fileExists = require('file-exists');
+  var xdg = require('xdg-basedir');
+
+  var filepath = xdg.data + '/cube/pushed.csv';
+
+  return fileExists(filepath);
+};
+
 exports.deleteLocalFile = function () {
   // empty the file times.csv
 
