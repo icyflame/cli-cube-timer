@@ -1,25 +1,67 @@
-# Rubik's Cube Timer on the Command Line
+## Who?
 
-> Time your solves, without leaving the terminal.
+A [lot of people](https://www.reddit.com/r/cubing/) solve the Rubik's Cube
+competitively. The [World Cube
+Association](https://www.worldcubeassociation.org/) organises periodic
+competitions throughout the globe. Before going to these competitions, people
+practice their Rubik's Cube solving skills at home.
 
-[![Build Status](https://travis-ci.org/icyflame/cli-cube-timer.svg?branch=master)](https://travis-ci.org/icyflame/node-cube-cli-timer)
+For this, most people use a computer and timer software. Some common browser
+based timers are [csTimer](http://cstimer.net/) and
+[qqTimer](http://www.qqtimer.net/). There are also
+[several](https://play.google.com/store/search?q=cubing%20timer&c=apps)
+[apps](https://play.google.com/store/apps/details?id=com.avelsoft.cubetimer) on
+the [Play
+Store](https://play.google.com/store/apps/details?id=air.tw.url.omega.FingerTimer)
+that emulate the functionality of the offical timers.
 
-[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
+Especially with browser based timers, the times are stored in JavaScript's
+LocalStorage. That is an extremely unstable form of storage because it gets
+cleared whenever you delete the cached images, files and cookies (periodically
+doing that speeds up your browser). I was frustrated with losing 100s of solve
+times and the statistics related to that, because of mistakenly clearing or
+installing an update.
 
-[![node-4-and-above](https://img.shields.io/badge/node.js-%3E%204.0-brightgreen.svg)](https://nodejs.org/en/download/)
+## So?
 
-## Why?
+This module is my way around that. The times are now stored safely on your hard
+disk. You can't clear this file, unless you go hunting for it and then delete
+it.
 
-I was tired of having to go to a browser, and even more tired of not getting to clear
-my cookies now and then. And also, living with the fear of the cookies getting cleared
-accidentally, and hence, losing my whole solve history!
+But, of course, there might be a catastrophic [hard disk
+failure](https://en.wikipedia.org/wiki/Hard_disk_failure). You must have a
+backup.
 
-So, this is my way around that.
+[![backup](./backup_batteries.png)](https://xkcd.com/1872/)
 
-You need a GitHub account to store your solves on a Gist.
-(Create an account [here](http://github.com)).
+So, always back your times up on a [Gist](https://gist.github.com/). You need a
+GitHub account to store your solves on a Gist.
 
-## Usage
+## Some dope screenshots
+
+1. A solving session
+
+![img](solving-session.png)
+
+2. Statistics
+
+![img](statistics.png)
+
+3. Logging into GitHub
+
+`![img](logging-in.png)`
+
+4. Pushing your solves to a Gist
+
+`![img](pushing-solves.png)`
+
+5. What does the Gist look like?
+
+`![img](gist-sample.png)`
+
+6. Help text
+
+![img](help-text.png)
 
 ### solve
 
