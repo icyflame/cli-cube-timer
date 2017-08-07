@@ -1,3 +1,5 @@
+# cli-cube-timer
+
 ## Who?
 
 A [lot of people](https://www.reddit.com/r/cubing/) solve the Rubik's Cube
