@@ -11,7 +11,7 @@
   },
   "preferGlobal": "true",
   "author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
-  "repository": "icyflame/node-cube-cli-timer",
+  "repository": "icyflame/cli-cube-timer",
   "license": "MIT",
   "keywords": [
     "cli-app",
