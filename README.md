@@ -49,15 +49,15 @@ GitHub account to store your solves on a Gist.
 
 3. Logging into GitHub
 
-`![img](logging-in.png)`
+![img](logging-in.png)
 
 4. Pushing your solves to a Gist
 
-`![img](pushing-solves.png)`
+![img](pushing-solves.png)
 
 5. What does the Gist look like?
 
-`![img](gist-sample.png)`
+![img](gist-sample.png)
 
 6. Help text
 
