@@ -37,31 +37,33 @@ backup.
 So, always back your times up on a [Gist](https://gist.github.com/). You need a
 GitHub account to store your solves on a Gist.
 
-## Some dope screenshots
+## Some screenshots!
 
-1. A solving session
+#### A solving session
 
 ![img](solving-session.png)
 
-2. Statistics
+#### Statistics
 
 ![img](statistics.png)
 
-3. Logging into GitHub
+#### Logging into GitHub
 
 ![img](logging-in.png)
 
-4. Pushing your solves to a Gist
+#### Pushing your solves to a Gist
 
 ![img](pushing-solves.png)
 
-5. What does the Gist look like?
+#### What does the Gist look like?
 
 ![img](gist-sample.png)
 
 6. Help text
 
 ![img](help-text.png)
+
+## Help text from the module
 
 ### solve
 
