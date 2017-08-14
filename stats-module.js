@@ -1,4 +1,6 @@
-module.exports = function () {
+module.exports = function (bucket_size) {
+  bucket_size = bucket_size || 10;
+
   var xdg = require('xdg-basedir');
 
   var fileModule = require('./file-module.js');
@@ -21,7 +23,7 @@ module.exports = function () {
   }
 
   var stream = fs.createReadStream(file_name);
-  var all_times = new Stats({bucket_precision: 10});
+  var all_times = new Stats({bucket_precision: bucket_size});
 
   var csvStream = csv()
     .on('data', function (data) {

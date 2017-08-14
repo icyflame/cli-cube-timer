@@ -10,6 +10,8 @@ var cli = meow({
     '    - Start a solve session',
     '  solve stats',
     '    - View your complete lifetime statistics',
+    '  solve stats --bucket 5',
+    '    - View your lifetime statistics with the bar graph broken at every 5 seconds',
     '  solve login',
     '    - Run the one time authentication module (GitHub)',
     '  solve push',
@@ -25,7 +27,7 @@ if (cli.flags.show) {
   var arg = cli.input[0];
 
   switch (arg) {
-    case 'stats': require('./stats-module.js')();
+    case 'stats': require('./stats-module.js')(cli.flags.bucket);
       break;
     case 'login': require('./login-module.js')();
       break;
