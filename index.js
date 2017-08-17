@@ -64,9 +64,9 @@ module.exports = function () {
     num_solves += 1;
 
     var stats = calcStats(solves_today);
-    ao5 = stats[0];
-    ao12 = stats[1];
-    ao_session = stats[2];
+    ao5 = stats.ao5;
+    ao12 = stats.ao12;
+    ao_session = stats.ao_session;
   }
 
   function print_stats (start_time, total_ms, num_solves, ao5, ao12, ao_session) {
