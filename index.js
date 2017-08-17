@@ -77,13 +77,13 @@ module.exports = function () {
 
     if (num_solves >= 5) {
       console.log('Your current ' + clc.red('AO5') + ' is ' + clc.blue(prettifyVerbose(ao5)));
-      start_solve += 1;
-      start_inspect += 1;
+      start_solve ++;
+      start_inspect ++;
     }
     if (num_solves >= 12) {
       console.log('Your current ' + clc.red('AO12') + ' is ' + clc.blue(prettifyVerbose(ao12)));
-      start_solve += 1;
-      start_inspect += 1;
+      start_solve ++;
+      start_inspect ++;
     }
 
     console.log('Your current ' + clc.red('Session average') + ' is ' + clc.blue(prettifyVerbose(ao_session)));
@@ -175,20 +175,20 @@ module.exports = function () {
   process.stdin.on('keypress', function (ch, key) {
     switch (key.name) {
       case 'e':
-        process.exit(0);
+        console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
+        print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session);
+        return process.exit(0);
+
       case 's':
         charm.erase('line');
         charm.left(1);
 
-        num_lines_printed = print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session);
-
-        start_solve += num_lines_printed.solve;
-        start_inspect += num_lines_printed.inspect;
+        var printed = print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session);
 
         userSay('Press space to initiate a new solve');
 
-        start_solve += 5;
-        start_inspect += 5;
+        start_solve += (7 + printed.solve);
+        start_inspect += (7 + printed.inspect);
 
         break;
 
