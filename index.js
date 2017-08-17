@@ -69,6 +69,28 @@ module.exports = function () {
     ao_session = stats[2];
   }
 
+  function print_stats (start_time, total_ms, num_solves, ao5, ao12, ao_session) {
+    console.log('Session statistics');
+    console.log('Session started at ' + start_time);
+    console.log('You have been cubing for ' + prettifyVerbose(total_ms));
+    var start_solve = 0, start_inspect = 0;
+
+    if (num_solves >= 5) {
+      console.log('Your current ' + clc.red('AO5') + ' is ' + clc.blue(prettifyVerbose(ao5)));
+      start_solve += 1;
+      start_inspect += 1;
+    }
+    if (num_solves >= 12) {
+      console.log('Your current ' + clc.red('AO12') + ' is ' + clc.blue(prettifyVerbose(ao12)));
+      start_solve += 1;
+      start_inspect += 1;
+    }
+
+    console.log('Your current ' + clc.red('Session average') + ' is ' + clc.blue(prettifyVerbose(ao_session)));
+
+    return { solve: start_solve, inspect: start_inspect };
+  }
+
   charm.pipe(process.stdout);
 
   keypress(process.stdin);
@@ -157,21 +179,12 @@ module.exports = function () {
       case 's':
         charm.erase('line');
         charm.left(1);
-        console.log('Session statistics');
-        console.log('Session started at ' + start_time);
-        console.log('You have been cubing for ' + prettifyVerbose(total_time.ms));
-        if (solves_today.length >= 5) {
-          console.log('Your current ' + clc.red('AO5') + ' is ' + clc.blue(prettifyVerbose(ao5)));
-          start_solve += 1;
-          start_inspect += 1;
-        }
-        if (solves_today.length >= 12) {
-          console.log('Your current ' + clc.red('AO12') + ' is ' + clc.blue(prettifyVerbose(ao12)));
-          start_solve += 1;
-          start_inspect += 1;
-        }
 
-        console.log('Your current ' + clc.red('Session average') + ' is ' + clc.blue(prettifyVerbose(ao_session)));
+        num_lines_printed = print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session);
+
+        start_solve += num_lines_printed.solve;
+        start_inspect += num_lines_printed.inspect;
+
         userSay('Press space to initiate a new solve');
 
         start_solve += 5;
