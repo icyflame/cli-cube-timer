@@ -71,3 +71,20 @@ exports.writeToPushed = function (glob) {
 
   return filepath;
 };
+
+exports.print_paths = function () {
+  var clc = require('cli-color');
+
+  var paths_str = [
+    '',
+    '  Local file path:',
+    '    ' + require('./constants').LOCAL_FILE_PATH,
+    '',
+    '  Pushed file path:',
+    '    ' + require('./constants').PUSHED_FILE_PATH,
+    ''
+  ].join('\n');
+
+  console.log(paths_str);
+  return;
+}

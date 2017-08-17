@@ -25,5 +25,4 @@ module.exports = function (arg) {
       break;
 
   }
-
 };

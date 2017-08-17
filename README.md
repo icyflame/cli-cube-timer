@@ -70,6 +70,14 @@ there was a breach! (Everything will work exactly like before!)
 This will print the URL to your gist, using your username and the gist ID that we have stored on
 your machine.
 
+### solve --file|--files
+
+> Show the path to the files where solve history is stored locally
+
+This will print the local path to the csv files where the solve history is
+stored. This is an advanced option and please do not open the file if you don't
+have something specific to do with it.
+
 ## Contributing
 
 I would love to have your help on this! Do check out the issues dashboard of this repository,

@@ -17,12 +17,16 @@ var cli = meow({
     '  solve push',
     '    - Push all your solves to a GitHub gist',
     '  solve --show gist',
-    '    - Get the link of the Gist where all the times are stored.'
+    '    - Get the link of the Gist where all the times are stored.',
+    '  solve --file|--files',
+    '    - Print the local file paths where all the past history is stored'
   ].join('\n')
 });
 
 if (cli.flags.show) {
   require('./show-module.js')(cli.flags.show);
+} else if (cli.flags.file || cli.flags.files) {
+  require('./file-module.js').print_paths();
 } else if (cli.input.length >= 1) {
   var arg = cli.input[0];
 
