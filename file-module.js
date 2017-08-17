@@ -12,8 +12,7 @@ exports.checkLocalFile = function () {
   var fileExists = require('file-exists');
   var touch = require('touch');
   var xdg = require('xdg-basedir');
-
-  var filepath = xdg.data + '/cube/times.csv';
+  var filepath = require('./constants').LOCAL_FILE_PATH;
 
   if (!fileExists(filepath)) {
     var mkdirp = require('mkdirp');
@@ -27,20 +26,14 @@ exports.checkLocalFile = function () {
 
 exports.localFileExists = function () {
   var fileExists = require('file-exists');
-  var xdg = require('xdg-basedir');
 
-  var filepath = xdg.data + '/cube/times.csv';
-
-  return fileExists(filepath);
+  return fileExists(require('./constants').LOCAL_FILE_PATH);
 };
 
 exports.pushedFileExists = function () {
   var fileExists = require('file-exists');
-  var xdg = require('xdg-basedir');
 
-  var filepath = xdg.data + '/cube/pushed.csv';
-
-  return fileExists(filepath);
+  return fileExists(require('./constants').PUSHED_FILE_PATH);
 };
 
 exports.deleteLocalFile = function () {
@@ -64,8 +57,7 @@ exports.writeToPushed = function (glob) {
   var fileExists = require('file-exists');
   var touch = require('touch');
   var xdg = require('xdg-basedir');
-
-  var filepath = xdg.data + '/cube/pushed.csv';
+  var filepath = require('./constants').PUSHED_FILE_PATH;
 
   if (!fileExists(filepath)) {
     var mkdirp = require('mkdirp');
