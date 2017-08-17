@@ -4,6 +4,7 @@ exports.calcStats = function (solves_today) {
   var removeMinMax = require('remove-min-max');
   var mathAvg = require('math-avg');
   var min = require('lodash.min');
+  var max = require('lodash.max');
 
   var sum = 0.0;
   var total_solves = solves_today.length;
@@ -14,6 +15,7 @@ exports.calcStats = function (solves_today) {
   var ao_session;
 
   var best_time = parseFloat(min(solves_today)) * 1000;
+  var worst_time = parseFloat(max(solves_today)) * 1000;
 
   var i;
 
@@ -39,5 +41,5 @@ exports.calcStats = function (solves_today) {
   ao12 = parseFloat(ao12) * 1000;
   ao_session = parseFloat(ao_session) * 1000;
 
-  return { ao5, ao12, ao_session, best_time }
+  return { ao5, ao12, ao_session, best_time, worst_time }
 };

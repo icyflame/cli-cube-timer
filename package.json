@@ -37,6 +37,7 @@
     "gh-gist-owner": "^1.0.1",
     "jsonfile": "^2.0.1",
     "keypress": "^0.2.1",
+    "lodash.max": "^4.0.1",
     "lodash.min": "^4.0.1",
     "math-avg": "^1.0.0",
     "meow": "^3.1.0",

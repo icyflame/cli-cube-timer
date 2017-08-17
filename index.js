@@ -8,7 +8,7 @@ module.exports = function () {
   var prettyMs = require('pretty-ms');
   var this_scramble, this_solve, stats = { };
 
-  const STATS_LINES = 10;
+  const STATS_LINES = 11;
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
@@ -70,9 +70,10 @@ module.exports = function () {
     ao12 = stats.ao12;
     ao_session = stats.ao_session;
     best_time = stats.best_time;
+    worst_time = stats.worst_time;
   }
 
-  function print_stats (start_time, total_ms, num_solves, ao5, ao12, ao_session, best_time) {
+  function print_stats (start_time, total_ms, num_solves, ao5, ao12, ao_session, best_time, worst_time) {
     console.log('Session statistics');
     console.log('Session started at ' + start_time);
     console.log('You have been cubing for ' + prettifyVerbose(total_ms));
@@ -80,6 +81,10 @@ module.exports = function () {
 
     if (best_time !== undefined) {
       console.log(clc.green('Best solve: ') + clc.blue(prettifyVerbose(best_time)));
+    }
+
+    if (worst_time !== undefined) {
+      console.log(clc.green('Worst solve: ') + clc.blue(prettifyVerbose(worst_time)));
     }
 
     var ret = { solve: 0, inspect: 0 };
@@ -181,19 +186,20 @@ module.exports = function () {
   var ao12 = 0.0;
   var ao_session = 0.0;
   var best_time = 0.0;
+  var worst_time = 0.0;
 
   process.stdin.on('keypress', function (ch, key) {
     switch (key.name) {
       case 'e':
         console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
-        print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, stats.best_time);
+        print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
         return process.exit(0);
 
       case 's':
         charm.erase('line');
         charm.left(1);
 
-        var printed = print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, stats.best_time);
+        var printed = print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
 
         userSay('Press space to initiate a new solve');
 
