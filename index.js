@@ -73,22 +73,23 @@ module.exports = function () {
     console.log('Session statistics');
     console.log('Session started at ' + start_time);
     console.log('You have been cubing for ' + prettifyVerbose(total_ms));
-    var start_solve = 0, start_inspect = 0;
+
+    var ret = { solve: 0, inspect: 0 };
 
     if (num_solves >= 5) {
       console.log('Your current ' + clc.red('AO5') + ' is ' + clc.blue(prettifyVerbose(ao5)));
-      start_solve ++;
-      start_inspect ++;
+      ret.solve ++;
+      ret.inspect ++;
     }
     if (num_solves >= 12) {
       console.log('Your current ' + clc.red('AO12') + ' is ' + clc.blue(prettifyVerbose(ao12)));
-      start_solve ++;
-      start_inspect ++;
+      ret.solve ++;
+      ret.inspect ++;
     }
 
     console.log('Your current ' + clc.red('Session average') + ' is ' + clc.blue(prettifyVerbose(ao_session)));
 
-    return { solve: start_solve, inspect: start_inspect };
+    return ret;
   }
 
   charm.pipe(process.stdout);
