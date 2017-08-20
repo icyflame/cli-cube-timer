@@ -43,46 +43,39 @@ module.exports = function () {
         client.get('gists/' + conf.get('gist_id'), function (err, res, body) {
           if (err) {
             console.log(require('util').inspect(err, { depth: null }));
-          }
-          for (var key in body.files) {
-            // console.log(key)
+          } else {
+            var key = 'times.csv';
             var oldcont = body.files[key].content;
-            var newcont = oldcont += glob;
-            break;
-          }
+            var newcont = oldcont + glob;
 
-          // console.log(oldcont)
-
-          var newData = {
-            'files': {
-              'times.csv': {
-                'content': newcont
-              },
-              'updated-on.txt': {
-                'content': new Date().toString()
+            var newData = {
+              'files': {
+                'times.csv': {
+                  'content': newcont
+                },
+                'updated-on.txt': {
+                  'content': new Date().toString()
+                }
               }
-            }
-          };
+            };
 
-          client.patch('gists/' + conf.get('gist_id'), newData, function (err, res, body) {
-            if (!err && res.statusCode === 200) {
-              console.log('Successfully updated on GitHub!');
-              console.log('Your solves are available at: ');
-              console.log(body.html_url);
-              require('./file-module.js').deleteLocalFile();
-              require('./file-module.js').writeToPushed(newcont);
-            } else {
-              console.log('HTTP Status Code: ' + res.statusCode);
-              console.log('We encountered an error!');
-            }
+            // send a patch request
 
-          });
+            client.patch('gists/' + conf.get('gist_id'), newData, function (err, res, body) {
+              if (!err && res.statusCode === 200) {
+                console.log('Successfully updated on GitHub!');
+                console.log('Your solves are available at: ');
+                console.log(body.html_url);
+                require('./file-module.js').deleteLocalFile();
+                require('./file-module.js').writeToPushed(newcont);
+              } else {
+                console.log('HTTP Status Code: ' + res.statusCode);
+                console.log('We encountered an error!');
+              }
 
+            });
+          }
         });
-
-        // send patch request
-
-      // console.log("case 2")
       } else {
         // case 1: authenticated, but gist not created yet
 
