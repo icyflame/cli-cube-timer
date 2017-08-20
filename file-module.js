@@ -38,19 +38,9 @@ exports.pushedFileExists = function () {
 
 exports.deleteLocalFile = function () {
   // empty the file times.csv
-
-  var trash = require('trash');
-
+  // (Rename and put it inside the same directory with another extension)
   var filepath = require('./file-module.js').checkLocalFile();
-
-  trash([filepath], function (err) {
-    if (err) {
-      console.log('There was an error in removing the file.');
-      console.log(err);
-    }
-  // else
-  // console.log("Old file removed!")
-  });
+  require('fs').renameSync(filepath, filepath + '.' + Date.now());
 };
 
 exports.writeToPushed = function (glob) {
