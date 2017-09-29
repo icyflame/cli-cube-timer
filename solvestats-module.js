@@ -17,29 +17,28 @@ exports.calcStats = function (solves_today) {
   var best_time = parseFloat(min(solves_today)) * 1000;
   var worst_time = parseFloat(max(solves_today)) * 1000;
 
-  var i;
+  if(Array.isArray(solves_today)) {
+    // it is assumed that solves_today is chronologically ordered, beginning with the oldest
+    var descendingTotalSolves = solves_today.slice().reverse();
 
-  if (total_solves >= 5) {
-    for (i = total_solves - 1; i >= total_solves - 5; i -= 1) {
-      last_five.push(solves_today[i]);
+    if(total_solves >= 5) {
+      last_five = descendingTotalSolves.slice(0, 5);
     }
-  }
 
-  ao5 = mathAvg(removeMinMax(last_five));
+    ao5 = mathAvg(removeMinMax(last_five));
 
-  if (total_solves >= 12) {
-    for (i = total_solves - 1; i >= total_solves - 12; i -= 1) {
-      last_twelve.push(solves_today[i]);
+    if(total_solves >= 12) {
+      last_twelve = descendingTotalSolves.slice(0, 12);
     }
+
+    ao12 = mathAvg(removeMinMax(last_twelve));
+
+    ao_session = mathAvg(solves_today);
   }
-
-  ao12 = mathAvg(removeMinMax(last_twelve));
-
-  ao_session = mathAvg(solves_today);
 
   ao5 = parseFloat(ao5) * 1000;
   ao12 = parseFloat(ao12) * 1000;
   ao_session = parseFloat(ao_session) * 1000;
 
-  return { ao5, ao12, ao_session, best_time, worst_time }
+  return {ao5, ao12, ao_session, best_time, worst_time}
 };
