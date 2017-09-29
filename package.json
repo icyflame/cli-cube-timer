@@ -4,7 +4,7 @@
   "description": "Rubik's Cube Timer for the Terminal-buff speedsolver",
   "main": "index.js",
   "scripts": {
-    "test": "exit 0"
+    "test": "mocha"
   },
   "bin": {
     "solve": "cli.js"
@@ -51,5 +51,8 @@
     "touch": "0.0.3",
     "window-size": "^0.1.1",
     "xdg-basedir": "^1.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.3"
   }
 }
