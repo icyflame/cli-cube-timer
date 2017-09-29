@@ -148,33 +148,95 @@ var testSolves = [
     34.70
 ];
 
-it('advisory test', function () {
-    // quick test to ensure overall health
+describe('advisory tests', function () { // quick tests to ensure overall health
+    it('returns object with 5 keys', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
+        var actual = Object.keys(calcStatsResult).sort();
+        var expected = [
+            "ao5",
+            "ao12",
+            "ao_session",
+            "best_time",
+            "worst_time"
+        ].sort();
 
-    var actual = solvestats.calcStats(testSolves.slice());
-    var expected = {
-        ao5: 37500,
-        ao12: 33139,
-        ao_session: 30001.2676056338,
-        best_time: 20460,
-        worst_time: 55370
-    }
+        assert.deepEqual(actual, expected);
+    });
 
-    assert.deepEqual(actual, expected);
-});
+    it('object returned on number array matches', function () {
+        var actual = solvestats.calcStats(testSolves.slice());
+        var expected = {
+            ao5: 37500,
+            ao12: 33139,
+            ao_session: 30001.2676056338,
+            best_time: 20460,
+            worst_time: 55370
+        }
 
-it('returns object with 5 keys', function () {
-    var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
-    var actual = Object.keys(calcStatsResult).sort();
-    var expected = [
-        "ao5",
-        "ao12",
-        "ao_session",
-        "best_time",
-        "worst_time"
-    ].sort();
+        assert.deepEqual(actual, expected);
+    });
 
-    assert.deepEqual(actual, expected);
+    it('object returned on empty array matches', function () {
+        var actual = solvestats.calcStats([]);
+        var expected = {
+            ao5: NaN,
+            ao12: NaN,
+            ao_session: NaN,
+            best_time: NaN,
+            worst_time: NaN
+        }
+
+        var allMatch = true;
+
+        for(var key of Object.keys(expected)) {
+            if(!actual.hasOwnProperty(key)) { // key missing
+                allMatch = false;
+                break;
+            }
+
+            if(actual[key] == actual[key]) {
+                // NaN is a bad value for comparison
+                // however - NaN is the only value that does not compare equal to itself
+                // you might attempt to employ isNaN()
+                // but isNaN(NaN) === isNaN("nan")
+
+                allMatch = false;
+                break;
+            }
+        }
+
+        assert.equal(true, allMatch);
+    });
+
+    it('object returned on non array type matches', function () {
+        var actual = solvestats.calcStats("");
+        var expected = {
+            ao5: NaN,
+            ao12: NaN,
+            ao_session: 0,
+            best_time: NaN,
+            worst_time: NaN
+        }
+
+        var allMatch = true;
+
+        for(var key of Object.keys(expected)) {
+            if(!actual.hasOwnProperty(key)) { // key missing
+                allMatch = false;
+                break;
+            }
+
+            if(!isNaN(actual[key]) && actual[key] !== expected[key]) {
+                allMatch = false;
+                break;
+            } else if(isNaN(actual[key]) && actual[key] == actual[key]) {
+                allMatch = false;
+                break;
+            }
+        }
+
+        assert.equal(true, allMatch);
+    });
 });
 
 describe('ao5', function () {
