@@ -11,12 +11,12 @@ exports.writeLocal = function (solvetime, scramble) {
 exports.checkLocalFile = function () {
   var fileExists = require('file-exists');
   var touch = require('touch');
-  var xdg = require('xdg-basedir');
   var filepath = require('./constants').LOCAL_FILE_PATH;
 
-  if(!fileExists(filepath)) {
+  if(!fileExists.sync(filepath)) {
     var mkdirp = require('mkdirp');
-    mkdirp(xdg.data + '/cube');
+    var localSaveDir = require('./constants').LOCAL_SAVE_DIR;
+    mkdirp.sync(localSaveDir);
     touch(filepath);
   }
 
