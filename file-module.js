@@ -14,7 +14,7 @@ exports.checkLocalFile = function () {
   var xdg = require('xdg-basedir');
   var filepath = require('./constants').LOCAL_FILE_PATH;
 
-  if (!fileExists(filepath)) {
+  if(!fileExists(filepath)) {
     var mkdirp = require('mkdirp');
     mkdirp(xdg.data + '/cube');
     touch(filepath);
@@ -49,7 +49,7 @@ exports.writeToPushed = function (glob) {
   var xdg = require('xdg-basedir');
   var filepath = require('./constants').PUSHED_FILE_PATH;
 
-  if (!fileExists(filepath)) {
+  if(!fileExists(filepath)) {
     var mkdirp = require('mkdirp');
     mkdirp(xdg.data + '/cube');
     touch(filepath);
