@@ -9,7 +9,7 @@
   "bin": {
     "solve": "cli.js"
   },
-  "preferGlobal": "true",
+  "preferGlobal": true,
   "author": "Siddharth Kannan <kannan.siddharth12@gmail.com>",
   "repository": "icyflame/cli-cube-timer",
   "license": "MIT",
