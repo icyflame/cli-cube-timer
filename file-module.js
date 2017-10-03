@@ -9,11 +9,11 @@ exports.writeLocal = function (solvetime, scramble) {
 };
 
 exports.checkLocalFile = function () {
-  var fileExists = require('file-exists');
+  var fs = require('fs');
   var touch = require('touch');
   var filepath = require('./constants').LOCAL_FILE_PATH;
 
-  if(!fileExists.sync(filepath)) {
+  if(!fs.existsSync(filepath)) {
     var mkdirp = require('mkdirp');
     var localSaveDir = require('./constants').LOCAL_SAVE_DIR;
     mkdirp.sync(localSaveDir);
@@ -44,14 +44,14 @@ exports.deleteLocalFile = function () {
 };
 
 exports.writeToPushed = function (glob) {
-  var fileExists = require('file-exists');
+  var fs = require('fs');
   var touch = require('touch');
   var xdg = require('xdg-basedir');
   var filepath = require('./constants').PUSHED_FILE_PATH;
 
-  if(!fileExists(filepath)) {
+  if(!fs.existsSync(filepath)) {
     var mkdirp = require('mkdirp');
-    mkdirp(xdg.data + '/cube');
+    mkdirp.sync(xdg.data + '/cube');
     touch(filepath);
   }
 
