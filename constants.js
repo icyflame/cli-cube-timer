@@ -1,3 +1,5 @@
 var xdg = require('xdg-basedir');
-exports.LOCAL_FILE_PATH = xdg.data + '/cube/times.csv';
-exports.PUSHED_FILE_PATH = xdg.data + '/cube/pushed.csv';
+
+var localSaveDir = exports.LOCAL_SAVE_DIR = xdg.data + '/cube';
+exports.LOCAL_FILE_PATH = localSaveDir + '/times.csv';
+exports.PUSHED_FILE_PATH = localSaveDir + '/pushed.csv';
