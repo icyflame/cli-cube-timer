@@ -33,7 +33,6 @@
     "configstore": "^1.0.0",
     "fast-csv": "^0.6.0",
     "fast-stats": "0.0.2",
-    "file-exists": "^0.1.1",
     "gh-gist-owner": "^1.0.1",
     "jsonfile": "^2.0.1",
     "keypress": "^0.2.1",

@@ -25,15 +25,11 @@ exports.checkLocalFile = function () {
 
 
 exports.localFileExists = function () {
-  var fileExists = require('file-exists');
-
-  return fileExists(require('./constants').LOCAL_FILE_PATH);
+  return require('fs').existsSync(require('./constants').LOCAL_FILE_PATH);
 };
 
 exports.pushedFileExists = function () {
-  var fileExists = require('file-exists');
-
-  return fileExists(require('./constants').PUSHED_FILE_PATH);
+  return require('fs').existsSync(require('./constants').PUSHED_FILE_PATH);
 };
 
 exports.deleteLocalFile = function () {
