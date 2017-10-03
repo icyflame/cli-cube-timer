@@ -1,10 +1,8 @@
 module.exports = function (bucket_size) {
   bucket_size = bucket_size || 10;
 
-  var xdg = require('xdg-basedir');
-
   var fileModule = require('./file-module.js');
-  var file_name = xdg.data + '/cube/pushed.csv';
+  var file_name = require('./constants.js').PUSHED_FILE_PATH;
 
   if (!fileModule.pushedFileExists()) {
     file_name = fileModule.checkLocalFile();
