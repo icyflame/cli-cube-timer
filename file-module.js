@@ -47,7 +47,8 @@ exports.writeToPushed = function (glob) {
 
   if(!fs.existsSync(filepath)) {
     var mkdirp = require('mkdirp');
-    mkdirp.sync(xdg.data + '/cube');
+    var localSaveDir = require('./constants').LOCAL_SAVE_DIR;
+    mkdirp.sync(localSaveDir);
     touch(filepath);
   }
 
