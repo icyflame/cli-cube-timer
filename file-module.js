@@ -17,7 +17,7 @@ exports.checkLocalFile = function () {
     var mkdirp = require('mkdirp');
     var localSaveDir = require('./constants').LOCAL_SAVE_DIR;
     mkdirp.sync(localSaveDir);
-    touch(filepath);
+    touch.sync(filepath);
   }
 
   return filepath;
@@ -41,7 +41,6 @@ exports.deleteLocalFile = function () {
 
 exports.writeToPushed = function (glob) {
   var fs = require('fs');
-  var touch = require('touch');
   var xdg = require('xdg-basedir');
   var filepath = require('./constants').PUSHED_FILE_PATH;
 
@@ -49,7 +48,6 @@ exports.writeToPushed = function (glob) {
     var mkdirp = require('mkdirp');
     var localSaveDir = require('./constants').LOCAL_SAVE_DIR;
     mkdirp.sync(localSaveDir);
-    touch(filepath);
   }
 
   var fs = require('fs');
