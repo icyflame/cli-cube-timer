@@ -148,201 +148,202 @@ var testSolves = [
     34.70
 ];
 
-describe('advisory tests', function () { // quick tests to ensure overall health
-    it('returns object with 5 keys', function () {
-        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
-        var actual = Object.keys(calcStatsResult).sort();
-        var expected = [
-            "ao5",
-            "ao12",
-            "ao_session",
-            "best_time",
-            "worst_time"
-        ].sort();
+// some tests to ensure overall health
+describe('advisory tests', function () {
+  it('returns object with 5 keys', function () {
+    var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
+    var actual = Object.keys(calcStatsResult).sort();
+    var expected = [
+      "ao5",
+      "ao12",
+      "ao_session",
+      "best_time",
+      "worst_time"
+      ].sort();
 
-        assert.deepEqual(actual, expected);
+      assert.deepEqual(actual, expected);
     });
 
     it('object returned on number array matches', function () {
-        var actual = solvestats.calcStats(testSolves.slice());
-        var expected = {
-            ao5: 37500,
-            ao12: 33139,
-            ao_session: 30001.2676056338,
-            best_time: 20460,
-            worst_time: 55370
-        }
+      var actual = solvestats.calcStats(testSolves.slice());
+      var expected = {
+        ao5: 37500,
+        ao12: 33139,
+        ao_session: 30001.2676056338,
+        best_time: 20460,
+        worst_time: 55370
+      }
 
-        assert.deepEqual(actual, expected);
+      assert.deepEqual(actual, expected);
     });
 
     it('object returned on empty array matches', function () {
-        var actual = solvestats.calcStats([]);
-        var expected = {
-            ao5: NaN,
-            ao12: NaN,
-            ao_session: NaN,
-            best_time: NaN,
-            worst_time: NaN
-        }
+    var actual = solvestats.calcStats([]);
+    var expected = {
+      ao5: NaN,
+      ao12: NaN,
+      ao_session: NaN,
+      best_time: NaN,
+      worst_time: NaN
+    }
 
-        var allMatch = true;
+    var allMatch = true;
 
-        for(var key of Object.keys(expected)) {
-            if(!actual.hasOwnProperty(key)) { // key missing
-                allMatch = false;
-                break;
-            }
+    for(var key of Object.keys(expected)) {
+      if(!actual.hasOwnProperty(key)) { // key missing
+      allMatch = false;
+      break;
+    }
 
-            if(actual[key] == actual[key]) {
-                // NaN is a bad value for comparison
-                // however - NaN is the only value that does not compare equal to itself
-                // you might attempt to employ isNaN()
-                // but isNaN(NaN) === isNaN("nan")
+    if(actual[key] == actual[key]) {
+      // NaN is a bad value for comparison
+      // however - NaN is the only value that does not compare equal to itself
+      // you might attempt to employ isNaN()
+      // but isNaN(NaN) === isNaN("nan")
 
-                allMatch = false;
-                break;
-            }
-        }
+      allMatch = false;
+      break;
+    }
+  }
 
-        assert.equal(true, allMatch);
-    });
-
-    it('object returned on non array type matches', function () {
-        var actual = solvestats.calcStats("");
-        var expected = {
-            ao5: NaN,
-            ao12: NaN,
-            ao_session: 0,
-            best_time: NaN,
-            worst_time: NaN
-        }
-
-        var allMatch = true;
-
-        for(var key of Object.keys(expected)) {
-            if(!actual.hasOwnProperty(key)) { // key missing
-                allMatch = false;
-                break;
-            }
-
-            if(!isNaN(actual[key]) && actual[key] !== expected[key]) {
-                allMatch = false;
-                break;
-            } else if(isNaN(actual[key]) && actual[key] == actual[key]) {
-                allMatch = false;
-                break;
-            }
-        }
-
-        assert.equal(true, allMatch);
-    });
+  assert.equal(true, allMatch);
 });
 
-describe('ao5', function () {
-  describe('ao5 is NaN when size of input < 5', function () {
-    it('is set to NaN when input contains less than 5 entries', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
-      var actual = isNaN(calcStatsResult.ao5);
-      var expected = true;
+it('object returned on non array type matches', function () {
+  var actual = solvestats.calcStats("");
+  var expected = {
+    ao5: NaN,
+    ao12: NaN,
+    ao_session: 0,
+    best_time: NaN,
+    worst_time: NaN
+  }
 
-      assert.equal(actual, expected);
+  var allMatch = true;
+
+  for(var key of Object.keys(expected)) {
+    if(!actual.hasOwnProperty(key)) { // key missing
+    allMatch = false;
+    break;
+  }
+
+  if(!isNaN(actual[key]) && actual[key] !== expected[key]) {
+    allMatch = false;
+    break;
+  } else if(isNaN(actual[key]) && actual[key] == actual[key]) {
+    allMatch = false;
+    break;
+  }
+}
+
+assert.equal(true, allMatch);
     });
   });
 
-  describe('ao5 is a number when size of input >= 5', function () {
-    it('input size = 5', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
-      var actual = typeof (calcStatsResult.ao5);
-      var expected = "number";
+  describe('ao5', function () {
+    describe('ao5 is NaN when size of input < 5', function () {
+      it('is set to NaN when input contains less than 5 entries', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
+        var actual = isNaN(calcStatsResult.ao5);
+        var expected = true;
 
-      assert.equal(actual, expected);
+        assert.equal(actual, expected);
+      });
     });
 
-    it('input size = 7', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 7));
-      var actual = typeof (calcStatsResult.ao5);
-      var expected = "number";
+    describe('ao5 is a number when size of input >= 5', function () {
+      it('input size = 5', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
+        var actual = typeof (calcStatsResult.ao5);
+        var expected = "number";
 
-      assert.equal(actual, expected);
-    });
+        assert.equal(actual, expected);
+      });
 
-    it('input size = 13', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
-      var actual = typeof (calcStatsResult.ao5);
-      var expected = "number";
+      it('input size = 7', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 7));
+        var actual = typeof (calcStatsResult.ao5);
+        var expected = "number";
 
-      assert.equal(actual, expected);
-    });
+        assert.equal(actual, expected);
+      });
 
-    it('input size = 29', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
-      var actual = typeof (calcStatsResult.ao5);
-      var expected = "number";
+      it('input size = 13', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
+        var actual = typeof (calcStatsResult.ao5);
+        var expected = "number";
 
-      assert.equal(actual, expected);
-    });
-  });
-});
+        assert.equal(actual, expected);
+      });
 
-describe('ao12', function () {
-  describe('ao12 is NaN when size of input < 12', function () {
-    it('input size = 2', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 2));
-      var actual = isNaN(calcStatsResult.ao12);
-      var expected = true;
+      it('input size = 29', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
+        var actual = typeof (calcStatsResult.ao5);
+        var expected = "number";
 
-      assert.equal(actual, expected);
-    });
-
-    it('input size = 5', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
-      var actual = isNaN(calcStatsResult.ao12);
-      var expected = true;
-
-      assert.equal(actual, expected);
-    });
-
-    it('input size = 11', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 11));
-      var actual = isNaN(calcStatsResult.ao12);
-      var expected = true;
-
-      assert.equal(actual, expected);
+        assert.equal(actual, expected);
+      });
     });
   });
 
-  describe('ao12 is a number when input size >= 12', function () {
-    it('input size = 12', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 12));
-      var actual = typeof (calcStatsResult.ao12);
-      var expected = "number";
+  describe('ao12', function () {
+    describe('ao12 is NaN when size of input < 12', function () {
+      it('input size = 2', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 2));
+        var actual = isNaN(calcStatsResult.ao12);
+        var expected = true;
 
-      assert.equal(actual, expected);
+        assert.equal(actual, expected);
+      });
+
+      it('input size = 5', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
+        var actual = isNaN(calcStatsResult.ao12);
+        var expected = true;
+
+        assert.equal(actual, expected);
+      });
+
+      it('input size = 11', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 11));
+        var actual = isNaN(calcStatsResult.ao12);
+        var expected = true;
+
+        assert.equal(actual, expected);
+      });
     });
 
-    it('13 entries', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
-      var actual = typeof (calcStatsResult.ao12);
-      var expected = "number";
+    describe('ao12 is a number when input size >= 12', function () {
+      it('input size = 12', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 12));
+        var actual = typeof (calcStatsResult.ao12);
+        var expected = "number";
 
-      assert.equal(actual, expected);
-    });
+        assert.equal(actual, expected);
+      });
 
-    it('29 entries', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
-      var actual = typeof (calcStatsResult.ao12);
-      var expected = "number";
+      it('13 entries', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
+        var actual = typeof (calcStatsResult.ao12);
+        var expected = "number";
 
-      assert.equal(actual, expected);
-    });
+        assert.equal(actual, expected);
+      });
 
-    it('31 entries', function () {
-      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 31));
-      var actual = typeof (calcStatsResult.ao12);
-      var expected = "number";
+      it('29 entries', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
+        var actual = typeof (calcStatsResult.ao12);
+        var expected = "number";
 
-      assert.equal(actual, expected);
+        assert.equal(actual, expected);
+      });
+
+      it('31 entries', function () {
+        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 31));
+        var actual = typeof (calcStatsResult.ao12);
+        var expected = "number";
+
+        assert.equal(actual, expected);
+      });
     });
   });
-});
