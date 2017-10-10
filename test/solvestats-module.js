@@ -240,107 +240,109 @@ describe('advisory tests', function () { // quick tests to ensure overall health
 });
 
 describe('ao5', function () {
+  describe('ao5 is NaN when size of input < 5', function () {
     it('is set to NaN when input contains less than 5 entries', function () {
-        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
-        var actual = isNaN(calcStatsResult.ao5);
-        var expected = true;
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
+      var actual = isNaN(calcStatsResult.ao5);
+      var expected = true;
 
-        assert.equal(actual, expected);
+      assert.equal(actual, expected);
+    });
+  });
+
+  describe('ao5 is a number when size of input >= 5', function () {
+    it('input size = 5', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
+      var actual = typeof (calcStatsResult.ao5);
+      var expected = "number";
+
+      assert.equal(actual, expected);
     });
 
-    it('has a number value when input contains 5 entries', function () {
-        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
-        var actual = typeof (calcStatsResult.ao5);
-        var expected = "number";
+    it('input size = 7', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 7));
+      var actual = typeof (calcStatsResult.ao5);
+      var expected = "number";
 
-        assert.equal(actual, expected);
+      assert.equal(actual, expected);
     });
 
-    describe('has a number value when input contains more than 5 entries', function () {
-        it('7 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 7));
-            var actual = typeof (calcStatsResult.ao5);
-            var expected = "number";
+    it('input size = 13', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
+      var actual = typeof (calcStatsResult.ao5);
+      var expected = "number";
 
-            assert.equal(actual, expected);
-        });
-
-        it('13 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
-            var actual = typeof (calcStatsResult.ao5);
-            var expected = "number";
-
-            assert.equal(actual, expected);
-        });
-
-        it('29 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
-            var actual = typeof (calcStatsResult.ao5);
-            var expected = "number";
-
-            assert.equal(actual, expected);
-        });
+      assert.equal(actual, expected);
     });
+
+    it('input size = 29', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
+      var actual = typeof (calcStatsResult.ao5);
+      var expected = "number";
+
+      assert.equal(actual, expected);
+    });
+  });
 });
 
 describe('ao12', function () {
-    describe('is set to NaN when input contains less than 12 entries', function () {
-        it('2 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 2));
-            var actual = isNaN(calcStatsResult.ao12);
-            var expected = true;
+  describe('ao12 is NaN when size of input < 12', function () {
+    it('input size = 2', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 2));
+      var actual = isNaN(calcStatsResult.ao12);
+      var expected = true;
 
-            assert.equal(actual, expected);
-        });
-
-        it('5 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
-            var actual = isNaN(calcStatsResult.ao12);
-            var expected = true;
-
-            assert.equal(actual, expected);
-        });
-
-        it('11 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 11));
-            var actual = isNaN(calcStatsResult.ao12);
-            var expected = true;
-
-            assert.equal(actual, expected);
-        });
+      assert.equal(actual, expected);
     });
 
-    it('has a number value when input contains 12 entries', function () {
-        var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 12));
-        var actual = typeof (calcStatsResult.ao12);
-        var expected = "number";
+    it('input size = 5', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
+      var actual = isNaN(calcStatsResult.ao12);
+      var expected = true;
 
-        assert.equal(actual, expected);
+      assert.equal(actual, expected);
     });
 
-    describe('has a number value when input contains more than 12 entries', function () {
-        it('13 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
-            var actual = typeof (calcStatsResult.ao12);
-            var expected = "number";
+    it('input size = 11', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 11));
+      var actual = isNaN(calcStatsResult.ao12);
+      var expected = true;
 
-            assert.equal(actual, expected);
-        });
-
-        it('29 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
-            var actual = typeof (calcStatsResult.ao12);
-            var expected = "number";
-
-            assert.equal(actual, expected);
-        });
-
-        it('31 entries', function () {
-            var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 31));
-            var actual = typeof (calcStatsResult.ao12);
-            var expected = "number";
-
-            assert.equal(actual, expected);
-        });
+      assert.equal(actual, expected);
     });
+  });
+
+  describe('ao12 is a number when input size >= 12', function () {
+    it('input size = 12', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 12));
+      var actual = typeof (calcStatsResult.ao12);
+      var expected = "number";
+
+      assert.equal(actual, expected);
+    });
+
+    it('13 entries', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 13));
+      var actual = typeof (calcStatsResult.ao12);
+      var expected = "number";
+
+      assert.equal(actual, expected);
+    });
+
+    it('29 entries', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 29));
+      var actual = typeof (calcStatsResult.ao12);
+      var expected = "number";
+
+      assert.equal(actual, expected);
+    });
+
+    it('31 entries', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 31));
+      var actual = typeof (calcStatsResult.ao12);
+      var expected = "number";
+
+      assert.equal(actual, expected);
+    });
+  });
 });
