@@ -148,95 +148,98 @@ var testSolves = [
     34.70
 ];
 
-// some tests to ensure overall health
-describe('advisory tests', function () {
-  it('returns object with 5 keys', function () {
-    var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
-    var actual = Object.keys(calcStatsResult).sort();
-    var expected = [
-      "ao5",
-      "ao12",
-      "ao_session",
-      "best_time",
-      "worst_time"
-      ].sort();
+describe("solvestats-module", function () {
+  // some tests to ensure overall health
+  describe('advisory tests', function () {
+    it('returns object with 5 keys', function () {
+      var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
+      var actual = Object.keys(calcStatsResult).sort();
+      var expected = [
+        "ao5",
+        "ao12",
+        "ao_session",
+        "best_time",
+        "worst_time"
+        ].sort();
 
-      assert.deepEqual(actual, expected);
-    });
+        assert.deepEqual(actual, expected);
+      });
 
-    it('object returned on number array matches', function () {
-      var actual = solvestats.calcStats(testSolves.slice());
+      it('object returned on number array matches', function () {
+        var actual = solvestats.calcStats(testSolves.slice());
+        var expected = {
+          ao5: 37500,
+          ao12: 33139,
+          ao_session: 30001.2676056338,
+          best_time: 20460,
+          worst_time: 55370
+        }
+
+        assert.deepEqual(actual, expected);
+      });
+
+      it('object returned on empty array matches', function () {
+      var actual = solvestats.calcStats([]);
       var expected = {
-        ao5: 37500,
-        ao12: 33139,
-        ao_session: 30001.2676056338,
-        best_time: 20460,
-        worst_time: 55370
+        ao5: NaN,
+        ao12: NaN,
+        ao_session: NaN,
+        best_time: NaN,
+        worst_time: NaN
       }
 
-      assert.deepEqual(actual, expected);
+      var allMatch = true;
+
+      for(var key of Object.keys(expected)) {
+        if(!actual.hasOwnProperty(key)) {
+          // key missing
+          allMatch = false;
+          break;
+        }
+
+        if(actual[key] == actual[key]) {
+          // NaN is a bad value for comparison
+          // however - NaN is the only value that does not compare equal to itself
+          // you might attempt to employ isNaN()
+          // but isNaN(NaN) === isNaN("nan")
+
+          allMatch = false;
+          break;
+        }
+      }
+
+      assert.equal(true, allMatch);
     });
 
-    it('object returned on empty array matches', function () {
-    var actual = solvestats.calcStats([]);
-    var expected = {
-      ao5: NaN,
-      ao12: NaN,
-      ao_session: NaN,
-      best_time: NaN,
-      worst_time: NaN
-    }
+    it('object returned on non array type matches', function () {
+      var actual = solvestats.calcStats("");
+      var expected = {
+        ao5: NaN,
+        ao12: NaN,
+        ao_session: 0,
+        best_time: NaN,
+        worst_time: NaN
+      }
 
-    var allMatch = true;
+      var allMatch = true;
 
-    for(var key of Object.keys(expected)) {
-      if(!actual.hasOwnProperty(key)) { // key missing
-      allMatch = false;
-      break;
-    }
+      for(var key of Object.keys(expected)) {
+        if(!actual.hasOwnProperty(key)) {
+          // key missing
+          allMatch = false;
+          break;
+        }
 
-    if(actual[key] == actual[key]) {
-      // NaN is a bad value for comparison
-      // however - NaN is the only value that does not compare equal to itself
-      // you might attempt to employ isNaN()
-      // but isNaN(NaN) === isNaN("nan")
+        if(!isNaN(actual[key]) && actual[key] !== expected[key]) {
+          allMatch = false;
+          break;
+        } else if(isNaN(actual[key]) && actual[key] == actual[key]) {
+          allMatch = false;
+          break;
+        }
+      }
 
-      allMatch = false;
-      break;
-    }
-  }
-
-  assert.equal(true, allMatch);
-});
-
-it('object returned on non array type matches', function () {
-  var actual = solvestats.calcStats("");
-  var expected = {
-    ao5: NaN,
-    ao12: NaN,
-    ao_session: 0,
-    best_time: NaN,
-    worst_time: NaN
-  }
-
-  var allMatch = true;
-
-  for(var key of Object.keys(expected)) {
-    if(!actual.hasOwnProperty(key)) { // key missing
-    allMatch = false;
-    break;
-  }
-
-  if(!isNaN(actual[key]) && actual[key] !== expected[key]) {
-    allMatch = false;
-    break;
-  } else if(isNaN(actual[key]) && actual[key] == actual[key]) {
-    allMatch = false;
-    break;
-  }
-}
-
-assert.equal(true, allMatch);
+      assert.equal(true, allMatch);
     });
   });
 
@@ -347,3 +350,4 @@ assert.equal(true, allMatch);
       });
     });
   });
+});
