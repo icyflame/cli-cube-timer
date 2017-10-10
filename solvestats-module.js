@@ -6,36 +6,25 @@ exports.calcStats = function (solves_today) {
   var min = require('lodash.min');
   var max = require('lodash.max');
 
-  var sum = 0.0;
-  var total_solves = solves_today.length;
-  var last_five = [];
-  var last_twelve = [];
-  var ao5;
-  var ao12;
-  var ao_session;
+  var ao_session, ao5, ao12, sum = 0.0, total_solves = solves_today.length;
 
   var best_time = parseFloat(min(solves_today)) * 1000;
   var worst_time = parseFloat(max(solves_today)) * 1000;
 
-  var i;
+  if(Array.isArray(solves_today)) {
+    // it is assumed that solves_today is chronologically ordered, beginning with the oldest
+    var descendingTotalSolves = solves_today.slice().reverse();
 
-  if (total_solves >= 5) {
-    for (i = total_solves - 1; i >= total_solves - 5; i -= 1) {
-      last_five.push(solves_today[i]);
+    ao_session = mathAvg(solves_today);
+
+    if(total_solves >= 5) {
+      ao5 = mathAvg(removeMinMax(descendingTotalSolves.slice(0, 5)));
+    }
+
+    if(total_solves >= 12) {
+      ao12 = mathAvg(removeMinMax(descendingTotalSolves.slice(0, 12)));
     }
   }
-
-  ao5 = mathAvg(removeMinMax(last_five));
-
-  if (total_solves >= 12) {
-    for (i = total_solves - 1; i >= total_solves - 12; i -= 1) {
-      last_twelve.push(solves_today[i]);
-    }
-  }
-
-  ao12 = mathAvg(removeMinMax(last_twelve));
-
-  ao_session = mathAvg(solves_today);
 
   ao5 = parseFloat(ao5) * 1000;
   ao12 = parseFloat(ao12) * 1000;
