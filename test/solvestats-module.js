@@ -3,6 +3,14 @@ var min = require('lodash.min');
 var max = require('lodash.max');
 var solvestats = require('../solvestats-module');
 
+var DEFAULT_RET_VAL = {
+  ao5: -1,
+  ao12: -1,
+  ao_session: -1,
+  best_time: -1,
+  worst_time: -1
+};
+
 var testSolves = [
     33.85,
     25.56,
@@ -154,92 +162,37 @@ describe("solvestats-module", function () {
     it('returns object with 5 keys', function () {
       var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
       var actual = Object.keys(calcStatsResult).sort();
-      var expected = [
-        "ao5",
-        "ao12",
-        "ao_session",
-        "best_time",
-        "worst_time"
-        ].sort();
+      var expected = [ "ao5", "ao12", "ao_session", "best_time", "worst_time" ];
+      expected = expected.sort();
 
-        assert.deepEqual(actual, expected);
-      });
-
-      it('object returned on number array matches', function () {
-        var actual = solvestats.calcStats(testSolves.slice());
-        var expected = {
-          ao5: 37500,
-          ao12: 33139,
-          ao_session: 30001.2676056338,
-          best_time: 20460,
-          worst_time: 55370
-        }
-
-        assert.deepEqual(actual, expected);
-      });
-
-      it('object returned on empty array matches', function () {
-      var actual = solvestats.calcStats([]);
-      var expected = {
-        ao5: NaN,
-        ao12: NaN,
-        ao_session: NaN,
-        best_time: NaN,
-        worst_time: NaN
-      }
-
-      var allMatch = true;
-
-      for(var key of Object.keys(expected)) {
-        if(!actual.hasOwnProperty(key)) {
-          // key missing
-          allMatch = false;
-          break;
-        }
-
-        if(actual[key] == actual[key]) {
-          // NaN is a bad value for comparison
-          // however - NaN is the only value that does not compare equal to itself
-          // you might attempt to employ isNaN()
-          // but isNaN(NaN) === isNaN("nan")
-
-          allMatch = false;
-          break;
-        }
-      }
-
-      assert.equal(true, allMatch);
+      assert.deepEqual(actual, expected);
     });
 
-    it('object returned on non array type matches', function () {
-      var actual = solvestats.calcStats("");
+    it('object returned on a sample test case', function () {
+      var actual = solvestats.calcStats(testSolves.slice());
       var expected = {
-        ao5: NaN,
-        ao12: NaN,
-        ao_session: 0,
-        best_time: NaN,
-        worst_time: NaN
+        ao5: 37500,
+        ao12: 33139,
+        ao_session: 30001.2676056338,
+        best_time: 20460,
+        worst_time: 55370
       }
 
-      var allMatch = true;
+      assert.deepEqual(actual, expected);
+    });
 
-      for(var key of Object.keys(expected)) {
-        if(!actual.hasOwnProperty(key)) {
-          // key missing
-          allMatch = false;
-          break;
-        }
+    it('default object is returned on empty array', function () {
+      var actual = solvestats.calcStats([]);
+      var expected = DEFAULT_RET_VAL;
 
-        if(!isNaN(actual[key]) && actual[key] !== expected[key]) {
-          allMatch = false;
-          break;
-        } else if(isNaN(actual[key]) && actual[key] == actual[key]) {
-          allMatch = false;
-          break;
-        }
-      }
+      assert.deepEqual(actual, expected);
+    });
 
-      assert.equal(true, allMatch);
+    it('default object is returned on non-array', function () {
+      var actual = solvestats.calcStats("");
+      var expected = DEFAULT_RET_VAL;
+
+      assert.deepEqual(actual, expected);
     });
   });
 
@@ -247,8 +200,8 @@ describe("solvestats-module", function () {
     describe('ao5 is NaN when size of input < 5', function () {
       it('is set to NaN when input contains less than 5 entries', function () {
         var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 1));
-        var actual = isNaN(calcStatsResult.ao5);
-        var expected = true;
+        var actual = calcStatsResult.ao5;
+        var expected = -1;
 
         assert.equal(actual, expected);
       });
@@ -293,24 +246,24 @@ describe("solvestats-module", function () {
     describe('ao12 is NaN when size of input < 12', function () {
       it('input size = 2', function () {
         var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 2));
-        var actual = isNaN(calcStatsResult.ao12);
-        var expected = true;
+        var actual = calcStatsResult.ao12;
+        var expected = -1;
 
         assert.equal(actual, expected);
       });
 
       it('input size = 5', function () {
         var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 5));
-        var actual = isNaN(calcStatsResult.ao12);
-        var expected = true;
+        var actual = calcStatsResult.ao12;
+        var expected = -1;
 
         assert.equal(actual, expected);
       });
 
       it('input size = 11', function () {
         var calcStatsResult = solvestats.calcStats(testSolves.slice(0, 11));
-        var actual = isNaN(calcStatsResult.ao12);
-        var expected = true;
+        var actual = calcStatsResult.ao12;
+        var expected = -1;
 
         assert.equal(actual, expected);
       });
