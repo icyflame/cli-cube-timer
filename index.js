@@ -291,8 +291,7 @@ module.exports = function () {
   charm.position(right_row_num, 3);
   console.log(clc.blue('Press letter s to see your session statistics.'));
 
-  var start_time = new Date();
-  start_time = start_time.getHours() + ':' + start_time.getMinutes();
+  start_time = (new Date()).toTimeString().split(' ')[0]
 
   var total_time = new Stopwatch();
   total_time.start();
