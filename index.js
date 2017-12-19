@@ -215,8 +215,7 @@ module.exports = function () {
   process.stdin.on('keypress', function (ch, key) {
     switch (key.name) {
       case 'e':
-        end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
-        return process.exit(0);
+        return end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
 
       case 's':
         charm.erase('line');
@@ -358,9 +357,7 @@ module.exports = function () {
     }
 
     if (key.ctrl && key.name === 'c') {
-      console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
-      end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
-      return process.exit(0);
+      return end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
     }
   });
 
