@@ -74,14 +74,14 @@ module.exports = function () {
     worst_time = stats.worst_time;
   }
 
-  function end_session(start_time, total_time_ms) {
+  function end_session() {
     console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
 
     if (post_solving) {
       acceptSolve(last_solve, last_scramble);
     }
 
-    print_stats(start_time, total_time_ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+    print_stats();
 
     return process.exit(0);
   }
@@ -96,10 +96,10 @@ module.exports = function () {
     writeLocal(solve_rep, scramble);
   }
 
-  function print_stats (start_time, total_ms, num_solves, ao5, ao12, ao_session, best_time, worst_time) {
+  function print_stats () {
     console.log('Session statistics');
     console.log('Session started at ' + start_time);
-    console.log('You have been cubing for ' + prettifyVerbose(total_ms));
+    console.log('You have been cubing for ' + prettifyVerbose(total_time.ms));
     console.log('Total solves: ' + clc.blue(num_solves));
 
     if (best_time !== undefined) {
@@ -215,13 +215,13 @@ module.exports = function () {
   process.stdin.on('keypress', function (ch, key) {
     switch (key.name) {
       case 'e':
-        return end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+        return end_session();
 
       case 's':
         charm.erase('line');
         charm.left(1);
 
-        var printed = print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+        var printed = print_stats();
 
         userSay('Press space to initiate a new solve');
 
@@ -357,7 +357,7 @@ module.exports = function () {
     }
 
     if (key.ctrl && key.name === 'c') {
-      return end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+      return end_session();
     }
   });
 
