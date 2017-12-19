@@ -214,65 +214,65 @@ module.exports = function () {
           // A new solve has been initiated
           inspect.start();
           inspecting = true;
-        } else {
-          if (inspecting && !post_inspecting && !solving) {
-            // Inspection ends, solving begins
-            inspect.stop();
-            inspect.reset(0);
-            stopwatch.start();
-            inspecting = false;
-            solving = true;
-          } else {
-            if (!inspecting && post_inspecting && !solving) {
-              // Inspection has ended, with a penalty of +2
-              // Solving begins
-              post_inspect.stop();
-              inspect.reset(0);
-              post_inspect.reset(0);
-              stopwatch.start();
-              post_inspecting = false;
-              solving = true;
-              penalty = 2000;
-            } else {
-              if (!inspecting && !post_inspecting && solving) {
-                var solveTime = stopwatch.ms;
+        } else if (inspecting && !post_inspecting && !solving) {
+          // Inspection ends, solving begins
+          inspect.stop();
+          inspect.reset(0);
+          stopwatch.start();
+          inspecting = false;
+          solving = true;
+        } else if (!inspecting && post_inspecting && !solving) {
+          // Inspection has ended, with a penalty of +2
+          // Solving begins
+          post_inspect.stop();
+          inspect.reset(0);
+          post_inspect.reset(0);
+          stopwatch.start();
+          post_inspecting = false;
+          solving = true;
+          penalty = 2000;
+        } else if (!inspecting && !post_inspecting && solving) {
+          // Solve has ended
+          var solveTime = stopwatch.ms;
 
-                solveTime = solveTime + penalty;
+          solveTime = solveTime + penalty;
 
-                addToStatsModule(solveTime);
+          addToStatsModule(solveTime);
+          writeLocal(this_solve, this_scramble);
 
-                writeLocal(this_solve, this_scramble);
+          charm.position(1, start_inspect);
+          botSay('That solve was ' + clc.green(prettify(solveTime)) +
+          (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
 
-                charm.position(1, start_inspect);
-                botSay('That solve was ' + clc.green(prettify(solveTime)) +
-                  (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
-
-                if (num_solves > 1) {
-                  charm.position(right_row_num, start_inspect);
-                  console.log(clc.red(num_solves < 5 ? 'Previous solve: ' : "This session's AO5: ") +
-                    clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
-                }
-
-                last_solve = solveTime;
-
-                prepNewSolve();
-
-                start_solve += 3;
-                start_inspect += 3;
-
-                resetForNextSolve();
-
-              }
-            }
+          if (num_solves > 1) {
+            charm.position(right_row_num, start_inspect);
+            console.log(clc.red(num_solves < 5 ? 'Previous solve: ' : "This session's AO5: ") +
+            clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
           }
+
+          last_solve = solveTime;
+
+          prepNewSolve();
+
+          start_solve += 3;
+          start_inspect += 3;
+
+          resetForNextSolve();
+
         }
+
+        break;
+
+      default:
 
         break;
 
     }
 
     if (key.ctrl && key.name === 'c') {
-      process.stdin.pause();
+      console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
+      print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+      return process.exit(0);
     }
   });
 
