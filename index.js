@@ -6,9 +6,10 @@ module.exports = function () {
   var Scrambo = require('scrambo');
   var threebythree = new Scrambo();
   var prettyMs = require('pretty-ms');
-  var this_scramble, this_solve, stats = { };
+  var this_scramble, last_scramble, this_solve, stats = { };
 
   const STATS_LINES = 11;
+  const INIT_START_INSPECT = 7;
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
@@ -71,6 +72,28 @@ module.exports = function () {
     ao_session = stats.ao_session;
     best_time = stats.best_time;
     worst_time = stats.worst_time;
+  }
+
+  function end_session(start_time, total_time_ms) {
+    console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
+
+    if (post_solving) {
+      acceptSolve(last_solve, last_scramble);
+    }
+
+    print_stats(start_time, total_time_ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+
+    return process.exit(0);
+  }
+
+  function acceptSolve(solveTime, scramble) {
+    solve_rep = 'DNF';
+    if (typeof solveTime === 'number') {
+      solve_rep = (solveTime/1000).toFixed(2);
+      addToStatsModule(solveTime);
+    }
+
+    writeLocal(solve_rep, scramble);
   }
 
   function print_stats (start_time, total_ms, num_solves, ao5, ao12, ao_session, best_time, worst_time) {
@@ -169,10 +192,11 @@ module.exports = function () {
   var writeLocal = push.writeLocal;
 
   var solving = false;
+  var post_solving = false;
   var inspecting = false;
   var post_inspecting = false;
 
-  var start_inspect = 7;
+  var start_inspect = INIT_START_INSPECT;
   var start_solve = start_inspect + 1;
 
   var last_solve = -1;
@@ -191,8 +215,7 @@ module.exports = function () {
   process.stdin.on('keypress', function (ch, key) {
     switch (key.name) {
       case 'e':
-        console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
-        print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+        end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
         return process.exit(0);
 
       case 's':
@@ -212,8 +235,20 @@ module.exports = function () {
 
         if (!inspecting && !post_inspecting && !solving) {
           // A new solve has been initiated
+
+          // Last solve has been accepted by user! Let's write it to the local
+          // file!
+          if (post_solving) {
+            // User didn't add penalty to the last solve or make it a DNF!
+            post_solving = false;
+
+            acceptSolve(last_solve, last_scramble);
+          }
+
+          // Now start inspection for the new solve
           inspect.start();
           inspecting = true;
+
         } else if (inspecting && !post_inspecting && !solving) {
           // Inspection ends, solving begins
           inspect.stop();
@@ -237,9 +272,6 @@ module.exports = function () {
 
           solveTime = solveTime + penalty;
 
-          addToStatsModule(solveTime);
-          writeLocal(this_solve, this_scramble);
-
           charm.position(1, start_inspect);
           botSay('That solve was ' + clc.green(prettify(solveTime)) +
           (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
@@ -251,11 +283,15 @@ module.exports = function () {
           }
 
           last_solve = solveTime;
+          last_scramble = this_scramble;
 
           prepNewSolve();
 
           start_solve += 3;
           start_inspect += 3;
+
+          // The user can still decide to reject this solve!
+          post_solving = true;
 
           resetForNextSolve();
 
@@ -263,14 +299,14 @@ module.exports = function () {
 
         break;
 
-      case 'd':
+      case 't':
 
         if (!inspecting && !post_inspecting && solving) {
-          // Solve has been cancelled by the solver
+          // Solve has been trashed by the solver
           // (Probably because they were disturbed during the solve)
           // Reset everything and show a new scramble to the solver
           charm.position(1, start_inspect);
-          botSay('That solve was cancelled');
+          botSay('That solve was trashed');
 
           prepNewSolve();
 
@@ -279,6 +315,38 @@ module.exports = function () {
 
           resetForNextSolve();
 
+        } else if (!inspecting && !post_inspecting && !solving && post_solving) {
+          // Solve completed, but the user would like to trash this solve
+          post_solving = false;
+          botSay("The previous solve was trashed");
+          start_inspect += 2;
+          start_solve += 2;
+        }
+
+        break;
+
+      case 'd':
+      case 'p':
+
+        if (!inspecting && !post_inspecting && !solving && post_solving) {
+          // User has decided to either add +2 to this solve time and write it
+          // to file or make it a DNF
+          post_solving = false;
+
+          if (key.name === 'd') {
+            botSay("The previous solve was changed to DNF");
+            acceptSolve('DNF', last_scramble);
+            start_inspect += 2;
+            start_solve += 2;
+          } else if (key.name === 'p' && typeof last_solve === 'number') {
+            // The 2nd check is not required, but is here to avoid any unexpected
+            // nastiness
+            last_solve += 2000;
+            botSay("A penalty of 2 seconds was added to the previous solve");
+            acceptSolve(last_solve, last_scramble);
+            start_inspect += 2;
+            start_solve += 2;
+          }
         }
 
         break;
@@ -291,7 +359,7 @@ module.exports = function () {
 
     if (key.ctrl && key.name === 'c') {
       console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
-      print_stats(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
+      end_session(start_time, total_time.ms, solves_today.length, ao5, ao12, ao_session, best_time, worst_time);
       return process.exit(0);
     }
   });
@@ -314,7 +382,7 @@ module.exports = function () {
   charm.position(right_row_num, 4);
   console.log(clc.blue('Press letter s to see your session statistics.'));
   charm.position(right_row_num, 5);
-  console.log(clc.blue('Press letter d to cancel a solve after the timer has started'));
+  console.log(clc.blue('Press letter t to trash a solve while the timer is running'));
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
