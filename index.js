@@ -172,8 +172,8 @@ module.exports = function () {
   var inspecting = false;
   var post_inspecting = false;
 
-  var start_inspect = 5;
-  var start_solve = 6;
+  var start_inspect = 7;
+  var start_solve = start_inspect + 1;
 
   var last_solve = -1;
   var penalty = 0;
@@ -263,6 +263,26 @@ module.exports = function () {
 
         break;
 
+      case 'd':
+
+        if (!inspecting && !post_inspecting && solving) {
+          // Solve has been cancelled by the solver
+          // (Probably because they were disturbed during the solve)
+          // Reset everything and show a new scramble to the solver
+          charm.position(1, start_inspect);
+          botSay('That solve was cancelled');
+
+          prepNewSolve();
+
+          start_solve += 3;
+          start_inspect += 3;
+
+          resetForNextSolve();
+
+        }
+
+        break;
+
       default:
 
         break;
@@ -282,14 +302,19 @@ module.exports = function () {
   charm.reset();
   botSay("Hey! Let's start solving!");
   botSay('The session starts now!');
+  charm.position(1, start_inspect-2)
   prepNewSolve();
 
   charm.position(right_row_num, 1);
-  console.log(clc.green('Keyboard shortcuts (press e to exit)'));
+  console.log(clc.green('Keyboard shortcuts'));
   charm.position(right_row_num, 2);
-  console.log(clc.red('Press space to initiate a solve.'));
+  console.log(clc.green('Press e to exit cli-cube-timer'));
   charm.position(right_row_num, 3);
+  console.log(clc.red('Press space to initiate a solve.'));
+  charm.position(right_row_num, 4);
   console.log(clc.blue('Press letter s to see your session statistics.'));
+  charm.position(right_row_num, 5);
+  console.log(clc.blue('Press letter d to cancel a solve after the timer has started'));
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
