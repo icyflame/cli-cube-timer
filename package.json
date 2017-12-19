@@ -27,6 +27,7 @@
     "statistics"
   ],
   "dependencies": {
+    "async": "2.6.0",
     "bar-horizontal": "0.2.1",
     "charm": "1.0.2",
     "cli-color": "1.2.0",
