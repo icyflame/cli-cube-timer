@@ -9,7 +9,7 @@ module.exports = function () {
   var this_scramble, last_scramble, this_solve, stats = { };
 
   const STATS_LINES = 11;
-  const INIT_START_INSPECT = 7;
+  const INIT_START_INSPECT = 10;
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
@@ -373,13 +373,17 @@ module.exports = function () {
   charm.position(right_row_num, 1);
   console.log(clc.green('Keyboard shortcuts'));
   charm.position(right_row_num, 2);
-  console.log(clc.green('Press e to exit cli-cube-timer'));
+  console.log(clc.green('Press E to exit cli-cube-timer'));
   charm.position(right_row_num, 3);
-  console.log(clc.red('Press space to initiate a solve.'));
+  console.log(clc.red('Press SPACE to initiate a solve.'));
   charm.position(right_row_num, 4);
-  console.log(clc.blue('Press letter s to see your session statistics.'));
+  console.log(clc.blue('Press S to see your session statistics.'));
   charm.position(right_row_num, 5);
-  console.log(clc.blue('Press letter t to trash a solve while the timer is running'));
+  console.log(clc.blue('Press T to trash a solve while the solve timer is running'));
+  charm.position(right_row_num, 6);
+  console.log(clc.blue('Press D after a solve to change it to a DNF'));
+  charm.position(right_row_num, 7);
+  console.log(clc.blue('Press P after a solve to add a penalty of 2 seconds'));
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
