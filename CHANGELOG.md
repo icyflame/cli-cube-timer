@@ -1,4 +1,4 @@
-# 0.9.2
+# 1.0.0
 
 - Support for three new actions inside the solve window:
   - `D` -> convert a solve to DNF after the solve has been stopped
