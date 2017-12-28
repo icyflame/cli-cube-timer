@@ -117,6 +117,7 @@ module.exports = function () {
       ret.solve ++;
       ret.inspect ++;
     }
+
     if (num_solves >= 12) {
       console.log('Your current ' + clc.red('AO12') + ' is ' + clc.blue(prettifyVerbose(ao12)));
       ret.solve ++;
@@ -167,10 +168,12 @@ module.exports = function () {
     charm.position(1, start_inspect);
     console.log(clc.red('This solve is a DNF.'));
 
+    post_solving = true;
     resetForNextSolve();
-    writeLocal('DNF', this_scramble);
+
     charm.position(1, start_inspect);
     botSay('That solve was ' + clc.green('DNF'));
+
     prepNewSolve();
     start_inspect += 3;
     start_solve += 3;
@@ -338,8 +341,9 @@ module.exports = function () {
             start_inspect += 2;
             start_solve += 2;
           } else if (key.name === 'p' && typeof last_solve === 'number') {
-            // The 2nd check is not required, but is here to avoid any unexpected
-            // nastiness
+            // The 2nd check ensures that the addition below will not cause any
+            // error, when we reach this position through the "DNF because solve
+            // didn't start within 17 seconds" flow
             last_solve += 2000;
             botSay("A penalty of 2 seconds was added to the previous solve");
             acceptSolve(last_solve, last_scramble);
