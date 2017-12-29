@@ -354,6 +354,21 @@ module.exports = function () {
 
         break;
 
+      case 'h':
+
+        console.log("Keyboard shortcuts:");
+        console.log(clc.green('Press E to exit.'));
+        console.log(clc.red('Press SPACE to initiate a solve.'));
+        console.log(clc.blue('Press S to see your session statistics.'));
+        console.log(clc.blue('Press T to trash a solve while the solve timer is running'));
+	    console.log(clc.blue('Press D after a solve to change it to a DNF'));
+	    console.log(clc.blue('Press P after a solve to add a penalty of 2 seconds'));
+	    start_inspect = start_inspect + 8;
+	    start_solve = start_solve + 8;
+	    charm.position(0, start_inspect);
+        
+        break;        
+
       default:
 
         break;
