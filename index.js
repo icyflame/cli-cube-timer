@@ -6,24 +6,11 @@ module.exports = function () {
   var Scrambo = require('scrambo');
   var threebythree = new Scrambo();
   var prettyMs = require('pretty-ms');
+  var printHelp = require('./printhelp-module');
   var this_scramble, last_scramble, this_solve, stats = { };
 
   const STATS_LINES = 11;
   const INIT_START_INSPECT = 10;
-
-  function print_help() {
-    console.log("Keyboard shortcuts:");
-    console.log(clc.green('Press E to exit.'));
-    console.log(clc.red('Press SPACE to initiate a solve.'));
-    console.log(clc.blue('Press S to see your session statistics.'));
-    console.log(clc.blue('Press T to trash a solve while the solve timer is running'));
-    console.log(clc.blue('Press D after a solve to change it to a DNF'));
-    console.log(clc.blue('Press P after a solve to add a penalty of 2 seconds'));
-    start_inspect = start_inspect + 8;
-    start_solve = start_solve + 8;
-    charm.position(0, start_inspect);
-    return;
-  }
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
@@ -370,11 +357,13 @@ module.exports = function () {
 
       case 'h':
 
-        if(!solving && !inspecting && !post_inspecting) {
-        	print_help();
+        if (!solving && !inspecting && !post_inspecting) {
+          start_solve = printHelp.data.update_start_solve(start_solve);
+          start_inspect = printHelp.data.update_start_inspect(start_inspect);
+          printHelp.data.print_help(start_inspect);
         }
-        
-        break;        
+
+        break;
 
       default:
 
