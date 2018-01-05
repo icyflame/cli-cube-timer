@@ -6,7 +6,6 @@ module.exports = function () {
   var Scrambo = require('scrambo');
   var threebythree = new Scrambo();
   var prettyMs = require('pretty-ms');
-  var printHelp = require('./printhelp-module');
   var this_scramble, last_scramble, this_solve, stats = { };
 
   const STATS_LINES = 11;
@@ -128,6 +127,23 @@ module.exports = function () {
     console.log('Your current ' + clc.red('Session average') + ' is ' + clc.blue(prettifyVerbose(ao_session)));
 
     return ret;
+  }
+
+  function print_help (left_position, right_position) {
+    charm.position(left_position, right_position);
+    console.log(clc.green('Keyboard shortcuts'));
+    charm.position(left_position, right_position + 1);
+    console.log(clc.green('Press E to exit cli-cube-timer'));
+    charm.position(left_position, right_position + 2);
+    console.log(clc.red('Press SPACE to initiate a solve.'));
+    charm.position(left_position, right_position + 3);
+    console.log(clc.blue('Press S to see your session statistics.'));
+    charm.position(left_position, right_position + 4);
+    console.log(clc.blue('Press T to trash a solve while the solve timer is running'));
+    charm.position(left_position, right_position + 5);
+    console.log(clc.blue('Press D after a solve to change it to a DNF'));
+    charm.position(left_position, right_position + 6);
+    console.log(clc.blue('Press P after a solve to add a penalty of 2 seconds'));
   }
 
   charm.pipe(process.stdout);
@@ -358,9 +374,9 @@ module.exports = function () {
       case 'h':
 
         if (!solving && !inspecting && !post_inspecting) {
-          start_solve = printHelp.data.update_start_solve(start_solve);
-          start_inspect = printHelp.data.update_start_inspect(start_inspect);
-          printHelp.data.print_help(start_inspect);
+          start_solve += 8;
+          print_help(0, start_inspect);
+          start_inspect += 8;
         }
 
         break;
@@ -385,20 +401,7 @@ module.exports = function () {
   charm.position(1, start_inspect-2)
   prepNewSolve();
 
-  charm.position(right_row_num, 1);
-  console.log(clc.green('Keyboard shortcuts'));
-  charm.position(right_row_num, 2);
-  console.log(clc.green('Press E to exit cli-cube-timer'));
-  charm.position(right_row_num, 3);
-  console.log(clc.red('Press SPACE to initiate a solve.'));
-  charm.position(right_row_num, 4);
-  console.log(clc.blue('Press S to see your session statistics.'));
-  charm.position(right_row_num, 5);
-  console.log(clc.blue('Press T to trash a solve while the solve timer is running'));
-  charm.position(right_row_num, 6);
-  console.log(clc.blue('Press D after a solve to change it to a DNF'));
-  charm.position(right_row_num, 7);
-  console.log(clc.blue('Press P after a solve to add a penalty of 2 seconds'));
+  print_help(right_row_num, 1);
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
