@@ -233,162 +233,164 @@ module.exports = function () {
   var worst_time = 0.0;
 
   process.stdin.on('keypress', function (ch, key) {
-    switch (key.name) {
-      case 'e':
-        return end_session();
+    if (key) {
+      switch (key.name) {
+        case 'e':
+          return end_session();
 
-      case 's':
-        charm.erase('line');
-        charm.left(1);
+        case 's':
+          charm.erase('line');
+          charm.left(1);
 
-        var printed = print_stats();
+          var printed = print_stats();
 
-        userSay('Press space to initiate a new solve');
+          userSay('Press space to initiate a new solve');
 
-        start_solve += (STATS_LINES + printed.solve);
-        start_inspect += (STATS_LINES + printed.inspect);
+          start_solve += (STATS_LINES + printed.solve);
+          start_inspect += (STATS_LINES + printed.inspect);
 
-        break;
+          break;
 
-      case 'space':
+        case 'space':
 
-        if (!inspecting && !post_inspecting && !solving) {
-          // A new solve has been initiated
+          if (!inspecting && !post_inspecting && !solving) {
+            // A new solve has been initiated
 
-          // Last solve has been accepted by user! Let's write it to the local
-          // file!
-          if (post_solving) {
-            // User didn't add penalty to the last solve or make it a DNF!
+            // Last solve has been accepted by user! Let's write it to the local
+            // file!
+            if (post_solving) {
+              // User didn't add penalty to the last solve or make it a DNF!
+              post_solving = false;
+
+              acceptSolve(last_solve, last_scramble);
+            }
+
+            // Now start inspection for the new solve
+            inspect.start();
+            inspecting = true;
+
+          } else if (inspecting && !post_inspecting && !solving) {
+            // Inspection ends, solving begins
+            inspect.stop();
+            inspect.reset(0);
+            stopwatch.start();
+            inspecting = false;
+            solving = true;
+          } else if (!inspecting && post_inspecting && !solving) {
+            // Inspection has ended, with a penalty of +2
+            // Solving begins
+            post_inspect.stop();
+            inspect.reset(0);
+            post_inspect.reset(0);
+            stopwatch.start();
+            post_inspecting = false;
+            solving = true;
+            penalty = 2000;
+          } else if (!inspecting && !post_inspecting && solving) {
+            // Solve has ended
+            var solveTime = stopwatch.ms;
+
+            solveTime = solveTime + penalty;
+
+            charm.position(1, start_inspect);
+            botSay('That solve was ' + clc.green(prettify(solveTime)) +
+            (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
+
+            if (num_solves > 1) {
+              charm.position(right_row_num, start_inspect);
+              console.log(clc.red(num_solves < 5 ? 'Previous solve: ' : "This session's AO5: ") +
+              clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
+            }
+
+            last_solve = solveTime;
+            last_scramble = this_scramble;
+
+            prepNewSolve();
+
+            start_solve += 3;
+            start_inspect += 3;
+
+            // The user can still decide to reject this solve!
+            post_solving = true;
+
+            resetForNextSolve();
+
+          }
+
+          break;
+
+        case 't':
+
+          if (!inspecting && !post_inspecting && solving) {
+            // Solve has been trashed by the solver
+            // (Probably because they were disturbed during the solve)
+            // Reset everything and show a new scramble to the solver
+            charm.position(1, start_inspect);
+            botSay('That solve was trashed');
+
+            prepNewSolve();
+
+            start_solve += 3;
+            start_inspect += 3;
+
+            resetForNextSolve();
+
+          } else if (!inspecting && !post_inspecting && !solving && post_solving) {
+            // Solve completed, but the user would like to trash this solve
+            post_solving = false;
+            botSay("The previous solve was trashed");
+            start_inspect += 2;
+            start_solve += 2;
+          }
+
+          break;
+
+        case 'd':
+        case 'p':
+
+          if (!inspecting && !post_inspecting && !solving && post_solving) {
+            // User has decided to either add +2 to this solve time and write it
+            // to file or make it a DNF
             post_solving = false;
 
-            acceptSolve(last_solve, last_scramble);
+            if (key.name === 'd') {
+              botSay("The previous solve was changed to DNF");
+              acceptSolve('DNF', last_scramble);
+              start_inspect += 2;
+              start_solve += 2;
+            } else if (key.name === 'p' && typeof last_solve === 'number') {
+              // The 2nd check ensures that the addition below will not cause any
+              // error, when we reach this position through the "DNF because solve
+              // didn't start within 17 seconds" flow
+              last_solve += 2000;
+              botSay("A penalty of 2 seconds was added to the previous solve");
+              acceptSolve(last_solve, last_scramble);
+              start_inspect += 2;
+              start_solve += 2;
+            }
           }
 
-          // Now start inspection for the new solve
-          inspect.start();
-          inspecting = true;
+          break;
 
-        } else if (inspecting && !post_inspecting && !solving) {
-          // Inspection ends, solving begins
-          inspect.stop();
-          inspect.reset(0);
-          stopwatch.start();
-          inspecting = false;
-          solving = true;
-        } else if (!inspecting && post_inspecting && !solving) {
-          // Inspection has ended, with a penalty of +2
-          // Solving begins
-          post_inspect.stop();
-          inspect.reset(0);
-          post_inspect.reset(0);
-          stopwatch.start();
-          post_inspecting = false;
-          solving = true;
-          penalty = 2000;
-        } else if (!inspecting && !post_inspecting && solving) {
-          // Solve has ended
-          var solveTime = stopwatch.ms;
+        case 'h':
 
-          solveTime = solveTime + penalty;
-
-          charm.position(1, start_inspect);
-          botSay('That solve was ' + clc.green(prettify(solveTime)) +
-          (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
-
-          if (num_solves > 1) {
-            charm.position(right_row_num, start_inspect);
-            console.log(clc.red(num_solves < 5 ? 'Previous solve: ' : "This session's AO5: ") +
-            clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
+          if (!solving && !inspecting && !post_inspecting) {
+            start_solve += 8;
+            print_help(0, start_inspect);
+            start_inspect += 8;
           }
 
-          last_solve = solveTime;
-          last_scramble = this_scramble;
+          break;
 
-          prepNewSolve();
+        default:
 
-          start_solve += 3;
-          start_inspect += 3;
+          break;
 
-          // The user can still decide to reject this solve!
-          post_solving = true;
+      }
 
-          resetForNextSolve();
-
-        }
-
-        break;
-
-      case 't':
-
-        if (!inspecting && !post_inspecting && solving) {
-          // Solve has been trashed by the solver
-          // (Probably because they were disturbed during the solve)
-          // Reset everything and show a new scramble to the solver
-          charm.position(1, start_inspect);
-          botSay('That solve was trashed');
-
-          prepNewSolve();
-
-          start_solve += 3;
-          start_inspect += 3;
-
-          resetForNextSolve();
-
-        } else if (!inspecting && !post_inspecting && !solving && post_solving) {
-          // Solve completed, but the user would like to trash this solve
-          post_solving = false;
-          botSay("The previous solve was trashed");
-          start_inspect += 2;
-          start_solve += 2;
-        }
-
-        break;
-
-      case 'd':
-      case 'p':
-
-        if (!inspecting && !post_inspecting && !solving && post_solving) {
-          // User has decided to either add +2 to this solve time and write it
-          // to file or make it a DNF
-          post_solving = false;
-
-          if (key.name === 'd') {
-            botSay("The previous solve was changed to DNF");
-            acceptSolve('DNF', last_scramble);
-            start_inspect += 2;
-            start_solve += 2;
-          } else if (key.name === 'p' && typeof last_solve === 'number') {
-            // The 2nd check ensures that the addition below will not cause any
-            // error, when we reach this position through the "DNF because solve
-            // didn't start within 17 seconds" flow
-            last_solve += 2000;
-            botSay("A penalty of 2 seconds was added to the previous solve");
-            acceptSolve(last_solve, last_scramble);
-            start_inspect += 2;
-            start_solve += 2;
-          }
-        }
-
-        break;
-
-      case 'h':
-
-        if (!solving && !inspecting && !post_inspecting) {
-          start_solve += 8;
-          print_help(0, start_inspect);
-          start_inspect += 8;
-        }
-
-        break;
-
-      default:
-
-        break;
-
-    }
-
-    if (key.ctrl && key.name === 'c') {
-      return end_session();
+      if (key.ctrl && key.name === 'c') {
+        return end_session();
+      }
     }
   });
 
