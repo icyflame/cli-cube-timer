@@ -9,8 +9,6 @@ module.exports = function () {
   var this_scramble, last_scramble, this_solve, stats = { };
 
   const STATS_LINES = 11;
-  const INIT_START_INSPECT = 10;
-  const INIT_FIRST_SOLVE = INIT_START_INSPECT - 2;
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
@@ -32,6 +30,8 @@ module.exports = function () {
     userSay('Press space to initiate a solve.');
     this_scramble = threebythree.get(1).join(' ');
     botSay(this_scramble);
+
+    return 2;
   }
 
   function eraseInspectSolveLines () {
@@ -138,7 +138,8 @@ module.exports = function () {
       { func: clc.blue, msg: 'Press S to see your session statistics.' },
       { func: clc.blue, msg: 'Press T to trash a solve while the solve timer is running' },
       { func: clc.blue, msg: 'Press D after a solve to change it to a DNF' },
-      { func: clc.blue, msg: 'Press P after a solve to add a penalty of 2 seconds' }
+      { func: clc.blue, msg: 'Press P after a solve to add a penalty of 2 seconds' },
+      { func: clc.green, msg: 'Press H to print this list of keyboard shortcuts' }
     ];
 
     for (var init = 0; init < help_message.length; init++) {
@@ -219,7 +220,7 @@ module.exports = function () {
   var inspecting = false;
   var post_inspecting = false;
 
-  var start_inspect = INIT_START_INSPECT;
+  var start_inspect = 0;
   var start_solve = start_inspect + 1;
 
   var last_solve = -1;
@@ -402,10 +403,12 @@ module.exports = function () {
   botSay("Hey! Let's start solving!");
   botSay('The session starts now!');
 
-  print_help(right_row_num, 1);
+  start_inspect = print_help(right_row_num, 1);
 
-  charm.position(1, INIT_FIRST_SOLVE)
-  prepNewSolve();
+  charm.position(1, start_inspect)
+  start_inspect += prepNewSolve();
+
+  start_solve = start_inspect + 1;
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
