@@ -134,8 +134,8 @@ module.exports = function () {
     var help_message = [
       { func: clc.green, msg: 'Keyboard shortcuts' },
       { func: clc.green, msg: 'Press E to exit cli-cube-timer' },
-      { func: clc.red.underline, msg: 'Press SPACE to initiate a solve.' },
-      { func: clc.blue, msg: 'Press S to see your session statistics.' },
+      { func: clc.red.underline, msg: 'Press SPACE to initiate a solve' },
+      { func: clc.blue, msg: 'Press S to see your session statistics' },
       { func: clc.blue, msg: 'Press T to trash a solve while the solve timer is running' },
       { func: clc.blue, msg: 'Press D after a solve to change it to a DNF' },
       { func: clc.blue, msg: 'Press P after a solve to add a penalty of 2 seconds' },
