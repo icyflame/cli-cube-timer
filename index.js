@@ -10,6 +10,7 @@ module.exports = function () {
 
   const STATS_LINES = 11;
   const INIT_START_INSPECT = 10;
+  const INIT_FIRST_SOLVE = INIT_START_INSPECT - 2;
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
@@ -130,20 +131,22 @@ module.exports = function () {
   }
 
   function print_help (left_position, right_position) {
-    charm.position(left_position, right_position);
-    console.log(clc.green('Keyboard shortcuts'));
-    charm.position(left_position, right_position + 1);
-    console.log(clc.green('Press E to exit cli-cube-timer'));
-    charm.position(left_position, right_position + 2);
-    console.log(clc.red('Press SPACE to initiate a solve.'));
-    charm.position(left_position, right_position + 3);
-    console.log(clc.blue('Press S to see your session statistics.'));
-    charm.position(left_position, right_position + 4);
-    console.log(clc.blue('Press T to trash a solve while the solve timer is running'));
-    charm.position(left_position, right_position + 5);
-    console.log(clc.blue('Press D after a solve to change it to a DNF'));
-    charm.position(left_position, right_position + 6);
-    console.log(clc.blue('Press P after a solve to add a penalty of 2 seconds'));
+    var help_message = [
+      { func: clc.green, msg: 'Keyboard shortcuts' },
+      { func: clc.green, msg: 'Press E to exit cli-cube-timer' },
+      { func: clc.red.underline, msg: 'Press SPACE to initiate a solve.' },
+      { func: clc.blue, msg: 'Press S to see your session statistics.' },
+      { func: clc.blue, msg: 'Press T to trash a solve while the solve timer is running' },
+      { func: clc.blue, msg: 'Press D after a solve to change it to a DNF' },
+      { func: clc.blue, msg: 'Press P after a solve to add a penalty of 2 seconds' }
+    ];
+
+    for (var init = 0; init < help_message.length; init++) {
+      charm.position(left_position, right_position + init);
+      console.log(help_message[init].func(help_message[init].msg))
+    }
+
+    return help_message.length + 1;
   }
 
   charm.pipe(process.stdout);
@@ -374,9 +377,9 @@ module.exports = function () {
       case 'h':
 
         if (!solving && !inspecting && !post_inspecting) {
-          start_solve += 8;
-          print_help(0, start_inspect);
-          start_inspect += 8;
+          var diff = print_help(0, start_inspect);
+          start_inspect += diff;
+          start_solve += diff;
         }
 
         break;
@@ -398,10 +401,11 @@ module.exports = function () {
   charm.reset();
   botSay("Hey! Let's start solving!");
   botSay('The session starts now!');
-  charm.position(1, start_inspect-2)
-  prepNewSolve();
 
   print_help(right_row_num, 1);
+
+  charm.position(1, INIT_FIRST_SOLVE)
+  prepNewSolve();
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
