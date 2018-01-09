@@ -417,5 +417,4 @@ module.exports = function () {
   var total_time = new Stopwatch();
   total_time.start();
   charm.position(1, start_inspect);
-
 };
