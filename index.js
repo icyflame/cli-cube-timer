@@ -237,6 +237,9 @@ module.exports = function () {
   var worst_time = 0.0;
 
   process.stdin.on('keypress', function (ch, key) {
+    if (key === undefined) {
+      return;
+    }
     switch (key.name) {
       case 'e':
         return end_session();
