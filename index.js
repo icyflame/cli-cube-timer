@@ -38,7 +38,7 @@ module.exports = function () {
     charm.position(1, start_inspect);
     charm.erase('end');
 
-    charm.position(1, start_solve);
+    charm.position(1, start_inspect + 1);
     charm.erase('end');
   }
 
@@ -197,7 +197,6 @@ module.exports = function () {
 
     prepNewSolve();
     start_inspect += 3;
-    start_solve += 3;
     last_solve = 'DNF';
 
   });
@@ -206,7 +205,7 @@ module.exports = function () {
     if (!solving) {
       return;
     }
-    charm.position(1, start_solve).write('Solving: ' + (time.ms / 1000).toFixed(2));
+    charm.position(1, start_inspect + 1).write('Solving: ' + (time.ms / 1000).toFixed(2));
   });
 
   var stats = require('./solvestats-module.js');
@@ -221,7 +220,6 @@ module.exports = function () {
   var post_inspecting = false;
 
   var start_inspect = 0;
-  var start_solve = start_inspect + 1;
 
   var last_solve = -1;
   var penalty = 0;
@@ -252,7 +250,6 @@ module.exports = function () {
 
         userSay('Press space to initiate a new solve');
 
-        start_solve += (STATS_LINES + printed.solve);
         start_inspect += (STATS_LINES + printed.inspect);
 
         break;
@@ -313,7 +310,6 @@ module.exports = function () {
 
           prepNewSolve();
 
-          start_solve += 3;
           start_inspect += 3;
 
           // The user can still decide to reject this solve!
@@ -336,7 +332,6 @@ module.exports = function () {
 
           prepNewSolve();
 
-          start_solve += 3;
           start_inspect += 3;
 
           resetForNextSolve();
@@ -346,7 +341,6 @@ module.exports = function () {
           post_solving = false;
           botSay("The previous solve was trashed");
           start_inspect += 2;
-          start_solve += 2;
         }
 
         break;
@@ -363,7 +357,6 @@ module.exports = function () {
             botSay("The previous solve was changed to DNF");
             acceptSolve('DNF', last_scramble);
             start_inspect += 2;
-            start_solve += 2;
           } else if (key.name === 'p' && typeof last_solve === 'number') {
             // The 2nd check ensures that the addition below will not cause any
             // error, when we reach this position through the "DNF because solve
@@ -372,7 +365,6 @@ module.exports = function () {
             botSay("A penalty of 2 seconds was added to the previous solve");
             acceptSolve(last_solve, last_scramble);
             start_inspect += 2;
-            start_solve += 2;
           }
         }
 
@@ -383,7 +375,6 @@ module.exports = function () {
         if (!solving && !inspecting && !post_inspecting) {
           var diff = print_help(0, start_inspect);
           start_inspect += diff;
-          start_solve += diff;
         }
 
         break;
@@ -410,8 +401,6 @@ module.exports = function () {
 
   charm.position(1, start_inspect)
   start_inspect += prepNewSolve();
-
-  start_solve = start_inspect + 1;
 
   start_time = (new Date()).toTimeString().split(' ')[0]
 
