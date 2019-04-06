@@ -27,7 +27,7 @@ module.exports = function () {
   }
 
   function prepNewSolve () {
-    userSay('Press space to initiate a solve.');
+    userSay('Press space or click your mouse to initiate a solve.');
     this_scramble = threebythree.get(1).join(' ');
     botSay(this_scramble);
 
@@ -134,7 +134,7 @@ module.exports = function () {
     var help_message = [
       { func: clc.green, msg: 'Keyboard shortcuts' },
       { func: clc.green, msg: 'Press E to exit cli-cube-timer' },
-      { func: clc.red.underline, msg: 'Press SPACE to initiate a solve' },
+      { func: clc.red.underline, msg: 'Press SPACE or CLICK YOUR MOUSE to initiate a solve' },
       { func: clc.blue, msg: 'Press S to see your session statistics' },
       { func: clc.blue, msg: 'Press T to trash a solve while the solve timer is running' },
       { func: clc.blue, msg: 'Press D after a solve to change it to a DNF' },
@@ -148,6 +148,71 @@ module.exports = function () {
     }
 
     return help_message.length + 1;
+  }
+
+  function space_or_mouse () {
+    if (!inspecting && !post_inspecting && !solving) {
+      // A new solve has been initiated
+
+      // Last solve has been accepted by user! Let's write it to the local
+      // file!
+      if (post_solving) {
+        // User didn't add penalty to the last solve or make it a DNF!
+        post_solving = false;
+
+        acceptSolve(last_solve, last_scramble);
+      }
+
+      // Now start inspection for the new solve
+      inspect.start();
+      inspecting = true;
+
+    } else if (inspecting && !post_inspecting && !solving) {
+      // Inspection ends, solving begins
+      inspect.stop();
+      inspect.reset(0);
+      stopwatch.start();
+      inspecting = false;
+      solving = true;
+    } else if (!inspecting && post_inspecting && !solving) {
+      // Inspection has ended, with a penalty of +2
+      // Solving begins
+      post_inspect.stop();
+      inspect.reset(0);
+      post_inspect.reset(0);
+      stopwatch.start();
+      post_inspecting = false;
+      solving = true;
+      penalty = 2000;
+    } else if (!inspecting && !post_inspecting && solving) {
+      // Solve has ended
+      var solveTime = stopwatch.ms;
+
+      solveTime = solveTime + penalty;
+
+      charm.position(1, start_inspect);
+      botSay('That solve was ' + clc.green(prettify(solveTime)) +
+        (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
+
+      if (num_solves > 1) {
+        charm.position(right_row_num, start_inspect);
+        console.log(clc.red(num_solves < 5 ? 'Previous solve: ' : "This session's AO5: ") +
+          clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
+      }
+
+      last_solve = solveTime;
+      last_scramble = this_scramble;
+
+      prepNewSolve();
+
+      start_inspect += 3;
+
+      // The user can still decide to reject this solve!
+      post_solving = true;
+
+      resetForNextSolve();
+
+    }
   }
 
   charm.pipe(process.stdout);
@@ -248,7 +313,7 @@ module.exports = function () {
 
         var printed = print_stats();
 
-        userSay('Press space to initiate a new solve');
+        userSay('Press space or click your mouse to initiate a new solve');
 
         start_inspect += (STATS_LINES + printed.inspect);
 
@@ -256,68 +321,7 @@ module.exports = function () {
 
       case 'space':
 
-        if (!inspecting && !post_inspecting && !solving) {
-          // A new solve has been initiated
-
-          // Last solve has been accepted by user! Let's write it to the local
-          // file!
-          if (post_solving) {
-            // User didn't add penalty to the last solve or make it a DNF!
-            post_solving = false;
-
-            acceptSolve(last_solve, last_scramble);
-          }
-
-          // Now start inspection for the new solve
-          inspect.start();
-          inspecting = true;
-
-        } else if (inspecting && !post_inspecting && !solving) {
-          // Inspection ends, solving begins
-          inspect.stop();
-          inspect.reset(0);
-          stopwatch.start();
-          inspecting = false;
-          solving = true;
-        } else if (!inspecting && post_inspecting && !solving) {
-          // Inspection has ended, with a penalty of +2
-          // Solving begins
-          post_inspect.stop();
-          inspect.reset(0);
-          post_inspect.reset(0);
-          stopwatch.start();
-          post_inspecting = false;
-          solving = true;
-          penalty = 2000;
-        } else if (!inspecting && !post_inspecting && solving) {
-          // Solve has ended
-          var solveTime = stopwatch.ms;
-
-          solveTime = solveTime + penalty;
-
-          charm.position(1, start_inspect);
-          botSay('That solve was ' + clc.green(prettify(solveTime)) +
-          (penalty === 0 ? ' (OK)' : clc.red(' (+2)')));
-
-          if (num_solves > 1) {
-            charm.position(right_row_num, start_inspect);
-            console.log(clc.red(num_solves < 5 ? 'Previous solve: ' : "This session's AO5: ") +
-            clc.blue(typeof last_solve === 'number' ? prettify(num_solves < 5 ? last_solve : ao5) : 'DNF'));
-          }
-
-          last_solve = solveTime;
-          last_scramble = this_scramble;
-
-          prepNewSolve();
-
-          start_inspect += 3;
-
-          // The user can still decide to reject this solve!
-          post_solving = true;
-
-          resetForNextSolve();
-
-        }
+        space_or_mouse();
 
         break;
 
@@ -391,9 +395,22 @@ module.exports = function () {
   });
 
   process.stdin.setRawMode(true);
+
+  process.stdin.on('mousepress', function (click) {
+    if (click.release) {
+      space_or_mouse();
+    }
+  });
+
+  process.on('exit', function () {
+    //disable mouse on exit, so that the state is back to normal for the terminal.
+    keypress.disableMouse(charm);
+  });
+
   process.stdin.resume();
 
   charm.reset();
+  keypress.enableMouse(charm);
   botSay("Hey! Let's start solving!");
   botSay('The session starts now!');
 
