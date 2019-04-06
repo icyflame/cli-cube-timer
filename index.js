@@ -133,8 +133,8 @@ module.exports = function () {
   function print_help (left_position, right_position) {
     var help_message = [
       { func: clc.green, msg: 'Keyboard shortcuts' },
-      { func: clc.green, msg: 'Press E to exit cli-cube-timer' },
-      { func: clc.red.underline, msg: 'Press SPACE or CLICK YOUR MOUSE to initiate a solve' },
+      { func: clc.green, msg: 'Press E or Q to exit cli-cube-timer' },
+      { func: clc.red.underline, msg: 'Press Space or click your mouse to start a solve' },
       { func: clc.blue, msg: 'Press S to see your session statistics' },
       { func: clc.blue, msg: 'Press T to trash a solve while the solve timer is running' },
       { func: clc.blue, msg: 'Press D after a solve to change it to a DNF' },
@@ -305,6 +305,7 @@ module.exports = function () {
     }
     switch (key.name) {
       case 'e':
+      case 'q':
         return end_session();
 
       case 's':
