@@ -79,7 +79,7 @@ module.exports = function () {
     console.log("\n\n" + clc.green("SESSION ENDED. Session stats follow:") + "\n\n");
 
     if (post_solving) {
-      acceptSolve(last_solve, last_scramble);
+      acceptSolve(last_solve, last_scramble, last_solve_timestamp);
     }
 
     print_stats();
@@ -87,14 +87,16 @@ module.exports = function () {
     return process.exit(0);
   }
 
-  function acceptSolve(solveTime, scramble) {
+  function acceptSolve(solveTime, scramble, solve_ts) {
     solve_rep = 'DNF';
     if (typeof solveTime === 'number') {
       solve_rep = (solveTime/1000).toFixed(2);
       addToStatsModule(solveTime);
     }
 
-    writeLocal(solve_rep, scramble);
+    solve_ts = typeof solve_ts === 'number' ? solve_ts : -1;
+
+    writeLocal(solve_rep, scramble, solve_ts);
   }
 
   function print_stats () {
@@ -160,7 +162,7 @@ module.exports = function () {
         // User didn't add penalty to the last solve or make it a DNF!
         post_solving = false;
 
-        acceptSolve(last_solve, last_scramble);
+        acceptSolve(last_solve, last_scramble, last_solve_timestamp);
       }
 
       // Now start inspection for the new solve
@@ -202,6 +204,7 @@ module.exports = function () {
 
       last_solve = solveTime;
       last_scramble = this_scramble;
+      last_solve_timestamp = (new Date()) - 0;
 
       prepNewSolve();
 
@@ -360,7 +363,7 @@ module.exports = function () {
 
           if (key.name === 'd') {
             botSay("The previous solve was changed to DNF");
-            acceptSolve('DNF', last_scramble);
+            acceptSolve('DNF', last_scramble, last_solve_timestamp);
             start_inspect += 2;
           } else if (key.name === 'p' && typeof last_solve === 'number') {
             // The 2nd check ensures that the addition below will not cause any
@@ -368,7 +371,7 @@ module.exports = function () {
             // didn't start within 17 seconds" flow
             last_solve += 2000;
             botSay("A penalty of 2 seconds was added to the previous solve");
-            acceptSolve(last_solve, last_scramble);
+            acceptSolve(last_solve, last_scramble, last_solve_timestamp);
             start_inspect += 2;
           }
         }

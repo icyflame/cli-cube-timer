@@ -1,5 +1,5 @@
-exports.writeLocal = function (solvetime, scramble) {
-  var solvestring = solvetime + ', ' + scramble + '\n';
+exports.writeLocal = function (solvetime, scramble, solve_ts) {
+  var solvestring = solvetime + ', ' + scramble + ', ' + solve_ts + '\n';
 
   var fs = require('fs');
 
