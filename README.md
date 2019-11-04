@@ -70,6 +70,11 @@ there was a breach! (Everything will work exactly like before!)
 This will print the URL to your gist, using your username and the gist ID that we have stored on
 your machine.
 
+### solve --show local
+
+> Print the local path to the file in which local times are stored (before
+> pushing to gist)
+
 ### solve --file|--files
 
 > Show the path to the files where solve history is stored locally
