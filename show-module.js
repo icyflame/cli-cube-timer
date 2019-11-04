@@ -18,6 +18,11 @@ module.exports = function (arg) {
       }
       break;
 
+    case 'local':
+      console.log('Local file path: ');
+      console.log(require('./file-module.js').checkLocalFile());
+      break;
+
     default:
       console.log('Unknown option!');
       console.log('For recognised options, check the README file here:');
