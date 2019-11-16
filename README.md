@@ -24,13 +24,13 @@ You need a GitHub account to store your solves on a Gist.
 
 ## Usage
 
-### solve
+### `solve`
 
 > Primary command line executable name.
 
 This will begin a solving session. All session statistics will be stored locally for this session.
 
-### solve stats [--bucket n] [--min min] [--max max]
+### `solve stats [--bucket n] [--min min] [--max max]`
 
 > View your lifetime statistics
 
@@ -44,7 +44,7 @@ each. If you would like to see just a subset of all your solves, you can use the
 print the distribution of your solve times between 10 and 20 seconds at a bucket
 sizeof 2 seconds.
 
-### solve push
+### `solve push`
 
 > Push all your solves to a gist
 
@@ -53,7 +53,7 @@ Psst, You can always add more data to your gist, from any other place that you m
 have recorded solves previously, and this app will automatically account for that when
 calculating stats using `solve stats`. Handy, huh?
 
-### solve login
+### `solve login`
 
 > One time GitHub authentication
 
@@ -63,19 +63,19 @@ the username and password everytime you want to push, and the OAuth token stays 
 **Psst,** you can delete and create a new OAuth token using this command at any time, just in case you think
 there was a breach! (Everything will work exactly like before!)
 
-### solve --show gist
+### `solve --show gist`
 
 > Print the URL where all your times are stored
 
 This will print the URL to your gist, using your username and the gist ID that we have stored on
 your machine.
 
-### solve --show local
+### `solve --show local`
 
 > Print the local path to the file in which local times are stored (before
 > pushing to gist)
 
-### solve --file|--files
+### `solve --file|--files`
 
 > Show the path to the files where solve history is stored locally
 
