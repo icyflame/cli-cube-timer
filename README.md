@@ -30,19 +30,19 @@ You need a GitHub account to store your solves on a Gist.
 
 This will begin a solving session. All session statistics will be stored locally for this session.
 
-### solve stats [--bucket n]
+### solve stats [--bucket n] [--min min] [--max max]
 
 > View your lifetime statistics
 
-This will show you the mean, the standard deviation and the distribution of your solve times.
+This will show you the mean, median, standard deviation and the distribution of your solve times.
 
 The distribution is by default at a bucket size of 10 seconds. If you are an
 advanced solver and need more resolution, just use the bucket option and use
 `solve stats --bucket 2` to show your solves with a bucket size of 2 seconds
-each.
-
-This part section is always open for improvement. The code for this is implemented using
-`fast-stats` and `fast-csv` node modules. So, this is one thing that you can always contribute to!
+each. If you would like to see just a subset of all your solves, you can use the
+`min` and `max` options. For eg: `solve stats --min 10 --max 20 --bucket 2` will
+print the distribution of your solve times between 10 and 20 seconds at a bucket
+sizeof 2 seconds.
 
 ### solve push
 
