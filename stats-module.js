@@ -1,5 +1,7 @@
-module.exports = function (bucket_size) {
-  bucket_size = bucket_size || 10;
+module.exports = function ({ bucket, min, max }) {
+  var bucket_size = typeof bucket === 'number' ? bucket : 10;
+  var min_solve = typeof min === 'number' ? min : 0;
+  var max_solve = typeof max === 'number' ? max : Number.MAX_SAFE_INTEGER;
 
   var async = require('async');
   var fileModule = require('./file-module.js');
@@ -34,8 +36,9 @@ module.exports = function (bucket_size) {
     function (file_name, callback) {
       var csvStream = csv()
       .on('data', function (data) {
-        if (data[0] !== 'DNF') {
-          all_times.push(parseFloat(data[0]));
+        var solve_time = parseFloat(data[0]);
+        if (!isNaN(solve_time) && solve_time >= min_solve && solve_time <= max_solve) {
+          all_times.push(solve_time);
         }
       })
       .on('end', function () {

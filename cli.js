@@ -31,7 +31,11 @@ if (cli.flags.show) {
   var arg = cli.input[0];
 
   switch (arg) {
-    case 'stats': require('./stats-module.js')(cli.flags.bucket);
+    case 'stats': require('./stats-module.js')({
+      bucket: cli.flags.bucket,
+      min: cli.flags.min,
+      max: cli.flags.max,
+    });
       break;
     case 'login': require('./login-module.js')();
       break;
