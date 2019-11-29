@@ -214,7 +214,6 @@ module.exports = function () {
       post_solving = true;
 
       resetForNextSolve();
-
     }
   }
 
@@ -266,7 +265,7 @@ module.exports = function () {
     prepNewSolve();
     start_inspect += 3;
     last_solve = 'DNF';
-
+    last_solve_timestamp = (new Date()) - 0;
   });
 
   stopwatch.on('time', function (time) {
@@ -290,6 +289,7 @@ module.exports = function () {
   var start_inspect = 0;
 
   var last_solve = -1;
+  var last_solve_timestamp = -1;
   var penalty = 0;
 
   var right_row_num = 50;
