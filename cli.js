@@ -39,6 +39,8 @@ if (cli.flags.show) {
       bucket: cli.flags.bucket,
       min: cli.flags.min,
       max: cli.flags.max,
+      before: cli.flags.before,
+      after: cli.flags.after,
     });
       break;
     case 'login': require('./login-module.js')();
