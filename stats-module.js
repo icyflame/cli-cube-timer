@@ -1,23 +1,51 @@
-module.exports = function ({ bucket, min, max, before_str, after_str }) {
+module.exports = function ({ bucket, min, max, before, after }) {
   var bucket_size = typeof bucket === 'number' ? bucket : 10;
   var min_solve = typeof min === 'number' ? min : 0;
   var max_solve = typeof max === 'number' ? max : Number.MAX_SAFE_INTEGER;
 
-  var before_timestamp = Number.MAX_SAFE_INTEGER;
-  var after_timestamp = -1;
+  var moment = require('moment');
 
-  var validator = function (min_solve, max_solve, before_timestamp, after_timestamp) {
-    return function (solve_time, solve_timestamp) {
+  function parseStrToMomentOrUndefined(input) {
+    return input !== undefined && moment(input).isValid() ? moment(input) : undefined;
+  }
+
+  var solveValidator = function (min_solve, max_solve, before_timestamp, after_timestamp) {
+    return function (solve_time, solve_unix_ts) {
       var solveTimeValid = (!isNaN(solve_time) && solve_time >= min_solve && solve_time <= max_solve);
 
-      var solveTsValid = solve_timestamp === undefined ||
-        (typeof solve_timestamp === 'number' &&
-          solve_timestamp >= after && solve_timestamp <= before);
+      var solveTsExists = !isNaN(solve_unix_ts) && typeof solve_unix_ts === 'number' && solve_unix_ts > 0;
+      var inputOptionsValid = before_timestamp !== undefined || after_timestamp !== undefined;
 
-      return solveTimeValid && solveTsValid;
+      // Solve time itself is invalid
+      if (!solveTimeValid) {
+        return solveTimeValid;
+      }
+
+      // --after or --before not provided, so timestamp validity needn't be checked
+      if (!inputOptionsValid) {
+        return solveTimeValid;
+      }
+
+      // User has provided --after or --before, solves without timestamps will not be included in
+      // the statistics
+      if (inputOptionsValid && !solveTsExists) {
+        return false;
+      }
+
+      var solve_moment = moment.unix(solve_unix_ts);
+      if (before_timestamp === undefined) {
+        return solve_moment.isAfter(after_timestamp);
+      }
+      if (after_timestamp === undefined) {
+        return solve_moment.isBefore(before_timestamp);
+      }
+      return solve_moment.isBetween(after_timestamp, before_timestamp);
     };
   }
-  var validatorFunc = validator(min_solve, max_solve, before_timestamp, after_timestamp);
+
+  var before_timestamp = parseStrToMomentOrUndefined(before);
+  var after_timestamp = parseStrToMomentOrUndefined(after);
+  var validatorFunc = solveValidator(min_solve, max_solve, before_timestamp, after_timestamp);
 
   var async = require('async');
   var fileModule = require('./file-module.js');
@@ -52,8 +80,16 @@ module.exports = function ({ bucket, min, max, before_str, after_str }) {
     function (file_name, callback) {
       var csvStream = csv()
       .on('data', function (data) {
+        // Step 1: Get the solve time, this should always be present
         var solve_time = parseFloat(data[0]);
-        if (validatorFunc(solve_time)) {
+
+        // Step 2: Try to parse solve timestamp
+        // This was introduced in v1.2.0. Files written by versions of cli-cube-timer before v1.2.0
+        // will not have this column.
+        var solve_timestamp = data.length >= 3 ? data[2] : undefined;
+        var solve_unix_ts = parseFloat(solve_timestamp, 10) / 1000;
+
+        if (validatorFunc(solve_time, solve_unix_ts)) {
           all_times.push(solve_time);
         }
       })
