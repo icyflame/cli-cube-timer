@@ -30,7 +30,7 @@ You need a GitHub account to store your solves on a Gist.
 
 This will begin a solving session. All session statistics will be stored locally for this session.
 
-### `solve stats [--bucket n] [--min min] [--max max]`
+### `solve stats [--bucket n] [--min min] [--max max] [--before timestamp] [--after timestamp]`
 
 > View your lifetime statistics
 
@@ -39,10 +39,18 @@ This will show you the mean, median, standard deviation and the distribution of 
 The distribution is by default at a bucket size of 10 seconds. If you are an
 advanced solver and need more resolution, just use the bucket option and use
 `solve stats --bucket 2` to show your solves with a bucket size of 2 seconds
-each. If you would like to see just a subset of all your solves, you can use the
+each.
+
+If you would like to see just a subset of all your solves, you can use the
 `min` and `max` options. For eg: `solve stats --min 10 --max 20 --bucket 2` will
 print the distribution of your solve times between 10 and 20 seconds at a bucket
 sizeof 2 seconds.
+
+Starting with v1.2.0, cli-cube-timer stores the time at which a solve was
+recorded. You can use the `--before` and `--after` options to filter out solves
+within a given period of time. Internally, the string is converted to a
+timestamp using [moment.js][1], so you can use any of the ISO 8601 standardized
+strings to specify the timestamps.
 
 ### `solve push`
 
@@ -92,3 +100,5 @@ on the dashboard, please do feel free to create new ones!
 Code licensed under MIT.
 
 Copyright Siddharth Kannan 2015.
+
+[1]: https://momentjs.com/docs/#/parsing/string/
