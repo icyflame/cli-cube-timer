@@ -7,15 +7,13 @@ module.exports = function () {
   var threebythree = new Scrambo();
   var prettyMs = require('pretty-ms');
   var this_scramble, last_scramble, this_solve, stats = { };
+  // Helper functions
+  var prettifyVerbose = require('./utils.js').prettifyVerbose;
 
   const STATS_LINES = 11;
 
   function prettify (ms) {
     return prettyMs(ms, {secDecimalDigits: 2});
-  }
-
-  function prettifyVerbose (ms) {
-    return prettyMs(ms, {verbose: true, secDecimalDigits: 2});
   }
 
   function botSay (phrase) {
