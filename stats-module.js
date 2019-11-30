@@ -79,6 +79,17 @@ module.exports = function ({ bucket, min, max, before, after }) {
       });
 
       barHorizontal(input_obj, { labels: true });
+
+      if (before_timestamp !== undefined || after_timestamp !== undefined) {
+        console.log('\nTime constraints:');
+      }
+
+      if (after_timestamp !== undefined) {
+        console.log(`After: ${clc.green(after_timestamp)}`);
+      }
+      if (before_timestamp !== undefined) {
+        console.log(`Before: ${clc.green(before_timestamp)}`);
+      }
     }
   });
 };
