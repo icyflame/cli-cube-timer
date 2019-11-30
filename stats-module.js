@@ -1,68 +1,27 @@
 module.exports = function ({ bucket, min, max, before, after }) {
+  var async = require('async');
+  var fileModule = require('./file-module.js');
+  // Constants
+  var pushed_file_name = require('./constants.js').PUSHED_FILE_PATH;
+  var local_file_name = require('./constants.js').LOCAL_FILE_PATH;
+  // Helper functions
+  var parseStrToMomentOrUndefined = require('./utils.js').parseStrToMomentOrUndefined;
+  var solveValidator = require('./utils.js').solveValidator;
+  var prettifyVerbose = require('./utils.js').prettifyVerbose;
+
   var bucket_size = typeof bucket === 'number' ? bucket : 10;
   var min_solve = typeof min === 'number' ? min : 0;
   var max_solve = typeof max === 'number' ? max : Number.MAX_SAFE_INTEGER;
 
-  var moment = require('moment');
-
-  function parseStrToMomentOrUndefined(input) {
-    return input !== undefined && moment(input).isValid() ? moment(input) : undefined;
-  }
-
-  var solveValidator = function (min_solve, max_solve, before_timestamp, after_timestamp) {
-    return function (solve_time, solve_unix_ts) {
-      var solveTimeValid = (!isNaN(solve_time) && solve_time >= min_solve && solve_time <= max_solve);
-
-      var solveTsExists = !isNaN(solve_unix_ts) && typeof solve_unix_ts === 'number' && solve_unix_ts > 0;
-      var inputOptionsValid = before_timestamp !== undefined || after_timestamp !== undefined;
-
-      // Solve time itself is invalid
-      if (!solveTimeValid) {
-        return solveTimeValid;
-      }
-
-      // --after or --before not provided, so timestamp validity needn't be checked
-      if (!inputOptionsValid) {
-        return solveTimeValid;
-      }
-
-      // User has provided --after or --before, solves without timestamps will not be included in
-      // the statistics
-      if (inputOptionsValid && !solveTsExists) {
-        return false;
-      }
-
-      var solve_moment = moment.unix(solve_unix_ts);
-      if (before_timestamp === undefined) {
-        return solve_moment.isAfter(after_timestamp);
-      }
-      if (after_timestamp === undefined) {
-        return solve_moment.isBefore(before_timestamp);
-      }
-      return solve_moment.isBetween(after_timestamp, before_timestamp);
-    };
-  }
-
   var before_timestamp = parseStrToMomentOrUndefined(before);
   var after_timestamp = parseStrToMomentOrUndefined(after);
   var validatorFunc = solveValidator(min_solve, max_solve, before_timestamp, after_timestamp);
-
-  var async = require('async');
-  var fileModule = require('./file-module.js');
-  var pushed_file_name = require('./constants.js').PUSHED_FILE_PATH;
-  var local_file_name = require('./constants.js').LOCAL_FILE_PATH;
 
   var fs = require('fs');
   var csv = require('fast-csv');
   var Stats = require('fast-stats').Stats;
   var clc = require('cli-color');
   var barHorizontal = require('bar-horizontal');
-
-  var prettyMs = require('pretty-ms');
-
-  function prettifyVerbose (ms) {
-    return prettyMs(ms, {verbose: true, secDecimalDigits: 2});
-  }
 
   var all_times = new Stats({bucket_precision: bucket_size});
 
