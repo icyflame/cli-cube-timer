@@ -1,5 +1,11 @@
 module.exports = function ({ bucket, min, max, before, after }) {
   var async = require('async');
+  var fs = require('fs');
+  var csv = require('fast-csv');
+  var Stats = require('fast-stats').Stats;
+  var clc = require('cli-color');
+  var barHorizontal = require('bar-horizontal');
+  // Local modules
   var fileModule = require('./file-module.js');
   // Constants
   var pushed_file_name = require('./constants.js').PUSHED_FILE_PATH;
@@ -12,25 +18,16 @@ module.exports = function ({ bucket, min, max, before, after }) {
   var bucket_size = typeof bucket === 'number' ? bucket : 10;
   var min_solve = typeof min === 'number' ? min : 0;
   var max_solve = typeof max === 'number' ? max : Number.MAX_SAFE_INTEGER;
-
   var before_timestamp = parseStrToMomentOrUndefined(before);
   var after_timestamp = parseStrToMomentOrUndefined(after);
   var validatorFunc = solveValidator(min_solve, max_solve, before_timestamp, after_timestamp);
 
-  var fs = require('fs');
-  var csv = require('fast-csv');
-  var Stats = require('fast-stats').Stats;
-  var clc = require('cli-color');
-  var barHorizontal = require('bar-horizontal');
-
   var all_times = new Stats({bucket_precision: bucket_size});
 
   var avail_files = [ ];
-
   if (fileModule.pushedFileExists()) {
     avail_files.push(pushed_file_name);
   }
-
   if (fileModule.localFileExists()) {
     avail_files.push(local_file_name);
   }
