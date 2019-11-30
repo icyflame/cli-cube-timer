@@ -41,16 +41,16 @@ advanced solver and need more resolution, just use the bucket option and use
 `solve stats --bucket 2` to show your solves with a bucket size of 2 seconds
 each.
 
-If you would like to see just a subset of all your solves, you can use the
-`min` and `max` options. For eg: `solve stats --min 10 --max 20 --bucket 2` will
-print the distribution of your solve times between 10 and 20 seconds at a bucket
-sizeof 2 seconds.
+If you would like to see just a subset of all your solves, you can use the `min`
+and `max` options. For eg: `solve stats --min 10 --max 20 --bucket 2` will print
+the distribution of your solve times between 10 and 20 seconds with a bucket
+size of 2 seconds.
 
 Starting with v1.2.0, cli-cube-timer stores the time at which a solve was
 recorded. You can use the `--before` and `--after` options to filter out solves
 within a given period of time. Internally, the string is converted to a
-timestamp using [moment.js][1], so you can use any of the ISO 8601 standardized
-strings to specify the timestamps.
+timestamp using [moment.js][1], so you can use any supported ISO 8601 string to
+specify the timestamps.
 
 ### `solve push`
 
